@@ -223,15 +223,15 @@ ax0.set_xlabel(r'$\log_{\rm 10}(m, [M_\odot])$')
 plt.legend()
 plt.tight_layout()
 
-# # save the plot:
-# plt.savefig('star_cluster_IMF_plot.pdf', dpi=300)
+# save the plot:
+plt.savefig('star_cluster_IMF_plot.pdf', dpi=300)
 #
 # # end of the example:
-# print("    The plot is saved in the file: star_cluster_IMF_plot.pdf\n\n"
-#       "    ============================\n")
+print("    The plot is saved in the file: star_cluster_IMF_plot.pdf\n\n"
+       "    ============================\n")
 #
 # # show the plot
-# plt.show()
+plt.show()
 
 
 

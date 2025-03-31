@@ -2450,7 +2450,7 @@ def function_get_igimf_for_this_epoch(SFR_input, Z_over_X, this_time, this_epoch
     if SFR_input == 0:
         igimf_file_name = "igimf_SFR_Zero"
     else:
-        igimf_file_name = "igimf_SFR_{}_Fe_over_H_{}".format(round(math.log(SFR_input, 10) * 100000),
+        igimf_file_name = "igimf_SFR_{}_Fe_over_H_{}.py".format(round(math.log(SFR_input, 10) * 100000),
                                                              round(Z_over_X * 100000))
     igimf = __import__(igimf_file_name)
     # import os
@@ -2484,10 +2484,10 @@ def function_generate_igimf_file(SFR=None, Z_over_X=None, printout=False, sf_epo
 
     Generated_IGIMFs_path = 'Generated_IGIMFs'
     if os.path.isdir(Generated_IGIMFs_path) == False:
-        Generated_IGIMFs_path = '/galIMF/Generated_IGIMFs'
+        Generated_IGIMFs_path = '/home/adriana/python/galIMF/Generated_IGIMFs'
         if os.path.isdir(Generated_IGIMFs_path) == False:
             cwd = os.getcwd()
-            Generated_IGIMFs_path = cwd + '/galIMF/Generated_IGIMFs'
+            Generated_IGIMFs_path = cwd + '/home/adriana/python/galIMF/Generated_IGIMFs'
     file_name = '/igimf_SFR_{}_Fe_over_H_{}.py'.format(round(math.log(SFR, 10) * 100000),
                                                        round(Z_over_X * 100000))
     file_path_and_name = Generated_IGIMFs_path + file_name
@@ -2501,7 +2501,7 @@ def function_generate_igimf_file(SFR=None, Z_over_X=None, printout=False, sf_epo
     if check_igimf == True:
 
         if os.path.isfile(file_path_and_name):
-            igimf_file_name = "igimf_SFR_{}_Fe_over_H_{}".format(round(math.log(SFR, 10) * 100000),
+            igimf_file_name = "igimf_SFR_{}_Fe_over_H_{}.py".format(round(math.log(SFR, 10) * 100000),
                                                                  round(Z_over_X * 100000))
             igimf_____ = __import__(igimf_file_name)
             if hasattr(igimf_____, "custom_imf"):
@@ -2693,12 +2693,12 @@ def function_generate_igimf_file(SFR=None, Z_over_X=None, printout=False, sf_epo
         def write_imf_input2():
             global file, masses, igimf
             if SFR == 0:
-                file = open('Generated_IGIMFs/igimf_SFR_Zero.py', 'w')
+                file = open('/home/adriana/python/galIMF/Generated_IGIMFs/igimf_SFR_Zero.py', 'w')
                 file.write("def custom_imf(mass, time):  # there is no time dependence for IGIMF\n")
                 file.write("    return 0\n")
                 file.close()
             else:
-                file = open('Generated_IGIMFs/igimf_SFR_{}_Fe_over_H_{}.py'.format(round(math.log(SFR, 10) * 100000),
+                file = open('/home/adriana/python/galIMF/Generated_IGIMFs/igimf_SFR_{}_Fe_over_H_{}.py'.format(round(math.log(SFR, 10) * 100000),
                                                                                    round(Z_over_X * 100000)), 'w')
                 file.write("# File to define a custom IMF\n"
                            "# The return value represents the chosen IMF value for the input mass\n\n\n")
@@ -2738,12 +2738,12 @@ def function_generate_igimf_file(SFR=None, Z_over_X=None, printout=False, sf_epo
         def write_imf_input3():
             global file, masses, igimf
             if SFR == 0:
-                file = open('Generated_IGIMFs/igimf_epoch_{}.py'.format(sf_epoch), 'w')
+                file = open('/home/adriana/python/galIMF/Generated_IGIMFs/igimf_epoch_{}.py'.format(sf_epoch), 'w')
                 file.write("def custom_imf(mass, time):  # there is no time dependence for IGIMF\n")
                 file.write("    return 0\n")
                 file.close()
             else:
-                file = open('Generated_IGIMFs/igimf_epoch_{}.py'.format(sf_epoch), 'w')
+                file = open('/home/adriana/python/galIMF/Generated_IGIMFs/igimf_epoch_{}.py'.format(sf_epoch), 'w')
                 file.write("# File to define a custom IMF\n"
                            "# The return value represents the chosen IMF value for the input mass\n\n\n")
                 file.write("def custom_imf(mass, time):  # there is no time dependence for IGIMF\n")

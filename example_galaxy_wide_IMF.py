@@ -216,10 +216,10 @@ plt.ylabel('$\log{(\\xi_{\mathrm{gal}}\,[M_{\odot}^{-1}])}$')
 
 plt.ylim(np.log10(ylim_min), np.log10(ylim_max))
 plt.xlim(math.log(0.06, 10), math.log(160, 10))
-
-plt.legend(loc='best', ncol=1, fancybox=True, prop={'size': 7})
+plt.text(0.32, 0.9, f'SFR = {SFR} $\mathrm{{M_{{\odot}}\,yr^{{-1}}}}$, [M/H] = {M_over_H}', fontsize=7, transform=plt.gcf().transFigure)
+#plt.legend(loc='best', ncol=1, fancybox=False, prop={'size': 7})
 plt.tight_layout()
-fig0.savefig('galaxy_wide_IMF_plot.pdf', dpi=250)
+fig0.savefig(f"example_galaxy_wide_IMF_plots/SFR_{SFR}_metallicity_{M_over_H}.png", dpi=250)
 
 print("\n    Please check the prompted window for the result."
       "\n    IMFs in the plot are normalized by the same galaxy stellar mass."

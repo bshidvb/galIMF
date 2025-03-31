@@ -284,7 +284,7 @@ def function_read_file(yield_table_name):
         file_yield.close()
     elif yield_table_name == "Kobayashi06":
         file_yield = open(
-            'yield_tables/agb_and_massive_stars_Kobayashi06_marigo01_gce_totalyields.txt', 'r')
+            "/home/adriana/python/galIMF/yield_tables/agb_and_massive_stars_Kobayashi06_marigo01_gce_totalyields.txt", 'r')
         # Use net yields of Woosley S. E., Weaver T. A., 1995, ApJS, 101, 181 (WW95)
         # Use WW95 model B which has the highest [Mg/Fe].
         data = file_yield.readlines()
