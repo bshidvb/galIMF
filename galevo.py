@@ -5722,9 +5722,9 @@ if __name__ == '__main__':
                 time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
                 SFH_model='provided', SFE=0.004, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
                 solar_abu_table='Asplund2009',
-                high_time_resolution=None, plot_show=None, plot_save=None, outflow=100, check_igimf=None)
+                high_time_resolution=None, plot_show=True, plot_save=None, outflow=100, check_igimf=None)
     
-    # Use plot_show=True on persenal computer to view the simualtion result immidiately after the computation
+    # Use plot_show=True on personal computer to view the simualtion result immidiately after the computation
     # Use plot_show=None if running on a computer cluster to avoid possible issues.
     # In both cases, the simulation results are saved as txt files.
 

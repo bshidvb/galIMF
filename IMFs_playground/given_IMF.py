@@ -1,4 +1,4 @@
-def custom_imf(mass, time):
+def given_imf(mass, time):
     change_time = 10*10**7
     change_limit = 1
     alpha_change = (change_time - time)/change_time
