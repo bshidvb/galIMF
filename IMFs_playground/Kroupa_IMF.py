@@ -1,7 +1,9 @@
 from scipy.integrate import quad
+import numpy as np
+import matplotlib.pyplot as plt
 
-alpha3 = 2.3
-
+masses = np.logspace(-2, 2.5, 500)
+alpha3 = 2.35
 def kroupa_imf_unnormalized(mass):  # there is no time dependence for Kroupa IMF
     if mass < 0.08:
         return 0
@@ -14,13 +16,10 @@ def kroupa_imf_unnormalized(mass):  # there is no time dependence for Kroupa IMF
     else:
         return 0
 
-
 def mass_function(mass):
     return kroupa_imf_unnormalized(mass) * mass
 
-
 integrated_mass = quad(mass_function, 0.08, 150, limit=50)[0]
-
 
 def kroupa_imf(mass, time=0):  # normalized to a population with mass = 1 Msun
     if mass < 0.08:

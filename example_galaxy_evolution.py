@@ -32,8 +32,8 @@ elif SFH_shape == '2':
 
 # Other SFH shape parameters
 location = 0
-skewness = 10
-sfr_tail = 0
+skewness = 20
+sfr_tail = 5
 
 SFEN = round(float(input(
     "\n\n    Please input the characteristic star formation timescale in the unit of 10 Myr (integer only) "

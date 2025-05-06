@@ -60,7 +60,7 @@ def function_read_file(yield_table_name):
     global M_list, Z_list, eject_mass_list, H_eject_mass_list, He_eject_mass_list, C_eject_mass_list, \
         N_eject_mass_list, O_eject_mass_list, Ne_eject_mass_list, Mg_eject_mass_list, Si_eject_mass_list, \
         S_eject_mass_list, Ca_eject_mass_list,  Fe_eject_mass_list, Metal_eject_mass_list
-    global O_over_Mg_list, Mg_over_Fe_list, Mg_over_H_list, Fe_over_H_list, O_over_H_list, Z_over_H_list, O_over_Fe_list
+    global O_over_Mg_list, Mg_over_Fe_list, Mg_over_H_list, Fe_over_H_list, O_over_H_list, Z_over_H_list, O_over_Fe_list, N_over_O_list
     #
     i = 0
     while i < len(data):
@@ -101,6 +101,7 @@ def function_read_file(yield_table_name):
             O_over_Mg = math.log(O_num/Mg_num, 10) - 8.69 + 7.60
             Mg_over_H = math.log(Mg_num/H_num, 10) - 7.60 + 12
             Fe_over_H = math.log(Fe_num/H_num, 10) - 7.50 + 12
+            N_over_O = math.log(N_mass/O_mass, 10) - 7.50 + 8.69 # CHANGE
             O_over_H = math.log(O_num/H_num, 10) - 8.69 + 12
             Mg_over_Fe = math.log(Mg_num/Fe_num, 10) - 7.60 + 7.50
             O_over_Fe = math.log(O_num/Fe_num, 10) - 8.69 + 7.50
@@ -132,6 +133,7 @@ def function_read_file(yield_table_name):
                 Mg_over_Fe_list.append([])
                 Mg_over_H_list.append([])
                 Fe_over_H_list.append([])
+                N_over_O_list.append([])
                 O_over_H_list.append([])
                 O_over_Fe_list.append([])
             if Z_ini != Z_list[-1]:
@@ -155,6 +157,7 @@ def function_read_file(yield_table_name):
                 Mg_over_Fe_list.append([])
                 Mg_over_H_list.append([])
                 Fe_over_H_list.append([])
+                N_over_O_list.append([])
                 O_over_H_list.append([])
                 Z_over_H_list.append([])
                 O_over_Fe_list.append([])
@@ -175,6 +178,7 @@ def function_read_file(yield_table_name):
             O_over_Mg_list[Z_n].append(O_over_Mg)
             Mg_over_Fe_list[Z_n].append(Mg_over_Fe)
             Mg_over_H_list[Z_n].append(Mg_over_H)
+            N_over_O_list[Z_n].append(N_over_O)
             O_over_H_list[Z_n].append(O_over_H)
             Z_over_H_list[Z_n].append(Z_over_H)
             Fe_over_H_list[Z_n].append(Fe_over_H)
@@ -558,7 +562,7 @@ def function_get_Z_M(M_Z_string):
     return (Z, M)
 
 def funtion_plot_yields():
-    global O_over_Mg_list, Mg_over_Fe_list, Mg_over_H_list, Fe_over_H_list, O_over_H_list, Z_over_H_list, O_over_Fe_list, M_list, Z_list
+    global O_over_Mg_list, Mg_over_Fe_list, Mg_over_H_list, Fe_over_H_list, N_over_O_list, O_over_H_list, Z_over_H_list, O_over_Fe_list, M_list, Z_list
     j = 0
     while j < len(M_list):
         i = 0
@@ -668,6 +672,23 @@ def funtion_plot_yields():
     plt.rc('font', family='serif')
     plt.rc('xtick', labelsize='x-small')
     plt.rc('ytick', labelsize='x-small')
+    fig = plt.figure(5, figsize=(6, 5.25))
+    ax = fig.add_subplot(1, 1, 1)
+    plt.xlim(-0.5, 2.2)
+    plt.ylim(-2, 2)
+    i = 0
+    while i < len(N_over_O_list):
+        plt.plot(N_over_O_list[i], O_over_H_list[i], label='Z={}'.format(Z_list[i]))
+        (i) = (i + 1)
+    plt.plot([-2, 3], [0, 0], lw=0.1)
+    plt.legend(prop={'size': 10}, loc='best')
+    plt.xlabel(r'[N/O]')
+    plt.ylabel(r'[O/H]')
+    plt.tight_layout()
+
+    plt.rc('font', family='serif')
+    plt.rc('xtick', labelsize='x-small')
+    plt.rc('ytick', labelsize='x-small')
     fig = plt.figure(6, figsize=(6, 5.25))
     ax = fig.add_subplot(1, 1, 1)
     plt.xlim(-0.5, 2.2)
@@ -724,6 +745,7 @@ if __name__ == '__main__':
     O_over_Mg_list = []
     Mg_over_H_list = []
     Fe_over_H_list = []
+    N_over_O_list = []
     O_over_H_list = []
     Z_over_H_list = []
     Mg_over_Fe_list = []

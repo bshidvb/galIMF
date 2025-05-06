@@ -1362,7 +1362,7 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
                                                                      stellar_Fe_mass_at_this_time, False)
         mass_weighted_stellar_N_over_O = function_element_abundunce(solar_abu_table, "N", "O",
                                                                      stellar_N_mass_at_this_time,
-                                                                     stellar_Fe_mass_at_this_time, False)
+                                                                     stellar_O_mass_at_this_time, False)
         mass_weighted_stellar_O_over_Fe = function_element_abundunce(solar_abu_table, "O", "Fe",
                                                                      stellar_O_mass_at_this_time,
                                                                      stellar_Fe_mass_at_this_time, False)
@@ -3636,9 +3636,6 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, log_Z_0, STF):  # S
     SFR_list.append(-22)
 
     if plot_show is True or plot_save is True:
-        plt.rc('font', family='serif')
-        plt.rc('xtick', labelsize='x-small')
-        plt.rc('ytick', labelsize='x-small')
         fig = plt.figure(0, figsize=(3, 2.5))
         fig.add_subplot(1, 1, 1)
         plt.plot(age_list, SFR_list, color="k", lw=0.8)
@@ -5717,23 +5714,23 @@ if __name__ == '__main__':
     # SNIa_yield_table='Thielemann1993' or 'Seitenzahl2013' or 'Iwamoto1999'
     # solar_abu_table='Anders1989' or 'Asplund2009'
 
-    galaxy_evol(imf='igimf', STF=0.05, SFEN=SFEN, Z_0=0.015*1e-16, solar_mass_component="Asplund2009_mass",
+    galaxy_evol(imf='Kroupa', STF=0.05, SFEN=SFEN, Z_0=0.015*1e-16, solar_mass_component="Asplund2009_mass",
                 str_yield_table='Kobayashi06', IMF_name='Kroupa', steller_mass_upper_bound=150,
                 time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
                 SFH_model='provided', SFE=0.004, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
                 solar_abu_table='Asplund2009',
-                high_time_resolution=None, plot_show=True, plot_save=None, outflow=100, check_igimf=None)
+                high_time_resolution=None, plot_show=None, plot_save=None, outflow=100, check_igimf=None)
     
-    # Use plot_show=True on personal computer to view the simualtion result immidiately after the computation
+    # Use plot_show=True on persenal computer to view the simualtion result immidiately after the computation
     # Use plot_show=None if running on a computer cluster to avoid possible issues.
     # In both cases, the simulation results are saved as txt files.
 
-    #galaxy_evol(imf='Salpeter', STF=0.039, SFEN=SFEN, Z_0=0.02 * 1e-1, solar_mass_component="Asplund2009_mass",
+    # galaxy_evol(imf='Salpeter', STF=0.039, SFEN=SFEN, Z_0=0.02 * 1e-1, solar_mass_component="Asplund2009_mass",
     #             str_yield_table='Kobayashi06', IMF_name='Kroupa', steller_mass_upper_bound=150,
     #             time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
     #             SFH_model='provided', SFE=0.0015, SNIa_ON='SD', SNIa_yield_table='Iwamoto1999',
     #             solar_abu_table='Asplund2009',
-    #             high_time_resolution=True, plot_show=True, plot_save=None, outflow=100, check_igimf=None)
+    #             high_time_resolution=True, plot_show=None, plot_save=None, outflow=100, check_igimf=None)
 
 
 
@@ -5776,7 +5773,7 @@ if __name__ == '__main__':
 
     # # #
     # # Model IGIMF-R14-SD with the Greggio 1983 SNIa rate
-    #galaxy_evol(imf='igimf', STF=0.039, SFEN=SFEN, Z_0=0.02 * 1e-7, solar_mass_component="Asplund2009_mass",
+    # galaxy_evol(imf='igimf', STF=0.039, SFEN=SFEN, Z_0=0.02 * 1e-7, solar_mass_component="Asplund2009_mass",
     #             str_yield_table='Kobayashi06', IMF_name='Kroupa', steller_mass_upper_bound=150,
     #             time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
     #             SFH_model='gas_mass_dependent', SFE=0.0015, SNIa_ON='SD', SNIa_yield_table='Iwamoto1999',
@@ -5786,7 +5783,7 @@ if __name__ == '__main__':
 
     # # Model ?
     # # # with IGIMF3: from R14 to IGIMF2 change galimf.py line 1050, 1053, 1063; 1166, 1168, 1169, 1172, 1173
-    #galaxy_evol(imf='igimf', STF=0.08, SFEN=SFEN, Z_0=0.02*1e-7, solar_mass_component="Asplund2009_mass",
+    # galaxy_evol(imf='igimf', STF=0.08, SFEN=SFEN, Z_0=0.02*1e-7, solar_mass_component="Asplund2009_mass",
     #             str_yield_table='Kobayashi06', IMF_name='Kroupa', steller_mass_upper_bound=150,
     #             time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
     #             SFH_model='gas_mass_dependent', SFE=0.004, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
