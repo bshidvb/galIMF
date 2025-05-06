@@ -3145,11 +3145,10 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
                 raise
 
     file = open(
-        'simulation_results_from_galaxy_evol/imf{}STF{}log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt'.format(imf, STF, SFR, SFEN, log_Z_0), 'w')
+        "simulation_results_from_galaxy_evol/imf{}STF{}alpha3{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0), 'w')
 
     print("simulation results saved in the file: "
-          "simulation_results_from_galaxy_evol/imf{}STF{}log_SFR{}SFEN{}Z_0{}/(plots/)...txt".format(imf, STF, SFR, SFEN,
-                                                                                                   log_Z_0))
+          "simulation_results_from_galaxy_evol/imf{}STF{}alpha3{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0))
 
     length_of_time_axis = len(time_axis)
     file.write("# time step list:\n")
@@ -3615,7 +3614,7 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
     ### splitting the output .txt file so it can be loaded using numpy
 
     file = open(
-        'simulation_results_from_galaxy_evol/imf{}STF{}log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution_single_rows.txt'.format(imf, STF, SFR, SFEN, log_Z_0), 'w')
+        "simulation_results_from_galaxy_evol/imf{}STF{}alpha3{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0), 'w')
 
     file.write("# Number of star formation event epoch (10^7 yr):\n")
     file.write("%s\n" % number_of_sf_epoch)
