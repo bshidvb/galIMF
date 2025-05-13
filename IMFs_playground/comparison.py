@@ -7,7 +7,7 @@ from scipy.integrate import quad
 import numpy as np
 import matplotlib.pyplot as plt
 
-alpha3 = 2.35
+alpha3 = 1.55
 
 # Generate a range of stellar masses
 masses = np.logspace(-2, 2.5, 500)  # Mass range from 0.01 to ~300 solar masses
@@ -29,8 +29,8 @@ plt.rc('font', family='serif')
 plt.figure(figsize=(8, 6))
 #plt.loglog(masses, salpeter_imf, label="Diet Salpeter IMF", color="blue")
 plt.loglog(masses, kroupa_imf_values, label="Kroupa IMF", color="green")
-plt.loglog(masses, given_imf_values, label="Time dependent IMF", color="purple")
-plt.loglog(masses, custom_imf_values, label="Salpeter IMF", color="red")
+# plt.loglog(masses, given_imf_values, label="Time dependent IMF", color="purple")
+# plt.loglog(masses, custom_imf_values, label="Salpeter IMF", color="red")
 plt.xlabel("Stellar Mass ($M_{\\odot}$)")
 plt.ylabel("IMF ($\\xi$)")
 # plt.title("Comparison of various IMFs")
