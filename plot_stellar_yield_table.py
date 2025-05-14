@@ -289,6 +289,26 @@ def function_read_file(yield_table_name):
         # Use WW95 model B which has the highest [Mg/Fe].
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_R000":
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R000.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R150":
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R150.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R300":
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R300.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Nomoto":
+        file_yield = open('yield_tables/agb_and_massive_stars_C15_N13_0_0_HNe.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Nomoto_HNe":
+        file_yield = open('yield_tables/agb_and_massive_stars_C15_N13_1_0_HNe.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
     elif yield_table_name == "WW95":
         file_yield = open(
             'yield_tables/massive_stars_WW95_totalyields.txt', 'r')
@@ -299,6 +319,14 @@ def function_read_file(yield_table_name):
     elif yield_table_name == "marigo01":
         file_yield = open(
             'yield_tables/agb_marigo01_totalyields.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "popIII_heger10":
+        file_yield = open('yield_tables/popIII_heger10.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "popIII_Nomoto13":
+        file_yield = open('yield_tables/popIII_N13.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
 
@@ -940,7 +968,7 @@ if __name__ == '__main__':
     Si_over_Fe_list = []
     Ca_over_Fe_list = []
     O_over_Fe_list = []
-    yield_table_name = "Kobayashi06" # being "WW95" or "portinari98" or "marigo01"
+    yield_table_name = "Nomoto" # being "Kobayashi06", "WW95", "portinari98" or "marigo01" etc.
     function_read_file(yield_table_name)
     funtion_plot_yields()
 

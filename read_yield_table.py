@@ -56,6 +56,22 @@ def function_read_file(yield_table_name):
         file_yield = open('yield_tables/agb_and_massive_stars_C15_N13_0_0_HNe.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_R000" or yield_table_name == "Limongi" :
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R000.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R150":
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R150.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R300":
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R300.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Nomoto":
+        file_yield = open('yield_tables/agb_and_massive_stars_C15_N13_0_0_HNe.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
 
 
     ###########################
