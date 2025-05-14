@@ -3145,20 +3145,37 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
     # print("Stellar metallicity:", round(stellar_Z_over_X_list[-1], 3))
     # print("Stellar [Z/H]:", round(stellar_Z_over_H_list[-1], 3))
 
-    filename = "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0)
-    if not os.path.exists(os.path.dirname(filename)):
-        try:
-            os.makedirs(os.path.dirname(filename))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
+    # modification of file name output in case of various Kroupa IMFs with different alpha3
+    if imf == "Kroupa":
+        filename = "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0)
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
 
-    file = open(
-        "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0), 'w')
+        file = open(
+            "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0), 'w')
 
-    print("simulation results saved in the file: "
-          "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0))
+        print("simulation results saved in the file: "
+            "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0))
 
+    else:
+        filename = "simulation_results_from_galaxy_evol/imf{}STF{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, SFR, SFEN, log_Z_0)
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
+        file = open(
+            "simulation_results_from_galaxy_evol/imf{}STF{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, SFR, SFEN, log_Z_0), 'w')
+
+        print("simulation results saved in the file: "
+            "simulation_results_from_galaxy_evol/imf{}STF{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, SFR, SFEN, log_Z_0))
+        
     length_of_time_axis = len(time_axis)
     file.write("# time step list:\n")
     i = 0
