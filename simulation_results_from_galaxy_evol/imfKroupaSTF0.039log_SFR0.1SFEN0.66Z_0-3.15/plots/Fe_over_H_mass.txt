@@ -1,0 +1,6 @@
+# gas_Fe_over_H
+-0.8251760211439594 
+# stellar_Fe_over_H
+-1.6421462400862863 
+# stellar_Fe_over_H_list_luminosity_weighted
+-1.624530465230829 
