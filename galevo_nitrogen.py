@@ -3016,7 +3016,7 @@ def fucntion_mass_boundary(time, mass_grid_for_lifetime, lifetime):
 #     return m
 
 
-def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
+def text_output(imf, STF, Log_SFR, SFEN, original_gas_mass, log_Z_0):
     print('Generating txt output files...')
     global time_axis
     # print("time:", time_axis)
@@ -3147,7 +3147,7 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
 
     # modification of file name output in case of various Kroupa IMFs with different alpha3
     if imf == "Kroupa":
-        filename = "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0)
+        filename = "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0)
         if not os.path.exists(os.path.dirname(filename)):
             try:
                 os.makedirs(os.path.dirname(filename))
@@ -3156,13 +3156,13 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
                     raise
 
         file = open(
-            "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0), 'w')
+            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0), 'w')
 
         print("simulation results saved in the file: "
-            "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0))
+            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0))
 
     else:
-        filename = "simulation_results_from_galaxy_evol/imf{}STF{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, SFR, SFEN, log_Z_0)
+        filename = "simulation_results_from_galaxy_evol/16.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0)
         if not os.path.exists(os.path.dirname(filename)):
             try:
                 os.makedirs(os.path.dirname(filename))
@@ -3171,10 +3171,10 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
                     raise
 
         file = open(
-            "simulation_results_from_galaxy_evol/imf{}STF{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, SFR, SFEN, log_Z_0), 'w')
+            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0), 'w')
 
         print("simulation results saved in the file: "
-            "simulation_results_from_galaxy_evol/imf{}STF{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, SFR, SFEN, log_Z_0))
+            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0))
         
     length_of_time_axis = len(time_axis)
     file.write("# time step list:\n")
@@ -3654,7 +3654,7 @@ def text_output(imf, STF, SFR, SFEN, original_gas_mass, log_Z_0):
     ### splitting the output .txt file so it can be loaded using numpy
 
     file = open(
-        "simulation_results_from_galaxy_evol/imf{}STF{}alpha{}SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, log_Z_0), 'w')
+        "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0), 'w')
 
     file.write("# Number of star formation event epoch (10^7 yr):\n")
     file.write("%s\n" % number_of_sf_epoch)
