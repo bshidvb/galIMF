@@ -2051,7 +2051,9 @@ def lindexsplit(List, *lindex):
 
 def function_read_Mmetal(str_yield_table, Z_select_in_table_2, Z_select_in_table_3):
     global mm, zz
-    if str_yield_table == "Kobayashi06" or str_yield_table == "portinari98":
+    if str_yield_table == "Kobayashi06" or str_yield_table == "portinari98" or str_yield_table == "Karakas10" \
+        or str_yield_table == "Limongi_R150" or str_yield_table == "Limongi_R000" or str_yield_table == "Limongi_R300" \
+        or str_yield_table == "Nomoto" or str_yield_table == "Nomoto_HNe":
         if Z_select_in_table_2[0] == 'out':
             file_Metal_eject = open(
                 'yield_tables/rearranged___/setllar_Metal_eject_mass_from_{}/{}_Z={}.txt'.format(str_yield_table,
@@ -2140,7 +2142,9 @@ def function_read_Mmetal(str_yield_table, Z_select_in_table_2, Z_select_in_table
 
 
 def function_read_M_element(element, str_yield_table, Z_select_in_table_2, Z_select_in_table_3):
-    if str_yield_table == "portinari98" or str_yield_table == "Kobayashi06":
+    if str_yield_table == "portinari98" or str_yield_table == "Kobayashi06" or str_yield_table == "Karakas10" \
+        or str_yield_table == "Limongi_R150" or str_yield_table == "Limongi_R000" or str_yield_table == "Limongi_R300" \
+        or str_yield_table == "Nomoto" or str_yield_table == "Nomoto_HNe":
         if element == "H" or element == "He" or element == "C" or element == "N" or element == "O" or element == "Mg"\
                 or element == "Ne" or element == "Si" or element == "S" or element == "Ca" or element == "Fe":
             file_M_eject = open(
@@ -3147,7 +3151,7 @@ def text_output(imf, STF, Log_SFR, SFEN, original_gas_mass, log_Z_0):
 
     # modification of file name output in case of various Kroupa IMFs with different alpha3
     if imf == "Kroupa":
-        filename = "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0)
+        filename = "simulation_results_from_galaxy_evol/24.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0)
         if not os.path.exists(os.path.dirname(filename)):
             try:
                 os.makedirs(os.path.dirname(filename))
@@ -3156,13 +3160,13 @@ def text_output(imf, STF, Log_SFR, SFEN, original_gas_mass, log_Z_0):
                     raise
 
         file = open(
-            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0), 'w')
+            "simulation_results_from_galaxy_evol/24.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0), 'w')
 
         print("simulation results saved in the file: "
-            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0))
+            "simulation_results_from_galaxy_evol/24.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0))
 
     else:
-        filename = "simulation_results_from_galaxy_evol/16.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0)
+        filename = "simulation_results_from_galaxy_evol/24.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0)
         if not os.path.exists(os.path.dirname(filename)):
             try:
                 os.makedirs(os.path.dirname(filename))
@@ -3171,10 +3175,10 @@ def text_output(imf, STF, Log_SFR, SFEN, original_gas_mass, log_Z_0):
                     raise
 
         file = open(
-            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0), 'w')
+            "simulation_results_from_galaxy_evol/24.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0), 'w')
 
         print("simulation results saved in the file: "
-            "simulation_results_from_galaxy_evol/16.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0))
+            "simulation_results_from_galaxy_evol/24.5/imf{}STF{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, log_Z_0))
         
     length_of_time_axis = len(time_axis)
     file.write("# time step list:\n")
@@ -3654,7 +3658,7 @@ def text_output(imf, STF, Log_SFR, SFEN, original_gas_mass, log_Z_0):
     ### splitting the output .txt file so it can be loaded using numpy
 
     file = open(
-        "simulation_results_from_galaxy_evol/16.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0), 'w')
+        "simulation_results_from_galaxy_evol/24.5/imf{}STF{}alpha{}Log_SFR{}SFEN{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, log_Z_0), 'w')
 
     file.write("# Number of star formation event epoch (10^7 yr):\n")
     file.write("%s\n" % number_of_sf_epoch)

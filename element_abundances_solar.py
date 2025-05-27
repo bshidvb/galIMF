@@ -5,7 +5,6 @@
 # Asplund, Martin; Grevesse, Nicolas; Sauval, A. Jacques; Scott, Pat (2009). ARAA 47 (1): 481–522.
 # Anders, E., & Grevesse, N. 1989 is applied in WW95, Geochim. Cosmochim. Acta, 53, 197
 
-
 def function_solar_element_abundances(reference_name, element_name):
     if reference_name == 'Anders1989':
         if element_name == "H":

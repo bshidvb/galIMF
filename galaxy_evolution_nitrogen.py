@@ -5,10 +5,10 @@
 
 import galevo_nitrogen as galevo
 
-Log_SFR_list = [1, 1.7, 2]      # 10, 50, 100
-SFEN_list = [10, 15]       # Example values
-STF_list = [0.09, 0.15]        # Example values
-
+Log_SFR_list = [1.4, 1.7, 2]      # 15, 30,  50, 100
+SFEN_list = [2.5, 5, 10]       # Example values
+STF_list = [0.03, 0.05, 0.07, 0.09]        # Example values
+steller_mass_upper_bound_list = 2  # in Msun, for Kroupa IMF
 # Log_SFR = 1.5 # for 20 M_sun/yr - real value
 location = 0
 skewness = 20
@@ -20,7 +20,7 @@ for SFEN in SFEN_list:
         for STF in STF_list:
             galevo.generate_SFH('flat', Log_SFR, SFEN, sfr_tail, skewness, location)
             galevo.galaxy_evol(imf='Kroupa', STF=STF, SFEN=SFEN, Z_0=1e-6, solar_mass_component="Asplund2009_mass",
-                            str_yield_table='Kobayashi06', IMF_name='Kroupa', steller_mass_upper_bound=25,
+                            str_yield_table='Limongi_R000', IMF_name='Kroupa', steller_mass_upper_bound=150,
                             time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
                             SFH_model='provided', SFE=0.001, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
                             solar_abu_table='Asplund2009',

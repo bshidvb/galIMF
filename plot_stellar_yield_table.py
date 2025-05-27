@@ -729,22 +729,22 @@ def funtion_plot_yields():
     # plt.tight_layout()
     # plt.savefig('steller_yield_Mg.pdf', dpi=250)
     #
-    # plt.rc('font', family='serif')
-    # plt.rc('xtick', labelsize='x-small')
-    # plt.rc('ytick', labelsize='x-small')
-    # fig = plt.figure(5, figsize=(4, 3.5))
-    # plt.xlim(-0.5, 2.2)
-    # plt.ylim(-2, 2)
-    # i = len(M_list) - 1
-    # while i > -1:
-    #     plt.plot(M_list[i], O_over_H_list[i], label='Z={}'.format(Z_list[i]))
-    #     (i) = (i - 1)
-    # plt.plot([-2, 3], [0, 0], lw=0.1)
-    # plt.legend(prop={'size': 6}, loc='best')
-    # plt.xlabel(r'log$_{10}$($M_{\rm *, initial}$/[$M_\odot$])')
-    # plt.ylabel(r'[O/H]')
-    # plt.tight_layout()
-    # # plt.savefig('steller_yield_O.pdf', dpi=250)
+    plt.rc('font', family='serif')
+    plt.rc('xtick', labelsize='x-small')
+    plt.rc('ytick', labelsize='x-small')
+    fig = plt.figure(5, figsize=(4, 3.5))
+    plt.xlim(-0.5, 2.2)
+    plt.ylim(-2, 2)
+    i = len(M_list) - 1
+    while i > -1:
+        plt.plot(M_list[i], O_over_H_list[i], label='Z={}'.format(Z_list[i]))
+        (i) = (i - 1)
+    plt.plot([-2, 3], [0, 0], lw=0.1)
+    plt.legend(prop={'size': 6}, loc='best')
+    plt.xlabel(r'log$_{10}$($M_{\rm *, initial}$/[$M_\odot$])')
+    plt.ylabel(r'[O/H]')
+    plt.tight_layout()
+    # plt.savefig('steller_yield_O.pdf', dpi=250)
     #
     # plt.rc('font', family='serif')
     # plt.rc('xtick', labelsize='x-small')
@@ -814,20 +814,20 @@ def funtion_plot_yields():
     # plt.tight_layout()
     # # plt.savefig('steller_yield_Y.pdf', dpi=250)
 
-    i = len(O_over_H_list) - 1
-    while i > -1:
-        #N_over_O_list[i].insert(0, N_over_O_list[i][0])
-        plt.plot(O_over_H_list[i], N_over_O_list[i], lw=2**(i**0.5), label=r'$Z={}$'.format(ZZZ),
-                    color='k', ls=['-', 'dashed', 'dotted', '-.'][i])
-        (i) = (i - 1)
-    # axs[2].plot([-0.3, 0.9], [Si_over_Fe_SNIa, Si_over_Fe_SNIa], ls="--", lw=1, label="SNIa", c='k')
-    # axs[2].plot([-2, 3], [0, 0], lw=0.7, ls='dotted')
-    # axs[2].set_yticks(np.arange(-2, 2.1, 2))
-    # axs[2].set_ylim(-0.1, 1.7)
-    plt.ylabel(r'[N/O]')
-    plt.xlabel(r'[O/H]')
-    plt.legend(prop={'size': 6}, loc='best')
-    plt.show()
+    # i = len(O_over_H_list) - 1
+    # while i > -1:
+    #     #N_over_O_list[i].insert(0, N_over_O_list[i][0])
+    #     plt.plot(O_over_H_list[i], N_over_O_list[i], lw=2**(i**0.5), label=r'$Z={}$'.format(ZZZ),
+    #                 color='k', ls=['-', 'dashed', 'dotted', '-.'][i])
+    #     (i) = (i - 1)
+    # # axs[2].plot([-0.3, 0.9], [Si_over_Fe_SNIa, Si_over_Fe_SNIa], ls="--", lw=1, label="SNIa", c='k')
+    # # axs[2].plot([-2, 3], [0, 0], lw=0.7, ls='dotted')
+    # # axs[2].set_yticks(np.arange(-2, 2.1, 2))
+    # # axs[2].set_ylim(-0.1, 1.7)
+    # plt.ylabel(r'[N/O]')
+    # plt.xlabel(r'[O/H]')
+    # plt.legend(prop={'size': 6}, loc='best')
+    # plt.show()
     # axs[2].legend(prop={'size': 6}, loc='best')
 
     ##########
