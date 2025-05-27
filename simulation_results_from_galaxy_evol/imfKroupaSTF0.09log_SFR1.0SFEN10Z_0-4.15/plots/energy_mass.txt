@@ -1,0 +1,6 @@
+# final SN_energy_release
+1.382898705938006e+58
+# final binding_energy
+8.336811846196331e+57
+# final gas_kinetic_energy
+6.921887113261899e+58

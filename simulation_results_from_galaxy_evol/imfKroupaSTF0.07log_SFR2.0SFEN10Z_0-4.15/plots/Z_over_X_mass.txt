@@ -1,0 +1,6 @@
+# gas_Z_over_X
+-0.0036563822592876605 
+# stellar_Z_over_X_list
+-0.764789631085838 
+# stellar_Z_over_X_list_luminosity_weighted
+-0.701883912244994 

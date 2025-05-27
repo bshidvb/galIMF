@@ -1,14 +1,11 @@
-# Python3 code
-
-# An example
-
-
 import galevo_nitrogen as galevo
 
-Log_SFR_list = [1.4, 1.7, 2]      # 15, 30,  50, 100
-SFEN_list = [2.5, 5, 10]       # Example values
-STF_list = [0.03, 0.05, 0.07, 0.09]        # Example values
-steller_mass_upper_bound_list = 2  # in Msun, for Kroupa IMF
+    # For gas_mass_dependent SFH model, we need to provide the gas mass evolution.
+    # This is an example of how to generate a gas mass evolution.
+Log_SFR_list = [2]      # 15, 30,  50, 100
+SFEN_list = [10]       # Example values
+STF_list = [0.05]        # Example values
+SFE_list = [0.04]
 # Log_SFR = 1.5 # for 20 M_sun/yr - real value
 location = 0
 skewness = 20
@@ -18,13 +15,14 @@ sfr_tail = 5
 for SFEN in SFEN_list:
     for Log_SFR in Log_SFR_list:
         for STF in STF_list:
-            galevo.generate_SFH('flat', Log_SFR, SFEN, sfr_tail, skewness, location)
-            galevo.galaxy_evol(imf='Kroupa', STF=STF, SFEN=SFEN, Z_0=1e-6, solar_mass_component="Asplund2009_mass",
-                            str_yield_table='Limongi_R000', IMF_name='Kroupa', steller_mass_upper_bound=150,
-                            time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
-                            SFH_model='provided', SFE=0.001, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
-                            solar_abu_table='Asplund2009',
-                            high_time_resolution=None, plot_show=None, plot_save=None, outflow=None, check_igimf=None)
+            for SFE in SFE_list:
+            # galevo.generate_SFH('flat', Log_SFR, SFEN, sfr_tail, skewness, location)
+                galevo.galaxy_evol(imf='Kroupa', STF=STF, SFEN=SFEN, Z_0=1e-6, solar_mass_component="Asplund2009_mass",
+                                str_yield_table='Limongi_R000', IMF_name='Kroupa', steller_mass_upper_bound=150,
+                                time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
+                                SFH_model='gas_mass_dependent', SFE=SFE, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
+                                solar_abu_table='Asplund2009',
+                                high_time_resolution=None, plot_show=None, plot_save=None, outflow=None, check_igimf=None)
 
 # Bekki input
 # galevo.galaxy_evol(imf='Kroupa', STF=0.5, SFEN=SFEN, Z_0=0.015*1e-6, solar_mass_component="Asplund2009_mass",

@@ -1,0 +1,6 @@
+# gas_Mg_over_Fe
+-0.6041300599401834 
+# stellar_Mg_over_Fe
+0.04399808035835179 
+# stellar_Mg_over_Fe_list_luminosity_weighted
+0.04082495258204355 
