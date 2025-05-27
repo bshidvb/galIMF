@@ -33,4 +33,3 @@ for SFEN in SFEN_list:
 #                 SFH_model='provided', SFE=0.04, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
 #                 solar_abu_table='Asplund2009',
 #                 high_time_resolution=None, plot_show=None, plot_save=None, outflow=100, check_igimf=None)
-    
