@@ -62,6 +62,8 @@ def function_mass_ejected(yield_reference_name, element_name):
         # Below adopt the mean value of all models (W, WDD, CDD) in their table 3
         if element_name == "C":
             mass_ejected = 0.0508  #
+        elif element_name == "N":
+            mass_ejected = 1.31e-4  # (1.16e-2+3.31e-4+2.84+2.69+1.82+0.906+0.903)/7 *1e-4
         elif element_name == "O":
             mass_ejected = 0.091  # (14.3+13.3+8.82+6.58+5.58+9.34+5.83)/7  # 0.133
         elif element_name == "Ne":  # Ne20

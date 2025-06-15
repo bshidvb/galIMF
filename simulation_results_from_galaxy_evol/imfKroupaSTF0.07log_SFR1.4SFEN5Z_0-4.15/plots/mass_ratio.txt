@@ -1,6 +1,0 @@
-# final alive stellar mass in log
-7.57264890910392
-# final alive + remnant mass in log
-8.458494556299772
-# (alive + remnant) / alive IN LOG
-0.8858456471958522

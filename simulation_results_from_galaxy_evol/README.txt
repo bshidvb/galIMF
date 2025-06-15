@@ -21,9 +21,6 @@ Notes on structure of files:
       - variation of alpha (1.15, 1.55, 2.35), LC18 yields, no outflow
       - SFR fixed at 100, SFEN (2.5, 5, 10), STF (0.09, 0.12, 0.15)
 
-experiment/ - testing whether steller_mass_upper_bound works right
-            - same setup as 23.5/ but with steller_mass_upper_bound=2 (=1 giving errors)
-
 24.5/ - lower STF (0.02, 0.05, 0.07, 0.09), variation of SFEN (25, 50, 100) and SFR (15, 30, 50, 100)
       - LC18 yields, no outflows, low metallicity Z_0=1e-6,  steller_mass_upper_bound (100)
       - trying different alpha
@@ -40,3 +37,5 @@ experiment/ - testing whether steller_mass_upper_bound works right
       - LC18 yields, no outflows, low metallicity Z_0=1e-6,  steller_mass_upper_bound (150)
       - SFH_model='gas_mass_dependent', SFE=0.04
       - trying different alpha
+
+11.6/ - 
