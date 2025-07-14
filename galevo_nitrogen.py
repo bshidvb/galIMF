@@ -1295,7 +1295,7 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
                                                             total_C_mass_at_this_time, total_H_mass_at_this_time, False)
         N_over_H_number_ratio = function_element_abundunce(solar_abu_table, "N", "H",
                                                             total_N_mass_at_this_time, total_H_mass_at_this_time, False)
-        C_over_O_number_ration = function_element_abundunce(solar_abu_table, "N", "O",
+        C_over_O_number_ration = function_element_abundunce(solar_abu_table, "C", "O",
                                                             total_C_mass_at_this_time, total_O_mass_at_this_time, False)
         Ca_over_H_number_ratio = function_element_abundunce(solar_abu_table, "Ca", "H",
                                                             total_Ca_mass_at_this_time, total_H_mass_at_this_time, False)
@@ -1966,8 +1966,6 @@ def function_read_lifetime(str_yield_table, Z_select_in_table):
         x2 = Z_select_in_table[2]
         x3 = Z_select_in_table[3]
         lifetime_table = [y1+(y3-y1)*(x2-x1)/(x3-x1) for y1, y3 in zip(lifetime_table_low, lifetime_table_high)]
-        for i in range(len(lifetime_table)):
-            lifetime_table[i] = lifetime_table[i]*50
     return (mass_1, mass, lifetime_table)
 
 
@@ -3145,7 +3143,7 @@ def text_output(imf, STF, Log_SFR, SFEN, SFE, original_gas_mass, log_Z_0):
 
     # modification of file name output in case of various Kroupa IMFs with different alpha3
     if imf == "Kroupa":
-        filename = "simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0)
+        filename = "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0)
         if not os.path.exists(os.path.dirname(filename)):
             try:
                 os.makedirs(os.path.dirname(filename))
@@ -3154,13 +3152,13 @@ def text_output(imf, STF, Log_SFR, SFEN, SFE, original_gas_mass, log_Z_0):
                     raise
 
         file = open(
-            "simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0), 'w')
+            "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0), 'w')
 
         print("simulation results saved in the file: "
-            "simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0))
+            "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0))
 
     else:
-        filename = "simulation_results_from_galaxy_evol/15.6/imf{}STF{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, SFE, log_Z_0)
+        filename = "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, SFE, log_Z_0)
         if not os.path.exists(os.path.dirname(filename)):
             try:
                 os.makedirs(os.path.dirname(filename))
@@ -3169,10 +3167,10 @@ def text_output(imf, STF, Log_SFR, SFEN, SFE, original_gas_mass, log_Z_0):
                     raise
 
         file = open(
-            "simulation_results_from_galaxy_evol/15.6/imf{}STF{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, SFE, log_Z_0), 'w')
+            "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, SFE, log_Z_0), 'w')
 
         print("simulation results saved in the file: "
-            "simulation_results_from_galaxy_evol/15.6/imf{}STF{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, SFE, log_Z_0))
+            "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution.txt".format(imf, STF, Log_SFR, SFEN, SFE, log_Z_0))
         
     length_of_time_axis = len(time_axis)
     file.write("# time step list:\n")
@@ -3645,7 +3643,7 @@ def text_output(imf, STF, Log_SFR, SFEN, SFE, original_gas_mass, log_Z_0):
     ### splitting the output .txt file so it can be loaded using numpy
 
     file = open(
-        "simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0), 'w')
+        "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}Log_SFR{}SFEN{}SFE{}Z_0{}/chemical_and_SN_evolution_single rows.txt".format(imf, STF, Kroupa_IMF.alpha3, Log_SFR, SFEN, SFE, log_Z_0), 'w')
 
     file.write("# Number of star formation event epoch (10^7 yr):\n")
     file.write("%s\n" % number_of_sf_epoch)
@@ -3736,7 +3734,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
         if plot_save is True:
             plt.savefig('galaxy_evolution_fig_SFH.pdf', dpi=250)
 
-    filename = "simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SFH.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0)
+    filename = "simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SFH.txt".format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0)
     if not os.path.exists(os.path.dirname(filename)):
         try:
             os.makedirs(os.path.dirname(filename))
@@ -3745,7 +3743,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
                 raise
 
     length_of_SFH_list = len(SFR_list)
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SFH.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SFH.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# age_list\n")
     i = 0
     while i < length_of_SFH_list:
@@ -3850,7 +3848,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     while i < number_of_sf_epoch:
         time = round(all_sf_imf[i][2] / 10 ** 6)
         length_of_xi = len(mass_list)
-        file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/imf_at_time_{}_Myr.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0, time), 'w')
+        file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/imf_at_time_{}_Myr.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0, time), 'w')
         file.write("# mass_list\n")
         j = 0
         while j < length_of_xi:
@@ -4205,7 +4203,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
             plt.savefig('galaxy_evolution_fig_NH_{}.pdf'.format(imf), dpi=250)
         plt.show()
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/N_over_O_time.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/N_over_O_time.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# log_time_axis\n")
     i = 0
     while i < length_of_time_axis:
@@ -4235,7 +4233,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     file.write("\n")
     file.close()
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/O_over_H_time.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/O_over_H_time.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# log_time_axis\n")
     i = 0
     while i < length_of_time_axis:
@@ -5077,7 +5075,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     #     if plot_save is True:
     #         plt.savefig('galaxy_evolution_SNII_number_loglinear.pdf'.format(imf), dpi=250)
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SN_number_evolution.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SN_number_evolution.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# time_axis\n")
     i = 0
     while i < length_of_time_axis:
@@ -5176,7 +5174,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     #     if plot_save is True:
     #         plt.savefig('energy_evolution.pdf'.format(imf), dpi=250)
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/energy_evolution.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/energy_evolution.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# time_axis\n")
     i = 0
     while i < length_of_time_axis:
@@ -5220,7 +5218,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     file.write("\n")
     file.close()
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/energy_mass.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/energy_mass.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# final SN_energy_release\n")
     file.write("{}\n".format(total_energy_release_list[-1]))
     file.write("# final binding_energy\n")
@@ -5352,7 +5350,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     #     if plot_save is True:
     #         plt.savefig('mass_evolution.pdf'.format(imf), dpi=250)
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/mass_evolution.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/mass_evolution.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# time_axis\n")
     i = 0
     while i < length_of_time_axis:
@@ -5400,7 +5398,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     final_remnant_stellar_mass = remnant_mass_list[-1]
     final_alive_and_remnant_stellar_mass = math.log((10 ** final_alive_stellar_mass + 10 ** final_remnant_stellar_mass),
                                                     10)
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/mass_ratio.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/mass_ratio.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# final alive stellar mass in log\n")
     file.write("{}\n".format(final_alive_stellar_mass))
     file.write("# final alive + remnant mass in log\n")
@@ -5410,7 +5408,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     file.close()
 
     global total_star_formed
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SN_number_mass.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/SN_number_mass.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# final SNIa_number per stellar mass formed\n")
     file.write("{}\n".format(SNIa_number_list[-1] / total_star_formed))
     # print("total SNIa number per solar mass of star formed:", SNIa_number_list[-1]/total_star_formed)
@@ -5435,7 +5433,7 @@ def plot_output(plot_show, plot_save, imf, igimf, SFR, SFEN, SFE, log_Z_0, STF):
     #     # plt.ylim(6, 12)
     #     plt.tight_layout()
 
-    file = open('simulation_results_from_galaxy_evol/15.6/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/expansion_factor.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
+    file = open('simulation_results_from_galaxy_evol/reproduction/imf{}STF{}alpha{}log_SFR{}SFEN{}SFE{}Z_0{}/plots/expansion_factor.txt'.format(imf, STF, Kroupa_IMF.alpha3, SFR, SFEN, SFE, log_Z_0), 'w')
     file.write("# time_axis\n")
     i = 0
     while i < length_of_time_axis:
