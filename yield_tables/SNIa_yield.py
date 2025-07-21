@@ -165,6 +165,8 @@ def function_mass_ejected(yield_reference_name, element_name):
         # Reference: https://ui.adsabs.harvard.edu/abs/1999ApJS..125..439I/abstract
         if element_name == "C":
             mass_ejected = 1.66e-2
+        elif element_name == "N":
+            mass_ejected = 1.82e-4
         elif element_name == "O":
             mass_ejected = 5.58e-2
         elif element_name == "Ne":  # Ne20

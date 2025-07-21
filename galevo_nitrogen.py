@@ -112,10 +112,10 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
     # Star Trasnformation fraction (STF)
     total_star_formed = 10 ** 7 * total_SF
     if tau_infalle9 != 0:
-      total_gas_mass = total_star_formed / STF
-      original_gas_mass = total_gas_mass/1000
+        total_gas_mass = total_star_formed / STF
+        original_gas_mass = total_gas_mass/1000
     else:
-      original_gas_mass = total_star_formed / STF  # in solar mass unit
+        original_gas_mass = total_star_formed / STF  # in solar mass unit
     print("original_gas_mass =", math.log(original_gas_mass, 10))
     ratio_gas_over_DM_radii = 0.3
     log_binding_energy_initial = round(
@@ -619,13 +619,13 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
                     # In this model, the SFR is determined by the current gas mass
                     # if the current time is shorter than SFEN * 10^7 yr.
                     S_F_R_of_this_epoch = total_gas_mass_at_this_time * SFE / 10 ** 7
-                    if SFH_input[epoch_index] == 0 or S_F_R_of_this_epoch < 3.5*1e-6 or epoch_index>99:
+                    if SFH_input[epoch_index] == 0 or S_F_R_of_this_epoch < 3.5*1e-6:
                         S_F_R_of_this_epoch = 0
                     # print(epoch_index, '*10 Myr  SFR:', S_F_R_of_this_epoch)
                     print(S_F_R_of_this_epoch)
                 else:
                     print("Wrong input parameter for 'SFH_model'.")
-
+                print(time_step, S_F_R_of_this_epoch)
                 # M_tot
                 # if total_gas_mass_at_last_time > 10**12:
                 #     M_tot_of_this_epoch = max((min(((total_gas_mass_at_last_time - 10 * stellar_mass_at_last_time) / 5), 10**12)), 0)
