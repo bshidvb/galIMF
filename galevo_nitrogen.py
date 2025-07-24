@@ -2092,7 +2092,49 @@ def function_read_Mmetal(str_yield_table, Z_select_in_table_2, Z_select_in_table
             x3 = Z_select_in_table_2[3]
             Metal_eject_table = [y1 + (y3 - y1) * (x2 - x1) / (x3 - x1) for y1, y3 in
                             zip(Metal_eject_table_low, Metal_eject_table_high)]
-
+    elif str_yield_table == "Limongi_M000" or str_yield_table == "Limongi_M150" or str_yield_table == "Limongi_M300":
+        if Z_select_in_table_2[0] == 'out':
+            file_Metal_eject = open(
+                'yield_tables__2024/rearranged___/setllar_Metal_eject_mass_from_{}/{}_Z={}.txt'.format(str_yield_table,
+                                                                                                 str_yield_table,
+                                                                                                 Z_select_in_table_2[1]),
+                'r')
+            data = file_Metal_eject.readlines()
+            metallicity = data[1]
+            mass_2 = data[3]
+            Metal_eject_ = data[5]
+            file_Metal_eject.close()
+            mass = [float(x) for x in mass_2.split()]
+            Metal_eject_table = [float(x) for x in Metal_eject_.split()]
+        else:
+            file_Metal_eject = open(
+                'yield_tables__2024/rearranged___/setllar_Metal_eject_mass_from_{}/{}_Z={}.txt'.format(str_yield_table,
+                                                                                                 str_yield_table,
+                                                                                                 Z_select_in_table_2[
+                                                                                                     1]),
+                'r')
+            data = file_Metal_eject.readlines()
+            metallicity = data[1]
+            mass_2 = data[3]
+            Metal_eject_low = data[5]
+            file_Metal_eject.close()
+            mass = [float(x) for x in mass_2.split()]
+            Metal_eject_table_low = [float(x) for x in Metal_eject_low.split()]
+            file_Metal_eject = open(
+                'yield_tables__2024/rearranged___/setllar_Metal_eject_mass_from_{}/{}_Z={}.txt'.format(str_yield_table,
+                                                                                                 str_yield_table,
+                                                                                                 Z_select_in_table_2[
+                                                                                                     3]),
+                'r')
+            data = file_Metal_eject.readlines()
+            Metal_eject_high = data[5]
+            file_Metal_eject.close()
+            Metal_eject_table_high = [float(x) for x in Metal_eject_high.split()]
+            x1 = Z_select_in_table_2[1]
+            x2 = Z_select_in_table_2[2]
+            x3 = Z_select_in_table_2[3]
+            Metal_eject_table = [y1 + (y3 - y1) * (x2 - x1) / (x3 - x1) for y1, y3 in
+                            zip(Metal_eject_table_low, Metal_eject_table_high)]
     elif str_yield_table == "WW95":
         if Z_select_in_table_2[2] < (Z_select_in_table_2[1]+Z_select_in_table_2[3])/2:
             Z_select_in_table_2 = Z_select_in_table_2[1]
@@ -2138,7 +2180,7 @@ def function_read_Mmetal(str_yield_table, Z_select_in_table_2, Z_select_in_table
 
 
 def function_read_M_element(element, str_yield_table, Z_select_in_table_2, Z_select_in_table_3):
-    if str_yield_table == "portinari98" or str_yield_table == "Kobayashi06" or str_yield_table == "Limongi_R000" or str_yield_table == "Limongi_R300":
+    if str_yield_table == "portinari98" or str_yield_table == "Kobayashi06" or str_yield_table == "Limongi_R000" or str_yield_table == "Limongi_R150" or str_yield_table == "Limongi_R300":
         if element == "H" or element == "He" or element == "C" or element == "N" or element == "O" or element == "Mg"\
                 or element == "Ne" or element == "Si" or element == "S" or element == "Ca" or element == "Fe":
             file_M_eject = open(
@@ -2156,7 +2198,36 @@ def function_read_M_element(element, str_yield_table, Z_select_in_table_2, Z_sel
             M_eject_high = data[5]
             file_M_eject.close()
         else:
-            print("Error: element parameter for function_read_M_element do not exsit.")
+            print("Error: element parameter for function_read_M_element do not exist.")
+        M_eject_table_low = [float(x) for x in M_eject_low.split()]
+        M_eject_table_high = [float(x) for x in M_eject_high.split()]
+        x1 = Z_select_in_table_2[1]
+        x2 = Z_select_in_table_2[2]
+        x3 = Z_select_in_table_2[3]
+        if x3 == x1:
+            M_eject_table = M_eject_table_high
+        else:
+            M_eject_table = [y1 + (y3 - y1) * (x2 - x1) / (x3 - x1) for y1, y3 in
+                             zip(M_eject_table_low, M_eject_table_high)]
+    elif str_yield_table == "Limongi_M000" or str_yield_table == "Limongi_M150" or str_yield_table == "Limongi_M300":
+        if element == "H" or element == "He" or element == "C" or element == "N" or element == "O" or element == "Mg"\
+                or element == "Ne" or element == "Si" or element == "S" or element == "Ca" or element == "Fe":
+            file_M_eject = open(
+                'yield_tables__2024/rearranged___/setllar_{}_eject_mass_from_{}/{}_Z={}.txt'.format(element, str_yield_table, str_yield_table,
+                    Z_select_in_table_2[1]),
+                'r')
+            data = file_M_eject.readlines()
+            M_eject_low = data[5]
+            file_M_eject.close()
+            file_M_eject = open(
+                'yield_tables__2024/rearranged___/setllar_{}_eject_mass_from_{}/{}_Z={}.txt'.format(element, str_yield_table, str_yield_table,
+                    Z_select_in_table_2[3]),
+                'r')
+            data = file_M_eject.readlines()
+            M_eject_high = data[5]
+            file_M_eject.close()
+        else:
+            print("Error: element parameter for function_read_M_element do not exist.")
         M_eject_table_low = [float(x) for x in M_eject_low.split()]
         M_eject_table_high = [float(x) for x in M_eject_high.split()]
         x1 = Z_select_in_table_2[1]
@@ -2849,6 +2920,13 @@ def function_get_avaliable_Z(str_yield_table):
     # extract avalible metallicity in the given grid table
     # stellar life-time table and metal production tables have different avalible metal grid.
     import os
+    if str_yield_table == "Limongi_M000" or str_yield_table == "Limongi_M150" or str_yield_table == "Limongi_M300":
+        yield_path2 = 'yield_tables__2024'
+        if os.path.isdir(yield_path2) == False:
+            yield_path2 = '/galIMF/yield_tables__2024'
+            if os.path.isdir(yield_path2) == False:
+                cwd = os.getcwd()
+                yield_path2 = cwd + '/galIMF/yield_tables__2024'
 
     yield_path = 'yield_tables'
     if os.path.isdir(yield_path) == False:
@@ -2880,7 +2958,11 @@ def function_get_avaliable_Z(str_yield_table):
         Z_table_list += [float(Z)]
     sorted_Z_table_list = sorted(Z_table_list)
     # list 2
-    file_names_setllar_lifetime_from_str_yield_table = os.listdir(
+    if str_yield_table == "Limongi_M000" or str_yield_table == "Limongi_M150" or str_yield_table == "Limongi_M300":
+        file_names_setllar_lifetime_from_str_yield_table = os.listdir(
+        yield_path2 + '/rearranged___/setllar_Metal_eject_mass_from_{}'.format(str_yield_table))
+    else:
+        file_names_setllar_lifetime_from_str_yield_table = os.listdir(
         yield_path + '/rearranged___/setllar_Metal_eject_mass_from_{}'.format(str_yield_table))
     Z_table_list_2 = []
     for name in file_names_setllar_lifetime_from_str_yield_table:
