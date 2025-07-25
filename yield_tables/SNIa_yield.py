@@ -98,6 +98,8 @@ def function_mass_ejected(yield_reference_name, element_name):
         # Below adopt the main isotope of W70 model
         if element_name == "C":
             mass_ejected = 0.0508
+        elif element_name == "N":
+            mass_ejected = 4.13e-7
         elif element_name == "O":
             mass_ejected = 0.133
         elif element_name == "Ne":  # Ne20
@@ -132,6 +134,8 @@ def function_mass_ejected(yield_reference_name, element_name):
         # Below adopt the main isotope of W70 model
         if element_name == "C":
             mass_ejected = 0.0483
+        elif element_name == "N":
+            mass_ejected = 1.16e-6   
         elif element_name == "O":
             mass_ejected = 0.143
         elif element_name == "Ne":  # Ne20

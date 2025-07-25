@@ -30,6 +30,7 @@
 
 from functools import partial
 from multiprocessing import Pool
+import glob
 import numpy as np
 import math
 from scipy.integrate import quad
@@ -47,7 +48,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 import element_weight_table, element_abundances_solar, element_abundances_primordial
 from yield_tables import SNIa_yield
 
-SNIa_yield_table = 'Iwamoto1999_WDD3'
+SNIa_yield_table = 'Iwamoto1999_W7'
 # SNIa_yield_table = 'Iwamoto1999_W70'
 
 def igimf_xi_function(mass, alpha1, alpha3, integrate_mass_):  # Kroupa 01 IMF, normalized to a population with mass = 1 Msun assuming mass limits 0.08 to 150
@@ -379,9 +380,11 @@ def galaxy_evol(logOGM=0.5, Z_0=0.000000134, solar_mass_component='Anders1989_ma
                     # if consider SNIa
                     Fe_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'Fe')
                     Si_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'Si')
+                    N_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'N')
+                    C_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'C')
                     O_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'O')
                     S_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'S')
-                    total_mass_eject_per_SNIa = Fe_mass_eject + Si_mass_eject + O_mass_eject + S_mass_eject
+                    total_mass_eject_per_SNIa = Fe_mass_eject + Si_mass_eject + O_mass_eject + S_mass_eject + N_mass_eject + C_mass_eject
                     # SNIa_energy_release_per_event = 0.8 * 10 ** 51  # in the unit of 10^51 erg
                     SNIa_number_from_this_epoch_till_this_time = function_number_SNIa_power_law(0, age_of_this_epoch, SNIa_number_prob, M_tot_of_this_epoch)
                     ejected_gas_mass_of_this_epoch += total_mass_eject_per_SNIa * SNIa_number_from_this_epoch_till_this_time
@@ -389,9 +392,13 @@ def galaxy_evol(logOGM=0.5, Z_0=0.000000134, solar_mass_component='Anders1989_ma
                     Fe_mass_of_SNIa = Fe_mass_eject * SNIa_number_from_this_epoch_till_this_time
                     O_mass_of_SNIa = O_mass_eject * SNIa_number_from_this_epoch_till_this_time
                     Si_mass_of_SNIa = Si_mass_eject * SNIa_number_from_this_epoch_till_this_time
+                    N_mass_of_SNIa = N_mass_eject * SNIa_number_from_this_epoch_till_this_time
+                    C_mass_of_SNIa = C_mass_eject * SNIa_number_from_this_epoch_till_this_time
                     O_mass_of_this_epoch += O_mass_of_SNIa
                     Si_mass_of_this_epoch += Si_mass_of_SNIa
                     Fe_mass_of_this_epoch += Fe_mass_of_SNIa
+                    N_mass_of_this_epoch += N_mass_of_SNIa
+                    C_mass_of_this_epoch += C_mass_of_SNIa
                     Fe_over_H_of_an_epoch = function_element_abundunce(solar_abu_table, "Fe", "H", metal_in_gas[6], metal_in_gas[1], False)
                     observable_star_number_of_different_epochs_at_this_time.append([Fe_over_H_of_an_epoch, observable_star_number_of_a_epoch_at_a_time_step])
                     ejected_gas_mass_till_this_time += ejected_gas_mass_of_this_epoch
@@ -1091,18 +1098,18 @@ if __name__ == '__main__':
     start_time = time.time()
 
     # log_prob -2.0044127568870516, SFE 0.09532987740311372, out 0.05926706797683223, tau_in 5.199789554313394, alpha1 0.644202050415464, alpha3 2.3007932997065152, Time: 49 m 18 s
-    maximum_core_number = 8
-    SFT = 100
-    SFE = 0.12
-    outflow = 3.23
+    maximum_core_number = 25
+    SFT = 850
+    SFE = 0.2
+    outflow = 0
     tau_infalle9 = 0.4
-    alpha1__ = 1.08
-    alpha3__ = 2.41
+    alpha1__ = 1.68
+    alpha3__ = 2.2
 
     integrate_mass = quad(unnormalized_mass_function, 0.08, 150, args=(alpha1__, alpha3__), limit=50)[0]
 
     kde_model_with_error, all_sfr, Fe_over_H_evolution_list, Si_over_Fe_evolution_list, O_over_Fe_evolution_list, observable_star_number_list, N_over_O_evolution_list, C_over_O_evolution_list = \
-        galaxy_evol(logOGM=11, Z_0=1e-5,
+        galaxy_evol(logOGM=15, Z_0=1e-5,
                     solar_mass_component="Asplund2009_mass",
                     SF_timescale_limit=SFT, SFE=SFE,  # 0.001 0.0005 0.0002 (0.003 canonical)
                     solar_abu_table='Asplund2009',
@@ -1124,7 +1131,7 @@ if __name__ == '__main__':
 
     ### import data from Bensby 2014
     from astropy.io import fits
-    filename = "MW_sim/J_A+A_562_A71_tablec3.dat.fits"
+    filename = "MW_sim/MW_data/J_A+A_562_A71_tablec3.dat.fits"
     with fits.open(filename) as hdul:
         data = hdul[1].data
         Fe_over_H_MW = []
@@ -1141,7 +1148,15 @@ if __name__ == '__main__':
     O_over_Fe_error = 0.1694444444444444
     Fe_over_H_error = 0.0696031746031746
 
-    sampled_data = pd.read_csv("MW_sim/Xiang2019_filtered_sampled_data.txt", delimiter="|")
+    #load data from Israelian 2004, https://www.aanda.org/articles/aa/pdf/2004/26/aa0132-04.pdf
+    mw_data = pd.read_csv("MW_sim/MW_data/Israelian2004_metal-poor-stars.txt", delimiter="|")
+    FeH_israel = mw_data['Fe/H']
+    NH_israel = mw_data['N/H']
+    OH_israel = mw_data['O/H']
+    NO_israel = mw_data['N/O']
+    kde_obs_israel = stats.gaussian_kde(FeH_israel)
+
+    sampled_data = pd.read_csv("MW_sim/MW_data/Xiang2019_filtered_sampled_data.txt", delimiter="|")
     FeH_xiang19 = sampled_data['    [Fe/H]']
     OFe_xiang19 = sampled_data['    [O/Fe]']
     CFe_xiang19 = sampled_data['    [C/Fe]']
@@ -1162,13 +1177,13 @@ if __name__ == '__main__':
     # plt.plot(kde__x, kde_obs(kde__x), c="b", lw=1.3, label='Observations\' kernel-density estimate')
     # plt.show()
 
-
     plt.figure(0, figsize=(6, 4))
     time_list_Gyr = np.linspace(0, len(all_sfr) / 100, len(all_sfr))
     plt.plot(time_list_Gyr, all_sfr, alpha=0.5)
     plt.scatter(time_list_Gyr, all_sfr, alpha=0.5)
     plt.xlabel("Time [Gyr]")
     plt.ylabel(r"Arbitrary normalized SFR [$M_\odot$/yr]")
+    plt.savefig("MW_sim/plots/SFH.png", dpi=300)
     plt.tight_layout()
 
     # time_list_Gyr = np.linspace(0, len(all_sfr) / 100, len(N_over_C_evolution_list))
@@ -1193,6 +1208,7 @@ if __name__ == '__main__':
     plt.ylabel("[O/Fe]")
     plt.xlim(-4, 1)
     plt.ylim(-1, 2)
+    plt.savefig("MW_sim/plots/OFe-FeH.png", dpi=300)
     plt.tight_layout()
 
     plt.figure(11, figsize=(6, 4))
@@ -1209,6 +1225,7 @@ if __name__ == '__main__':
     plt.ylabel("[Si/Fe]")
     plt.xlim(-4, 1)
     plt.ylim(-1, 1.5)
+    plt.savefig("MW_sim/plots/SiFe-FeH.png", dpi=300)
     plt.tight_layout()
 
     # plt.figure(12, figsize=(6, 4))
@@ -1220,6 +1237,7 @@ if __name__ == '__main__':
     kde__x = np.linspace(-3, 0.5, 100)
     plt.figure(12, figsize=(6, 4))
     plt.hist(Fe_over_H_MW, density=True, bins=25, color='k', histtype='step', linestyle='--', label='MW Bensby14')
+    plt.hist(FeH_israel, density=True, bins=25, color='orange', histtype='step', linestyle='--', label='MW Israelian04')
     plt.plot(kde__x, kde_model_with_error(kde__x), alpha=0.5)
     plt.plot(kde__x, kde_obs_xiang19(kde__x), ls='dashed', alpha=0.5)
     plt.xlabel("[Fe/H]")
@@ -1227,24 +1245,27 @@ if __name__ == '__main__':
     plt.xlim(-4, 1)
     plt.ylim(0, 2)
     plt.legend()
+    plt.savefig("MW_sim/plots/PDF-FeH.png", dpi=300)
     plt.tight_layout()
 
     O_over_H_evolution_list = [8.69 + a + b for a, b in zip(Fe_over_H_evolution_list, O_over_Fe_evolution_list)]
     NO_xiang19 = [a - b for a, b in zip(NFe_xiang19, OFe_xiang19)]
     CO_xiang19 = [a - b for a, b in zip(CFe_xiang19, OFe_xiang19)]
     OH_xiang19 = [8.69 + a + b for a, b in zip(OFe_xiang19, FeH_xiang19)]
+    OH_israel = 8.69 + OH_israel
 
     plt.figure(13, figsize=(6, 4))
     ### plot data
-    plt.scatter([], [], s=10, color='r', alpha=0.2)
+    #plt.scatter(OH_xiang19, NO_xiang19, color='orange', alpha=0.3)
+    plt.scatter(OH_israel, NO_israel, color='orange', alpha=0.3)
     ### plot model
-    plt.plot(O_over_H_evolution_list, N_over_O_evolution_list, alpha=0.5)
-    plt.scatter(O_over_H_evolution_list, N_over_O_evolution_list, alpha=0.5)
-    plt.scatter(OH_xiang19, NO_xiang19, alpha=0.1)
+    plt.plot(O_over_H_evolution_list, N_over_O_evolution_list, alpha=0.5, color='tab:blue')
+    plt.scatter(O_over_H_evolution_list, N_over_O_evolution_list, alpha=0.5, color='tab:blue')
     plt.xlabel("12+log(O/H)")
     plt.ylabel("[N/O]")
     # plt.xlim(-4, 1)
     # plt.ylim(-1, 1.5)
+    plt.savefig("MW_sim/plots/NO-12logOH.png", dpi=300)
     plt.tight_layout()
     
     plt.figure(14, figsize=(6, 4))
@@ -1259,4 +1280,5 @@ if __name__ == '__main__':
     # plt.xlim(-4, 1)
     # plt.ylim(-1, 1.5)
     plt.tight_layout()
+    plt.savefig("MW_sim/plots/CO-12logOH.png", dpi=300)
     plt.show()
