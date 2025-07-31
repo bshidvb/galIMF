@@ -52,9 +52,11 @@ SNIa_yield_table = 'Iwamoto1999_W7'
 # SNIa_yield_table = 'Iwamoto1999_W70'
 
 def igimf_xi_function(mass, alpha1, alpha3, integrate_mass_):  # Kroupa 01 IMF, normalized to a population with mass = 1 Msun assuming mass limits 0.08 to 150
-    if mass > 1:
+    if mass > 50.1:
+        return 0
+    elif mass > 1:
         return mass ** (-alpha3) / integrate_mass_
-    elif mass > 0.5:
+    elif mass > 0.08:
         return mass ** (-alpha1-1) / integrate_mass_
     else:
         return 0.5 ** (-alpha1-1) * (mass / 0.5) ** (-alpha1) / integrate_mass_
@@ -117,7 +119,7 @@ def process_epoches(age_of_this_epoch_list, epoch_info_list, alpha1, alpha3, int
             C_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'C')
             O_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'O')
             S_mass_eject = SNIa_yield.function_mass_ejected(SNIa_yield_table, 'S')
-            total_mass_eject_per_SNIa = Fe_mass_eject + Si_mass_eject + O_mass_eject + S_mass_eject
+            total_mass_eject_per_SNIa = Fe_mass_eject + Si_mass_eject + O_mass_eject + S_mass_eject + N_mass_eject + C_mass_eject
             SNIa_number_from_this_epoch_till_this_time = function_number_SNIa_power_law(0, age_of_this_epoch, SNIa_number_prob, M_tot_of_this_epoch)
             ejected_gas_mass_of_this_epoch += total_mass_eject_per_SNIa * SNIa_number_from_this_epoch_till_this_time
             metal_mass_of_this_epoch += 1.2 * SNIa_number_from_this_epoch_till_this_time  # Chandrasekhar_mass = 1.44
@@ -176,6 +178,7 @@ def galaxy_evol(logOGM=0.5, Z_0=0.000000134, solar_mass_component='Anders1989_ma
     # (Z_table_list, Z_table_list_2) = function_get_avaliable_Z()
     Z_table_list = [0.0004, 0.0008, 0.0012, 0.0016, 0.002, 0.0024, 0.0028, 0.0032, 0.0036, 0.004, 0.008, 0.012]
     Z_table_list_2 = [2e-05, 0.0002, 0.002, 0.02]
+    # Z_table_list_2 = [0.008, 0.004, 0.02, 0.0001, 0.001]
 
     # constrain SFH
     total_gas_mass = 10**logOGM  # in solar mass unit
@@ -297,7 +300,7 @@ def galaxy_evol(logOGM=0.5, Z_0=0.000000134, solar_mass_component='Anders1989_ma
             mass_grid_table = mass
             mass_grid_table2 = mass2
             number_in_SNIa_boundary = quad(igimf_xi_function, 2, 8, args=(alpha1, alpha3, integrate_mass), limit=50)[0]
-            number_all = quad(igimf_xi_function, 0.08, 150, args=(alpha1, alpha3, integrate_mass), limit=50)[0]
+            number_all = quad(igimf_xi_function, 0.08, 50.1, args=(alpha1, alpha3, integrate_mass), limit=50)[0]
             SNIa_number_prob = number_in_SNIa_boundary ** 2 / number_all
             last_time_age = age_of_this_epoch
             all_sfr.append(SFR_of_this_epoch)
@@ -392,13 +395,13 @@ def galaxy_evol(logOGM=0.5, Z_0=0.000000134, solar_mass_component='Anders1989_ma
                     Fe_mass_of_SNIa = Fe_mass_eject * SNIa_number_from_this_epoch_till_this_time
                     O_mass_of_SNIa = O_mass_eject * SNIa_number_from_this_epoch_till_this_time
                     Si_mass_of_SNIa = Si_mass_eject * SNIa_number_from_this_epoch_till_this_time
-                    N_mass_of_SNIa = N_mass_eject * SNIa_number_from_this_epoch_till_this_time
-                    C_mass_of_SNIa = C_mass_eject * SNIa_number_from_this_epoch_till_this_time
+                    #N_mass_of_SNIa = N_mass_eject * SNIa_number_from_this_epoch_till_this_time
+                    #C_mass_of_SNIa = C_mass_eject * SNIa_number_from_this_epoch_till_this_time
                     O_mass_of_this_epoch += O_mass_of_SNIa
                     Si_mass_of_this_epoch += Si_mass_of_SNIa
                     Fe_mass_of_this_epoch += Fe_mass_of_SNIa
-                    N_mass_of_this_epoch += N_mass_of_SNIa
-                    C_mass_of_this_epoch += C_mass_of_SNIa
+                    #N_mass_of_this_epoch += N_mass_of_SNIa
+                    #C_mass_of_this_epoch += C_mass_of_SNIa
                     Fe_over_H_of_an_epoch = function_element_abundunce(solar_abu_table, "Fe", "H", metal_in_gas[6], metal_in_gas[1], False)
                     observable_star_number_of_different_epochs_at_this_time.append([Fe_over_H_of_an_epoch, observable_star_number_of_a_epoch_at_a_time_step])
                     ejected_gas_mass_till_this_time += ejected_gas_mass_of_this_epoch
@@ -849,14 +852,16 @@ def function_read_M_element_Fe(Z_select_in_table_2, log_Z_select_in_table_2):
 
 
 def function_get_target_mass_in_range(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2, M_element_table):
-    return quad(integrator_for_function_get_target_mass_in_range2, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range2, lower_mass_limit, 50.1,
                               args=(M_element_table, alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 
 def integrator_for_function_get_target_mass_in_range2(initial_mass, Mtarget_table, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
     mass_grid_table2 = [0.08, 1.0, 1.25, 1.5, 1.75, 1.9, 2.0, 2.25, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 15.0, 20.0, 25.0, 30.0, 40.0, 60.0, 80.0, 120.0, 150]
-    if initial_mass > 1:
+    if initial_mass > 50.1:
+        return 0
+    elif initial_mass > 1:
         number = initial_mass ** (-alpha3) / integrate_mass
-    elif initial_mass > 0.5:
+    elif initial_mass > 0.08:
         number = initial_mass ** (-alpha1-1) / integrate_mass
     else:
         number = 0.5**(-alpha1-1) * (initial_mass / 0.5)**(-alpha1) / integrate_mass
@@ -881,34 +886,36 @@ def integrator_for_function_get_target_mass_in_range2(initial_mass, Mtarget_tabl
     return integrator
 
 def function_get_target_mass_in_range_metal(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[0], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_H(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[1], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_He(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[2], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_O(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[3], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_N(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[4], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_C(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[5], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_Si(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[6], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 def function_get_target_mass_in_range_Fe(lower_mass_limit, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 150,
+    return quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, 50.1,
                               args=(M_element_table[7], alpha1, alpha3, integrate_mass, len_mass_grid_table2), limit=40)[0]
 
 def integrator_for_function_get_target_mass_in_range(initial_mass, Mtarget_table, alpha1, alpha3, integrate_mass, len_mass_grid_table2):
-    if initial_mass > 1:
+    if initial_mass > 50.1:
+        return 0
+    elif initial_mass > 1:
         number = initial_mass ** (-alpha3) / integrate_mass
-    elif initial_mass > 0.5:
+    elif initial_mass > 0.08:
         number = initial_mass ** (-alpha1-1) / integrate_mass
     else:
         number = 0.5 ** (-alpha1-1) * (initial_mass / 0.5)**(-alpha1) / integrate_mass
@@ -1078,9 +1085,11 @@ def fucntion_mass_boundary(time, mass, lifetime):
 if __name__ == '__main__':
 
     def unnormalized_mass_function(mass, alpha1, alpha3):
-        if mass > 1:
+        if mass > 50.1:
+            return 0
+        elif mass > 1:
             return mass ** (1-alpha3)
-        elif mass > 0.5:
+        elif mass > 0.08:
             return mass ** (1-alpha1 - 1)
         else:
             return 0.5 ** (1-alpha1 - 1) * (mass / 0.5) ** (1-alpha1)
@@ -1099,17 +1108,17 @@ if __name__ == '__main__':
 
     # log_prob -2.0044127568870516, SFE 0.09532987740311372, out 0.05926706797683223, tau_in 5.199789554313394, alpha1 0.644202050415464, alpha3 2.3007932997065152, Time: 49 m 18 s
     maximum_core_number = 25
-    SFT = 850
-    SFE = 0.2
-    outflow = 0
+    SFT = 800
+    SFE = 0.12
+    outflow = 8
     tau_infalle9 = 0.4
-    alpha1__ = 1.68
-    alpha3__ = 2.2
+    alpha1__ = 1.08
+    alpha3__ = 2
 
-    integrate_mass = quad(unnormalized_mass_function, 0.08, 150, args=(alpha1__, alpha3__), limit=50)[0]
+    integrate_mass = quad(unnormalized_mass_function, 0.08, 50.1, args=(alpha1__, alpha3__), limit=50)[0]
 
     kde_model_with_error, all_sfr, Fe_over_H_evolution_list, Si_over_Fe_evolution_list, O_over_Fe_evolution_list, observable_star_number_list, N_over_O_evolution_list, C_over_O_evolution_list = \
-        galaxy_evol(logOGM=15, Z_0=1e-5,
+        galaxy_evol(logOGM=11, Z_0=1e-9,
                     solar_mass_component="Asplund2009_mass",
                     SF_timescale_limit=SFT, SFE=SFE,  # 0.001 0.0005 0.0002 (0.003 canonical)
                     solar_abu_table='Asplund2009',
@@ -1256,8 +1265,8 @@ if __name__ == '__main__':
 
     plt.figure(13, figsize=(6, 4))
     ### plot data
-    #plt.scatter(OH_xiang19, NO_xiang19, color='orange', alpha=0.3)
-    plt.scatter(OH_israel, NO_israel, color='orange', alpha=0.3)
+    plt.scatter(OH_xiang19, NO_xiang19, color='orange', alpha=0.3)
+    plt.scatter(OH_israel, NO_israel, color='red', alpha=0.3)
     ### plot model
     plt.plot(O_over_H_evolution_list, N_over_O_evolution_list, alpha=0.5, color='tab:blue')
     plt.scatter(O_over_H_evolution_list, N_over_O_evolution_list, alpha=0.5, color='tab:blue')

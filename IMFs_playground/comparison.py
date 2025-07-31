@@ -7,7 +7,7 @@ from scipy.integrate import quad
 import numpy as np
 import matplotlib.pyplot as plt
 
-alpha3 = 1.55
+alpha3 = 2.3
 
 # Generate a range of stellar masses
 masses = np.logspace(-2, 2.5, 500)  # Mass range from 0.01 to ~300 solar masses

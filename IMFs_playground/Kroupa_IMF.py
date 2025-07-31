@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 masses = np.logspace(-2, 2.5, 500)
-alpha3 = 2.35
+alpha3 = 2.5
 def kroupa_imf_unnormalized(mass):  # there is no time dependence for Kroupa IMF
     if mass < 0.08:
         return 0

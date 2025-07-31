@@ -2279,7 +2279,7 @@ if __name__ == '__main__':
     Cr_over_Fe_list = []
     Mn_over_Fe_list = []
     Ni_over_Fe_list = []
-    yield_table_name = "Limongi_M150"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
+    yield_table_name = "K10_K06_HNe00"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
     # or "Nomoto" or "Nomoto_HNe" or "Nomoto_ZY_hypernova" or "Nomoto_ZY_CCSN" or "Nomoto_ZY_CCSN_popIII" or "K10_N13_HegerPopIII"
     # or "Limongi_R000" or "Limongi_R300" or "Limongi_R150" or "K10_N13_HNe00"
     # or "popIII_N13" or "popIII_heger10"
@@ -2287,7 +2287,7 @@ if __name__ == '__main__':
     make_dir = True  # mkdir for new yield tables.
     # make_dir = False
     function_read_file(yield_table_name)
-    # funtion_plot_yields()
+    #funtion_plot_yields()
 
     # yield_table_name = "WW95" or "portinari98" or "marigo01"
     # or marigo01+"Kobayashi06" or "Karakas10"+Kobayashi06 or Cristallo15+"Nomoto"13 or Karakas10+"Limongi_R000"18

@@ -3,13 +3,13 @@
 # Modeled star formation duration (Gyr):
 0.6
 # Total number of SN (log_10):
-57.2
+57.3
 # Mass of all alive stars at final time (log_10):
-8.5517
+8.5588
 # Star formation duration of this final stellar mass according to the downsizing relation, Gyr):
-2.1261
+2.1178
 # Mass of stars and remnants at final time (log_10):
-8.7172
+8.7224
 # total mass in the closed-box model:
 150000000.0
 # Total number of SNIa (log_10):

@@ -1,0 +1,20 @@
+# Number of star formation event epoch (10^7 yr):
+30
+# Modeled star formation duration (Gyr):
+0.3
+# Total number of SN (log_10):
+57.7
+# Mass of all alive stars at final time (log_10):
+9.0356
+# Star formation duration of this final stellar mass according to the downsizing relation, Gyr):
+1.6273
+# Mass of stars and remnants at final time (log_10):
+9.199
+# total mass in the closed-box model:
+179912468.92646182
+# Total number of SNIa (log_10):
+57.7
+# Total number of SNII (log_10):
+56.9
+# initial [M/H]:
+-4.15 
