@@ -2,11 +2,11 @@ import galevo_nitrogen as galevo
 
     # For gas_mass_dependent SFH model, we need to provide the gas mass evolution.
     # This is an example of how to generate a gas mass evolution.
-Log_SFR_list = [1.38]  # 24 M_sun/yr    
+Log_SFR_list = [1.3]  # 20 M_sun/yr    
 SFEN_list = [30]       # Example values
 STF_list = [0.04]
-SFE_list = [0.0005]
-tau_infall_list = [0.1, 0.01, 0.001] 
+SFE_list = [0.0095]
+tau_infall_list = [0.005] 
 # Log_SFR = 1.5 # for 20 M_sun/yr - real value
 location = 0
 skewness = 20
@@ -20,11 +20,11 @@ for SFEN in SFEN_list:
                 for tau_infall in tau_infall_list:
                     galevo.generate_SFH('flat', Log_SFR, SFEN, sfr_tail, skewness, location)
                     galevo.galaxy_evol(imf='Kroupa', STF=STF, SFEN=SFEN, Z_0=1e-6, solar_mass_component="Asplund2009_mass",
-                                    str_yield_table='Limongi_R300', IMF_name='Kroupa', steller_mass_upper_bound=100, #try 100
+                                    str_yield_table='Limongi_R300', IMF_name='Kroupa', steller_mass_upper_bound=150, #try 100
                                     time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
                                     SFH_model='gas_mass_dependent', SFE=SFE, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
                                     solar_abu_table='Asplund2009',
-                                    high_time_resolution=None, plot_show=None, plot_save=True, outflow=0, check_igimf=None, tau_infalle9=tau_infall)
+                                    high_time_resolution=None, plot_show=None, plot_save=True, outflow=30, check_igimf=None, tau_infalle9=tau_infall)
 
 # Bekki input
 # galevo.galaxy_evol(imf='Kroupa', STF=0.5, SFEN=SFEN, Z_0=0.015*1e-6, solar_mass_component="Asplund2009_mass",
