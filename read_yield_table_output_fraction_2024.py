@@ -86,10 +86,6 @@ def function_read_file(yield_table_name):
         file_yield = open('yield_tables/agb_and_massive_stars_K10_K06_0.0HNe.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
-    elif yield_table_name == "Limongi_R000":
-        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R000.txt', 'r')
-        data = file_yield.readlines()
-        file_yield.close()
     elif yield_table_name == "Limongi_R":
         file_yield = open('yield_tables/agb_and_massive_stars_C15_LC18_R_mix.txt', 'r')
         data = file_yield.readlines()
@@ -106,12 +102,20 @@ def function_read_file(yield_table_name):
         file_yield = open('yield_tables/agb_and_massive_stars_K10C20_lc18_r300_M.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_R000":
+        file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R000.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
     elif yield_table_name == "Limongi_R150":
         file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R150.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
     elif yield_table_name == "Limongi_R300":
         file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R300.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R000_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R000.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
     elif yield_table_name == "Nomoto":
@@ -198,7 +202,7 @@ def function_read_file(yield_table_name):
     ###########################
     ### extract information ###
     ###########################
-    #
+    
     H_relative_line_number = function_get_element_line_number(data, 'H-1')
     He_relative_line_number = function_get_element_line_number(data, 'He-4')
     C12_relative_line_number = function_get_element_line_number(data, 'C-12')
@@ -2279,7 +2283,7 @@ if __name__ == '__main__':
     Cr_over_Fe_list = []
     Mn_over_Fe_list = []
     Ni_over_Fe_list = []
-    yield_table_name = "Limongi_R000"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
+    yield_table_name = "Limongi_R000_sup_agb"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
     # or "Nomoto" or "Nomoto_HNe" or "Nomoto_ZY_hypernova" or "Nomoto_ZY_CCSN" or "Nomoto_ZY_CCSN_popIII" or "K10_N13_HegerPopIII"
     # or "Limongi_R000" or "Limongi_R300" or "Limongi_R150" or "K10_N13_HNe00"
     # or "popIII_N13" or "popIII_heger10"
