@@ -255,7 +255,6 @@ def function_read_file(yield_table_name):
     Ni62_relative_line_number = function_get_element_line_number(data, 'Ni-62')
     Ni64_relative_line_number = function_get_element_line_number(data, 'Ni-64')
     # Ce_relative_line_number = function_get_element_line_number(data, 'Ce-140')
-    #
     global M_list, Z_list, eject_mass_list, lifetime_list, Mfinal_list, H_eject_mass_list, He_eject_mass_list, C_eject_mass_list, C13_eject_mass_list, \
         N_eject_mass_list, O_eject_mass_list, O17_eject_mass_list, O18_eject_mass_list, Ne_eject_mass_list, Na_eject_mass_list, Mg_eject_mass_list, Al_eject_mass_list, Si_eject_mass_list, \
         S_eject_mass_list, Ar_eject_mass_list, Ca_eject_mass_list, Ti_eject_mass_list, Cr_eject_mass_list, Mn_eject_mass_list, Fe_eject_mass_list, Ni_eject_mass_list, Metal_eject_mass_list
@@ -320,6 +319,7 @@ def function_read_file(yield_table_name):
             line_Ni62 = str.split(data[i + Ni62_relative_line_number])
             line_Ni64 = str.split(data[i + Ni64_relative_line_number])
             line_Lifetime = str.split(data[i + 1])
+            print(i, line_Lifetime, data[i + 1])
             lifetime = function_get_Mfinal_and_Lifetime(line_Lifetime[2])
             (Z_ini, M_ini) = function_get_Z_M(line_i[2])  # get the initial mass and metallicity of the star
             if yield_table_name == "popIII_heger10":
