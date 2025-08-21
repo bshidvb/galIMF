@@ -118,6 +118,14 @@ def function_read_file(yield_table_name):
         file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R000.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_R150_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R150.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R300_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R300.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
     elif yield_table_name == "Nomoto":
         file_yield = open('yield_tables/agb_and_massive_stars_C15_N13_0_0_HNe.txt', 'r')
         data = file_yield.readlines()
@@ -319,7 +327,6 @@ def function_read_file(yield_table_name):
             line_Ni62 = str.split(data[i + Ni62_relative_line_number])
             line_Ni64 = str.split(data[i + Ni64_relative_line_number])
             line_Lifetime = str.split(data[i + 1])
-            print(i, line_Lifetime, data[i + 1])
             lifetime = function_get_Mfinal_and_Lifetime(line_Lifetime[2])
             (Z_ini, M_ini) = function_get_Z_M(line_i[2])  # get the initial mass and metallicity of the star
             if yield_table_name == "popIII_heger10":
@@ -521,41 +528,77 @@ def function_read_file(yield_table_name):
             Fe57_num = Fe57_mass / element_weight_table.function_element_weight("Fe57")
             Fe58_num = Fe58_mass / element_weight_table.function_element_weight("Fe58")
             Fe_num = Fe54_num + Fe56_num + Fe57_num + Fe58_num
-            O_over_Mg = math.log(O_num / Mg_num, 10) - solar_O + solar_Mg
-            C13_over_O17 = math.log(C13_num / O17_num, 10)
-            C_over_O = math.log(C_num / O_num, 10)
-            C13_over_C = math.log(C13_num / C_num, 10)
-            O17_over_O = math.log(O17_num / O_num, 10)
-            Al_over_Mg = math.log(Al_num / Mg_num, 10) - solar_Al + solar_Mg
-            Al_over_O = math.log(Al_num / O_num, 10) - solar_Al + solar_O
-            Ne_over_H = math.log(Ne_num / H_num, 10) - solar_Ne + solar_H
-            Na_over_H = math.log(Na_num / H_num, 10) - solar_Na + solar_H
-            Mg_over_H = math.log(Mg_num / H_num, 10) - solar_Mg + solar_H
-            Al_over_H = math.log(Al_num / H_num, 10) - solar_Al + solar_H
-            Si_over_H = math.log(Si_num / H_num, 10) - solar_Si + solar_H
-            S_over_H = math.log(S_num / H_num, 10) - solar_S + solar_H
-            Ar_over_H = math.log(Ar_num / H_num, 10) - solar_Ar + solar_H
-            Ca_over_H = math.log(Ca_num / H_num, 10) - solar_Ca + solar_H
-            Ti_over_H = math.log(Ti_num / H_num, 10) - solar_Ti + solar_H
-            Cr_over_H = math.log(Cr_num / H_num, 10) - solar_Cr + solar_H
-            Mn_over_H = math.log(Mn_num / H_num, 10) - solar_Mn + solar_H
-            Fe_over_H = math.log(Fe_num / H_num, 10) - solar_Fe + solar_H
-            Ni_over_H = math.log(Ni_num / H_num, 10) - solar_Ni + solar_H
-            C_over_H = math.log(C_num / H_num, 10) - solar_C + solar_H
-            N_over_H = math.log(N_num / H_num, 10) - solar_N + solar_H
-            O_over_H = math.log(O_num / H_num, 10) - solar_O + solar_H
-            C13_over_H = math.log(C13_num / H_num, 10) - solar_C13 + solar_H
-            O17_over_H = math.log(O17_num / H_num, 10) - solar_O17 + solar_H
-            O18_over_H = math.log(O18_num / H_num, 10) - solar_O18 + solar_H
-            Mg_over_Fe = math.log(Mg_num / Fe_num, 10) - solar_Mg + solar_Fe
-            Al_over_Fe = math.log(Al_num / Fe_num, 10) - solar_Al + solar_Fe
-            Si_over_Fe = math.log(Si_num / Fe_num, 10) - solar_Si + solar_Fe
-            Ca_over_Fe = math.log(Ca_num / Fe_num, 10) - solar_Ca + solar_Fe
-            Ti_over_Fe = math.log(Ti_num / Fe_num, 10) - solar_Ti + solar_Fe
-            Cr_over_Fe = math.log(Cr_num / Fe_num, 10) - solar_Cr + solar_Fe
-            Mn_over_Fe = math.log(Mn_num / Fe_num, 10) - solar_Mn + solar_Fe
-            Ni_over_Fe = math.log(Ni_num / Fe_num, 10) - solar_Ni + solar_Fe
-            O_over_Fe = math.log(O_num / Fe_num, 10) - solar_O + solar_Fe
+            O_over_Mg = math.log(np.abs(O_num / Mg_num), 10) - solar_O + solar_Mg
+            C13_over_O17 = math.log(np.abs(C13_num / O17_num), 10)
+            C_over_O = math.log(np.abs(C_num / O_num), 10)
+            C13_over_C = math.log(np.abs(C13_num / C_num), 10)
+            O17_over_O = math.log(np.abs(O17_num / O_num), 10)
+            Al_over_Mg = math.log(np.abs(Al_num / Mg_num), 10) - solar_Al + solar_Mg
+            Al_over_O = math.log(np.abs(Al_num / O_num), 10) - solar_Al + solar_O
+            Ne_over_H = math.log(np.abs(Ne_num / H_num), 10) - solar_Ne + solar_H
+            Na_over_H = math.log(np.abs(Na_num / H_num), 10) - solar_Na + solar_H
+            Mg_over_H = math.log(np.abs(Mg_num / H_num), 10) - solar_Mg + solar_H
+            Al_over_H = math.log(np.abs(Al_num / H_num), 10) - solar_Al + solar_H
+            Si_over_H = math.log(np.abs(Si_num / H_num), 10) - solar_Si + solar_H
+            S_over_H = math.log(np.abs(S_num / H_num), 10) - solar_S + solar_H
+            Ar_over_H = math.log(np.abs(Ar_num / H_num), 10) - solar_Ar + solar_H
+            if Ca_num == 0 or H_num == 0:
+                Ca_over_H = 0
+            else:
+                Ca_over_H = math.log(np.abs(Ca_num / H_num), 10) - solar_Ca + solar_H
+            Ti_over_H = math.log(np.abs(Ti_num / H_num), 10) - solar_Ti + solar_H
+            Cr_over_H = math.log(np.abs(Cr_num / H_num), 10) - solar_Cr + solar_H
+            Mn_over_H = math.log(np.abs(Mn_num / H_num), 10) - solar_Mn + solar_H
+            if Fe_num == 0 or H_num == 0:
+                Fe_over_H = 0
+            else:
+                Fe_over_H = math.log(np.abs(Fe_num / H_num), 10) - solar_Fe + solar_H
+            if Ni_num == 0 or H_num == 0:
+                Ni_over_H = 0
+            else:
+                Ni_over_H = math.log(np.abs(Ni_num / H_num), 10) - solar_Ni + solar_H
+            C_over_H = math.log(np.abs(C_num / H_num), 10) - solar_C + solar_H
+            N_over_H = math.log(np.abs(N_num / H_num), 10) - solar_N + solar_H
+            O_over_H = math.log(np.abs(O_num / H_num), 10) - solar_O + solar_H
+            C13_over_H = math.log(np.abs(C13_num / H_num), 10) - solar_C13 + solar_H
+            O17_over_H = math.log(np.abs(O17_num / H_num), 10) - solar_O17 + solar_H
+            O18_over_H = math.log(np.abs(O18_num / H_num), 10) - solar_O18 + solar_H
+            if Mg_num == 0 or Fe_num == 0:
+                Mg_over_Fe = 0
+            else:
+                Mg_over_Fe = math.log(np.abs(Mg_num / Fe_num), 10) - solar_Mg + solar_Fe
+            if Al_num == 0 or Fe_num == 0:
+                Al_over_Fe = 0
+            else:
+                Al_over_Fe = math.log(np.abs(Al_num / Fe_num), 10) - solar_Al + solar_Fe
+            if Si_num == 0 or Fe_num == 0:
+                Si_over_Fe = 0
+            else:
+                Si_over_Fe = math.log(np.abs(Si_num / Fe_num), 10) - solar_Si + solar_Fe
+            if Ca_num == 0 or Fe_num == 0:
+                Ca_over_Fe = 0
+            else:
+                Ca_over_Fe = math.log(np.abs(Ca_num / Fe_num), 10) - solar_Ca + solar_Fe
+            if Ti_num == 0 or Fe_num == 0:
+                Ti_over_Fe = 0
+            else:
+                Ti_over_Fe = math.log(np.abs(Ti_num / Fe_num), 10) - solar_Ti + solar_Fe
+            if Cr_num == 0 or Fe_num == 0:
+                Cr_over_Fe = 0
+            else:
+                Cr_over_Fe = math.log(np.abs(Cr_num / Fe_num), 10) - solar_Cr + solar_Fe
+            if Mn_num == 0 or Fe_num == 0:
+                Mn_over_Fe = 0
+            else:
+                Mn_over_Fe = math.log(np.abs(Mn_num / Fe_num), 10) - solar_Mn + solar_Fe
+            if Ni_num == 0 or Fe_num == 0:
+                Ni_over_Fe = 0
+            else:
+                Ni_over_Fe = math.log(np.abs(Ni_num / Fe_num), 10) - solar_Ni + solar_Fe
+            if O_num == 0 or Fe_num == 0:
+                O_over_Fe = 0
+            else:
+                O_over_Fe = math.log(np.abs(O_num / Fe_num), 10) - solar_O + solar_Fe
             Metal_mass = round((ejecta_mass - H_mass - He_mass), 5)  ####################
             if Metal_mass < 0 or Metal_mass == 0:
                 print("Warning: Metal_mass=", Metal_mass, "<0")
@@ -859,6 +902,18 @@ def function_get_mass_grid(yield_table_name):  # read in a grid from 0.08 to 150
         file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R300.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_R000_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R000.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R150_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R150.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_R300_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R300.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
     elif yield_table_name == "Nomoto":
         file_yield = open('yield_tables/agb_and_massive_stars_C15_N13_0_0_HNe.txt', 'r')
         data = file_yield.readlines()
@@ -939,6 +994,8 @@ def function_get_mass_grid(yield_table_name):  # read in a grid from 0.08 to 150
         file_yield = open('yield_tables/popIII_N13.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    else:
+        raise ValueError(f"Unknown yield_table_name: {yield_table_name}")
     pattern = r"\(M=([\d.]+)"
     m_values = []
     i = 0
@@ -1044,8 +1101,7 @@ def write_data():
         os.makedirs('yield_tables__2024/rearranged___/setllar_Ba_eject_mass_from_{}'.format(yield_table_name), exist_ok=True)
         os.makedirs('yield_tables__2024/rearranged___/setllar_Ce_eject_mass_from_{}'.format(yield_table_name), exist_ok=True)
         # os.makedirs('yield_tables__2024/rearranged___/setllar_Eu_eject_mass_from_{}'.format(yield_table_name), exist_ok=True)
-        os.makedirs('yield_tables__2024/rearranged___/setllar_Metal_eject_mass_from_{}'.format(yield_table_name),
-                    exist_ok=True)
+        os.makedirs('yield_tables__2024/rearranged___/setllar_Metal_eject_mass_from_{}'.format(yield_table_name),exist_ok=True)
     mass_grid = function_get_mass_grid(yield_table_name)
     print("mass_grid:", mass_grid)
     # splitted_mass_grid = lindexsplit(mass_grid, 153)
@@ -1271,27 +1327,27 @@ def write_data():
             lifetime__.append(math.log(lifetime[i], 10))
             Mfinal__.append(math.log(Mfinal[i], 10))
             H_eject_mass__.append(math.log(H_eject_mass[i], 10))
-            He_eject_mass__.append(math.log(He_eject_mass[i], 10))
-            C_eject_mass__.append(math.log(C_eject_mass[i], 10))
-            C13_eject_mass__.append(math.log(C13_eject_mass[i], 10))
-            N_eject_mass__.append(math.log(N_eject_mass[i], 10))
-            O_eject_mass__.append(math.log(O_eject_mass[i], 10))
-            O17_eject_mass__.append(math.log(O17_eject_mass[i], 10))
-            O18_eject_mass__.append(math.log(O18_eject_mass[i], 10))
-            Ne_eject_mass__.append(math.log(Ne_eject_mass[i], 10))
-            Na_eject_mass__.append(math.log(Na_eject_mass[i], 10))
-            Mg_eject_mass__.append(math.log(Mg_eject_mass[i], 10))
-            Al_eject_mass__.append(math.log(Al_eject_mass[i], 10))
-            Si_eject_mass__.append(math.log(Si_eject_mass[i], 10))
-            S_eject_mass__.append(math.log(S_eject_mass[i], 10))
-            Ar_eject_mass__.append(math.log(Ar_eject_mass[i], 10))
-            Ca_eject_mass__.append(math.log(Ca_eject_mass[i], 10))
-            Ti_eject_mass__.append(math.log(Ti_eject_mass[i], 10))
-            Cr_eject_mass__.append(math.log(Cr_eject_mass[i], 10))
-            Mn_eject_mass__.append(math.log(Mn_eject_mass[i], 10))
-            Ni_eject_mass__.append(math.log(Ni_eject_mass[i], 10))
-            Metal_eject_mass__.append(math.log(Metal_eject_mass[i], 10))
-            Fe_eject_mass__.append(math.log(Fe_eject_mass[i], 10))
+            He_eject_mass__.append(math.log(np.abs(He_eject_mass[i]), 10))
+            C_eject_mass__.append(math.log(np.abs(C_eject_mass[i]), 10))
+            C13_eject_mass__.append(math.log(np.abs(C13_eject_mass[i]), 10))
+            N_eject_mass__.append(math.log(np.abs(N_eject_mass[i]), 10))
+            O_eject_mass__.append(math.log(np.abs(O_eject_mass[i]), 10))
+            O17_eject_mass__.append(math.log(np.abs(O17_eject_mass[i]), 10))
+            O18_eject_mass__.append(math.log(np.abs(O18_eject_mass[i]), 10))
+            Ne_eject_mass__.append(math.log(np.abs(Ne_eject_mass[i]), 10))
+            Na_eject_mass__.append(math.log(np.abs(Na_eject_mass[i]), 10))
+            Mg_eject_mass__.append(math.log(np.abs(Mg_eject_mass[i]), 10))
+            Al_eject_mass__.append(math.log(np.abs(Al_eject_mass[i]), 10))
+            Si_eject_mass__.append(math.log(np.abs(Si_eject_mass[i]), 10))
+            S_eject_mass__.append(math.log(np.abs(S_eject_mass[i]), 10))
+            Ar_eject_mass__.append(math.log(np.abs(Ar_eject_mass[i]), 10))
+            Ca_eject_mass__.append(math.log(np.abs(Ca_eject_mass[i]), 10))
+            Ti_eject_mass__.append(math.log(np.abs(Ti_eject_mass[i]), 10))
+            Cr_eject_mass__.append(math.log(np.abs(Cr_eject_mass[i]), 10))
+            Mn_eject_mass__.append(math.log(np.abs(Mn_eject_mass[i]), 10))
+            Ni_eject_mass__.append(math.log(np.abs(Ni_eject_mass[i]), 10))
+            Metal_eject_mass__.append(math.log(np.abs(Metal_eject_mass[i]), 10))
+            Fe_eject_mass__.append(math.log(np.abs(Fe_eject_mass[i]), 10))
 
         eject_mass = np.interp(mass_grid, mass, eject_mass__).tolist()
         lifetime = np.interp(mass_grid, mass, lifetime__).tolist()
@@ -2283,9 +2339,10 @@ if __name__ == '__main__':
     Cr_over_Fe_list = []
     Mn_over_Fe_list = []
     Ni_over_Fe_list = []
-    yield_table_name = "Limongi_R000_sup_agb"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
+    yield_table_name = "Limongi_R300_sup_agb"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
     # or "Nomoto" or "Nomoto_HNe" or "Nomoto_ZY_hypernova" or "Nomoto_ZY_CCSN" or "Nomoto_ZY_CCSN_popIII" or "K10_N13_HegerPopIII"
     # or "Limongi_R000" or "Limongi_R300" or "Limongi_R150" or "K10_N13_HNe00"
+    # or "Limongi_R000_sup_agb" or "Limongi_R150_sup_agb" or "Limongi_R300_sup_agb"
     # or "popIII_N13" or "popIII_heger10"
     # or "nugrid_N13" or "nugrid_FRUITY" or "nugrid_MESAonly_ye" or "nugrid_K06"
     make_dir = True  # mkdir for new yield tables.
