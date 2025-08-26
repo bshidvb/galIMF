@@ -1,3 +1,4 @@
+H X_i,solar for calculation of X_i,0 taken from Lodders (2021)
 H 7.0M Z=0.02 VW93
 &Isotopes &Yields
 &H &3.487681e+00

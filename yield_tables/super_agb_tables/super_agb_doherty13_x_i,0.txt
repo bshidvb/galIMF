@@ -1,3 +1,4 @@
+H X_i,solar taken from Lodders (2021)
 H 7.0M Z=0.02 VW93
 &Isotopes &NetYield &MassExp &X_i,solar &X_i,0 &Yields
 &H &-4.832E-01 &3.770E+00 &7.057E-01 &1.053284E+00

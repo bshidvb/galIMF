@@ -1,3 +1,4 @@
+H taken from Lodders (2021)
 &X_i,solar
 &7.057E-01
 &3.461E-05
