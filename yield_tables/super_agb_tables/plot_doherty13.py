@@ -10,7 +10,7 @@ metallicities = []
 yields = []
 
 # Specify the isotope to filter
-chosen_isotope = "&N-14"
+chosen_isotope = "&O-16"
 
 # Read the file and process lines
 with open(file_path, 'r') as file:
@@ -23,7 +23,7 @@ with open(file_path, 'r') as file:
                 metallicities.append(float(match_metallicity.group(1)))
         elif line.startswith(chosen_isotope):  # Process lines starting with the chosen isotope
             columns = line.split()
-            yield_value = float(columns[-1].lstrip('&'))  # Remove '&' symbol and convert to float
+            yield_value = float(columns[1].lstrip('&'))  # Remove '&' symbol and convert to float
             yields.append(yield_value)
             print(yield_value)
 print(yields)
