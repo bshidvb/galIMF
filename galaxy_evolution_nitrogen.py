@@ -20,7 +20,7 @@ for SFEN in SFEN_list:
                 for tau_infall in tau_infall_list:
                     galevo.generate_SFH('flat', Log_SFR, SFEN, sfr_tail, skewness, location)
                     galevo.galaxy_evol(imf='Kroupa', STF=STF, SFEN=SFEN, Z_0=1e-6, solar_mass_component="Asplund2009_mass",
-                                    str_yield_table='Limongi_R300', IMF_name='Kroupa', steller_mass_upper_bound=150, #try 100
+                                    str_yield_table='Limongi_R300_sup_agb', IMF_name='Kroupa', steller_mass_upper_bound=150, #try 100
                                     time_resolution_in_Myr=1, mass_boundary_observe_low=1.5, mass_boundary_observe_up=8,
                                     SFH_model='gas_mass_dependent', SFE=SFE, SNIa_ON=True, SNIa_yield_table='Iwamoto1999',
                                     solar_abu_table='Asplund2009',
