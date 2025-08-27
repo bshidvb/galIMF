@@ -605,7 +605,7 @@ def function_read_file(yield_table_name):
                 print("check stellar yield table with metallicity and mass being:", Z_ini, "&", M_ini)
                 Metal_mass = 1e-6
             Z_over_H = math.log(Metal_mass / H_mass, 10) - math.log(0.0134 / 0.7381, 10)
-            skip_Z_values = {0.003236, 0.01345}
+            skip_Z_values = {0.003236, 0.01345} # specify which metallicities to skip
             if Z_ini in skip_Z_values:
                 pass
             else:
