@@ -10,7 +10,7 @@ metallicities = []
 yields = []
 
 # Specify the isotope to filter
-chosen_isotope = "&Si-28"
+chosen_isotope = "&H-1"
 
 # Read the file and process lines
 with open(file_path, 'r') as file:

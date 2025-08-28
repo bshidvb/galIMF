@@ -2,12 +2,15 @@ import matplotlib.pyplot as plt
 import re
 
 # File path
-file_path = "yield_tables/TABLE1-VW93ML.txt"
+file_path = "yield_tables/super_agb_tables/super_agb_doherty13_original_file.txt"
 
 # Initialize lists to store data
 initial_masses = []
 metallicities = []
 yields = []
+
+# Specify the isotope to filter
+chosen_isotope = "&H-1"
 
 # Read the file and process lines
 with open(file_path, 'r') as file:
@@ -18,14 +21,12 @@ with open(file_path, 'r') as file:
             if match_mass and match_metallicity:
                 initial_masses.append(float(match_mass.group(1)))
                 metallicities.append(float(match_metallicity.group(1)))
-        elif line.strip().lower().startswith("mg24"):  # Process lines for Mg-24
+        elif line.startswith(chosen_isotope):  # Process lines starting with the chosen isotope
             columns = line.split()
-            try:
-                yield_value = float(columns[1])  # Extract yield from the second column
-                yields.append(yield_value)
-            except ValueError as e:
-                print(f"Error processing line: {line.strip()} - {e}")
-
+            yield_value = float(columns[1].lstrip('&'))  # Remove '&' symbol and convert to float
+            yields.append(yield_value)
+            print(yield_value)
+print(yields)
 # Organize data into a dictionary by metallicity
 data_by_metallicity = {}
 for mass, metallicity, yield_value in zip(initial_masses, metallicities, yields):
@@ -44,7 +45,6 @@ plt.xlabel("Initial Mass (M☉)")
 plt.ylabel("Mg-24 Yields")
 plt.title("Mg-24 Yields vs Initial Mass for Different Metallicities")
 plt.legend()
-plt.grid(True)
 
 # Adjust layout and show the plot
 plt.tight_layout()
