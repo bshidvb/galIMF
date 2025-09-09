@@ -50,6 +50,7 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
         S_over_H_list, Si_over_H_list, Ne_over_H_list, X_list, Y_list, Z_list, \
         N_over_O_list, C_over_O_list,\
         ejected_O_mass_till_this_time_tot_list, ejected_O_mass_till_this_time_SNII_list, ejected_O_mass_till_this_time_SNIa_list, \
+        ejected_N_mass_till_this_time_tot_list, ejected_N_mass_till_this_time_SNII_list, ejected_N_mass_till_this_time_SNIa_list, \
         ejected_Mg_mass_till_this_time_tot_list, ejected_Mg_mass_till_this_time_SNII_list, ejected_Mg_mass_till_this_time_SNIa_list, \
         ejected_Fe_mass_till_this_time_tot_list, ejected_Fe_mass_till_this_time_SNII_list, ejected_Fe_mass_till_this_time_SNIa_list, \
         ejected_S_mass_till_this_time_tot_list, ejected_S_mass_till_this_time_SNII_list, ejected_S_mass_till_this_time_SNIa_list, \
@@ -226,6 +227,9 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
     ejected_O_mass_till_this_time_tot_list = []
     ejected_O_mass_till_this_time_SNII_list = []
     ejected_O_mass_till_this_time_SNIa_list = []
+    ejected_N_mass_till_this_time_tot_list = []
+    ejected_N_mass_till_this_time_SNII_list = []
+    ejected_N_mass_till_this_time_SNIa_list = []
     ejected_Mg_mass_till_this_time_tot_list = []
     ejected_Mg_mass_till_this_time_SNII_list = []
     ejected_Mg_mass_till_this_time_SNIa_list = []
@@ -603,6 +607,7 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
         Si_production_SNII = 0
         S_production_SNII = 0
         O_production_SNII = 0
+        N_production_SNII = 0
 
         epoch_index = 0
         while epoch_index < epoch_index_limit:
@@ -952,6 +957,7 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
                     S_production_SNII += S_mass_of_this_epoch
                     Mg_production_SNII += Mg_mass_of_this_epoch
                     O_production_SNII += O_mass_of_this_epoch
+                    N_production_SNII += N_mass_of_this_epoch
                     # if age_of_this_epoch == 1 * 10 ** 9:
                     #     print("Fe_production_SNII", Fe_production_SNII)
                     #     print("O_production_SNII", O_production_SNII)
@@ -1200,7 +1206,6 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
         #     print(epoch_index, "log total_energy_release =", math.log(total_energy_release, 10))
         if outflow is not None and total_energy_release > 0 and math.log(total_energy_release, 10) > log_binding_energy_initial:
             lockup_and_outflow_mass = M_tot_of_this_epoch * outflow  # lockup gas mass in BDs is about 4% thus neglected while the uniform outflow is often assumed to be the same value as the formed stellar mass.
-            # print("lockup_and_outflow_mass", lockup_and_outflow_mass)
         else:
             lockup_and_outflow_mass = M_tot_of_this_epoch
 
@@ -1226,7 +1231,7 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
         total_N_mass_at_this_time = total_N_mass_at_last_time - lockup_and_outflow_mass * (
             total_N_mass_at_last_time / total_gas_mass_at_last_time) + ejected_N_mass_at_this_time
         if total_N_mass_at_this_time < 0.0001:
-            total_N_mass_at_this_time = 0.0001
+            total_N_mass_at_this_time = 0.0
         total_O_mass_at_this_time = total_O_mass_at_last_time - lockup_and_outflow_mass * (
             total_O_mass_at_last_time / total_gas_mass_at_last_time) + ejected_O_mass_at_this_time
         if total_O_mass_at_this_time < 0.0001:
@@ -1518,6 +1523,10 @@ def galaxy_evol(imf='igimf', STF=0.5, SFEN=1, Z_0=0.000000134, solar_mass_compon
         ejected_O_mass_till_this_time_tot_list += [ejected_O_mass_till_this_time]
         ejected_O_mass_till_this_time_SNII_list += [O_production_SNII]
         ejected_O_mass_till_this_time_SNIa_list += [ejected_O_mass_till_this_time - O_production_SNII]
+
+        ejected_N_mass_till_this_time_tot_list += [ejected_N_mass_till_this_time]
+        ejected_N_mass_till_this_time_SNII_list += [N_production_SNII]
+        ejected_N_mass_till_this_time_SNIa_list += [ejected_N_mass_till_this_time - N_production_SNII]
 
         ejected_Mg_mass_till_this_time_tot_list += [ejected_Mg_mass_till_this_time]
         ejected_Mg_mass_till_this_time_SNII_list += [Mg_production_SNII]
@@ -2403,7 +2412,7 @@ def get_WD_mass(mass_boundary, mass_grid_table_number, Mtarget_table_number, mas
 def function_get_target_mass_in_range(lower_mass_limit, upper_mass_limit, mass_grid_table_number, Mtarget_table_number,
                                       mass_calibration_factor):
     integrate_in_range = quad(integrator_for_function_get_target_mass_in_range, lower_mass_limit, upper_mass_limit,
-                              (mass_grid_table_number, Mtarget_table_number), limit=40)[
+                              (mass_grid_table_number, Mtarget_table_number), limit=60)[
         0]  ####################################
     target_mass_in_range = mass_calibration_factor * integrate_in_range
     return target_mass_in_range
@@ -2876,28 +2885,30 @@ def function_element_abundunce(solar_abu_table, element_1_name, element_2_name, 
     # The following warning might be due to too large a timestep.
     # Try applying the "high_time_resolution=True"
     # but the simulation will take longer time.
-    if metal_2_mass == 0:
-        if metal_1_mass == 0:
-            metal_1_over_2 = 0
-            print("Warning: [{}/{}] = 0 because both element mass = 0. See function_element_abundunce in galevo.py".format(element_1_name, element_2_name))
-        elif metal_1_mass > 0:
-            metal_1_over_2 = 6
-        elif metal_1_mass < 0:
-            if instant_ejection==False:
-                print("Warning: current {} mass < 0. See galevo.py".format(element_1_name))
-            metal_1_over_2 = -6
-    elif metal_2_mass < 0:
-        if instant_ejection == False:
-            print("Warning: current {} mass < 0. See galevo.py".format(element_2_name))
-        if metal_1_mass == 0:
-            metal_1_over_2 = 6
-        elif metal_1_mass > 0:
-            metal_1_over_2 = 6
-        elif metal_1_mass < 0:
-            if instant_ejection == False:
-                print("Warning: current {} mass < 0. See galevo.py".format(element_1_name))
-            metal_1_over_2 = 0
-            print("Warning: [{}/{}] = 0 because both element mass < 0. See function_element_abundunce in galevo.py".format(element_1_name, element_2_name))
+    # if metal_2_mass == 0:
+    #     if metal_1_mass == 0:
+    #         metal_1_over_2 = 0
+    #         print("Warning: [{}/{}] = 0 because both element mass = 0. See function_element_abundunce in galevo.py".format(element_1_name, element_2_name))
+    #     elif metal_1_mass > 0:
+    #         metal_1_over_2 = 6
+    #     elif metal_1_mass < 0:
+    #         if instant_ejection==False:
+    #             print("Warning: current {} mass < 0. See galevo.py".format(element_1_name))
+    #         metal_1_over_2 = -6
+    # elif metal_2_mass < 0:
+    #     if instant_ejection == False:
+    #         print("Warning: current {} mass < 0. See galevo.py".format(element_2_name))
+    #     if metal_1_mass == 0:
+    #         metal_1_over_2 = 6
+    #     elif metal_1_mass > 0:
+    #         metal_1_over_2 = 6
+    #     elif metal_1_mass < 0:
+    #         if instant_ejection == False:
+    #             print("Warning: current {} mass < 0. See galevo.py".format(element_1_name))
+    #         metal_1_over_2 = 0
+    #         print("Warning: [{}/{}] = 0 because both element mass < 0. See function_element_abundunce in galevo.py".format(element_1_name, element_2_name))
+    if metal_2_mass <= 0 or metal_1_mass <= 0:
+        metal_1_over_2 = np.nan
     else:
         if metal_1_mass == 0:
             metal_1_over_2 = -6
@@ -3205,6 +3216,7 @@ def text_output(imf, STF, Log_SFR, SFEN, SFE, original_gas_mass, log_Z_0, tau_in
 
     global Mg_over_H_list, stellar_Mg_over_H_list, stellar_Mg_over_H_list_luminosity_weighted
     global C_over_H_list, stellar_C_over_H_list, stellar_C_over_H_list_luminosity_weighted
+    global N_over_H_list, stellar_N_over_H_list, stellar_N_over_H_list_luminosity_weighted
     global O_over_H_list, stellar_O_over_H_list, stellar_O_over_H_list_luminosity_weighted
     global N_over_O_list, stellar_N_over_O_list, stellar_N_over_O_list_luminosity_weighted
     global C_over_O_list, stellar_C_over_O_list, stellar_C_over_O_list_luminosity_weighted
@@ -3364,6 +3376,13 @@ def text_output(imf, STF, Log_SFR, SFEN, SFE, original_gas_mass, log_Z_0, tau_in
     i = 0
     while i < length_of_time_axis:
         file.write("%s " % N_over_O_list[i])
+        (i) = (i + 1)
+    file.write("\n")
+
+    file.write("# Gas [N/H]:\n")
+    i = 0
+    while i < length_of_time_axis:
+        file.write("%s " % N_over_H_list[i])
         (i) = (i + 1)
     file.write("\n")
 
