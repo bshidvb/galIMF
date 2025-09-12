@@ -152,6 +152,102 @@ def plot_mass_evolution(file_paths):
     plt.savefig('./figs/galevo_output_plots/mass_evolution.png', bbox_inches='tight', dpi=300)
     plt.show()
 
-plot_NO_over_time("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0072Z_0100infall0.008/plots/N_over_O_time.txt")
+def plot_masses(file_paths):
+    data = load_data_with_names(file_paths)
+    log_time_axis = np.log(data['time step list:'])
+    Y_list = data['Y_list:']
+    X_list = data['X_list:']
+    Z_list = data['Z_list:']
+    plt.rc('font', family='serif')
+    # plt.rc('xtick', labelsize='x-small')
+    # plt.rc('ytick', labelsize='x-small')
+    # fig = plt.figure(61, figsize=(3, 2.5))
+    # fig.add_subplot(1, 1, 1)
+    plt.stackplot(log_time_axis, Y_list, X_list, Z_list, labels=["Y", "X", "Z"])
+    plt.title('gas-phase H, He, and metal mass fraction', fontsize=10)
+    plt.xlim(7, log_time_axis[-1])
+    plt.ylim(0, 1)
+    plt.xlabel(r'log$_{10}$(time [yr])')
+    plt.ylabel('stacked mass fraction')
+    plt.legend(loc='lower left', prop={'size': 7})
+    plt.tight_layout()
+    plt.show()
+    stellar_Y_list = data['stellar_Y_list:']
+    stellar_X_list = data['stellar_X_list:']
+    stellar_Z_list = data['stellar_Z_list:']
+    # if plot_save is True:
+    #     plt.savefig('XYZ_gas_phase.pdf', dpi=250)
+    #     fig = plt.figure(62, figsize=(3, 2.5))
+    #     fig.add_subplot(1, 1, 1)
+    plt.stackplot(log_time_axis, stellar_Y_list, stellar_X_list, stellar_Z_list, labels=["Y", "X", "Z"])
+    #     if plot_save is not True:
+    #         plt.title('stellar H, He, and metal mass fraction', fontsize=10)
+    plt.xlim(7, log_time_axis[-1])
+    plt.ylim(0, 1)
+    plt.xlabel(r'log$_{10}$(time [yr])')
+    plt.ylabel('stacked mass fraction')
+    plt.legend(loc='lower left', prop={'size': 7})
+    plt.tight_layout()
+    plt.show()
+    #     if plot_save is True:
+    #         plt.savefig('XYZ_star_MW.pdf', dpi=250)
+    #     fig = plt.figure(63, figsize=(3, 2.5))
+    #     fig.add_subplot(1, 1, 1)
+    stellar_Y_list_luminosity_weighted = data['stellar_Y_list_luminosity_weighted:']
+    stellar_X_list_luminosity_weighted = data['stellar_X_list_luminosity_weighted:']
+    stellar_Z_list_luminosity_weighted = data['stellar_Z_list_luminosity_weighted:']
+    plt.stackplot(log_time_axis, stellar_Y_list_luminosity_weighted, stellar_X_list_luminosity_weighted, stellar_Z_list_luminosity_weighted, labels=["Y", "X", "Z"])
+    #     if plot_save is not True:
+    #         plt.title('stellar luminosity-weighted H, He, and metal mass fraction', fontsize=10)
+    plt.xlim(7, log_time_axis[-1])
+    plt.ylim(0, 1)
+    plt.xlabel(r'log$_{10}$(time [yr])')
+    plt.ylabel('stacked mass fraction')
+    plt.legend(loc='lower left', prop={'size': 7})
+    plt.tight_layout()
+    plt.show()
+    #     if plot_save is True:
+    #         plt.savefig('XYZ_star_LW.pdf', dpi=250)
+
+def nitrogen_oxygen_mass_fraction_evolution(file_paths):
+    data = load_data_with_names(file_paths)
+    time_axis = data['time step list:']
+    gas_NO = data['Gas [N/O]:']
+    stellar_NO = data['Stellar mass-weighted [N/O]:']
+    stellar_NO_luminosity_weighted = data['Stellar luminosity-weighted [N/O]:']
+    plt.rc('font', family='serif')
+    plt.rc('xtick', labelsize='x-small')
+    plt.rc('ytick', labelsize='x-small')
+    plt.plot(time_axis, gas_NO, label='gas')
+    plt.plot(time_axis, stellar_NO, label='stellar MW')
+    plt.plot(time_axis, stellar_NO_luminosity_weighted, label='stellar LW')
+    plt.xlabel(r'log$_{10}$(time [yr])')
+    plt.ylabel('N/O')
+    plt.title('Nitrogen mass fraction evolution', fontsize=10)
+    plt.legend(prop={'size': 7})
+    plt.tight_layout()
+    plt.show()
+
+def nitrogen_hydrogen_mass_fraction_evolution(file_paths):
+    data = load_data_with_names(file_paths)
+    time_axis = data['time step list:']
+    gas_NH = data['Gas [N/H]:']
+    stellar_NH = data['Stellar mass-weighted [N/H]:']
+    stellar_NH_luminosity_weighted = data['Stellar luminosity-weighted [N/H]:']
+    plt.rc('font', family='serif')
+    plt.rc('xtick', labelsize='x-small')
+    plt.rc('ytick', labelsize='x-small')
+    plt.plot(time_axis, gas_NH, label='gas')
+    plt.plot(time_axis, stellar_NH, label='stellar MW')
+    plt.plot(time_axis, stellar_NH_luminosity_weighted, label='stellar LW')
+    plt.xlabel('time [yr]')
+    plt.ylabel('log(N/H)')
+    plt.title('Nitrogen mass fraction evolution', fontsize=10)
+    plt.legend(prop={'size': 7})
+    plt.tight_layout()
+    plt.show()
+
+#plot_NO_over_time("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0072Z_0100infall0.008/plots/N_over_O_time.txt")
 #plot_mass_evolution("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0072Z_015infall0.008/plots/mass_evolution.txt")
 #plot_sfh("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0072Z_015infall0.008/plots/SFH.txt")
+plot_NO_over_time("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0072Z_0100infall0.008/plots/N_over_O_time.txt")
