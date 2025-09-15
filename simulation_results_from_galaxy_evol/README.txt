@@ -38,4 +38,4 @@ Notes on structure of files:
       - SFH_model='gas_mass_dependent', SFE=0.04
       - trying different alpha
 
-11.6/ - 
+20250915/alpha=x.x/ - finding solution for top heavy imf, alpha3=x.x
