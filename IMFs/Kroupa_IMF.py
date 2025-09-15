@@ -1,6 +1,6 @@
 from scipy.integrate import quad
 
-alpha3 = 1.5
+alpha3 = 2.7
 
 def custom_imf_unnormalized(mass):  # there is no time dependence for Kroupa IMF
     if mass < 0.08:
