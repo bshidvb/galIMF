@@ -39,3 +39,5 @@ Notes on structure of files:
       - trying different alpha
 
 20250915/alpha=x.x/ - finding solution for top heavy imf, alpha3=x.x
+
+20250916/ - looking for solutions for canonical IMF and 3.0
