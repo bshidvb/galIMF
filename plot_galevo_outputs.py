@@ -124,15 +124,19 @@ def plot_OH_over_time(file_paths):
     plt.show()
 
 def plot_sfh(file_paths,labels):
+    plt.figure(figsize=(8, 6))
+    plt.rc('font', family='serif')
     colours = colors = plt.get_cmap('tab10').colors
     for i, path in enumerate(file_paths):
         data = load_data_with_names(path)
         age_list, sfr = data['age_list'], data['SFR_list']
         label = labels[i] if labels and i < len(labels) else f"Run {i+1}"
         plt.plot(age_list, sfr, lw=0.8, color=colours[i % len(colours)], label=label)
-    plt.xlabel('Time (Gyr)')
-    plt.ylabel('log(SFR)')
-    plt.title('Star Formation History')
+    plt.xlabel('Time (Gyr)', fontsize=14)
+    plt.ylabel('log(SFR)', fontsize=14)
+    plt.ylim(-5,1.8)
+    plt.xlim(-0.1, 1.1)
+    plt.title('Star Formation History', fontsize=16)
     plt.legend()
     plt.savefig('./figs/galevo_output_plots/sfh.png', bbox_inches='tight', dpi=300)
     plt.show()
@@ -262,6 +266,8 @@ def nitrogen_hydrogen_mass_fraction_evolution(file_paths):
 # plot_NO_over_time("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0072Z_0100infall0.008/plots/N_over_O_time.txt", labels=['alpha=2.1'])
 
 def plot_O_SFR_gas_N_evolution(OH_path, gas_path, sfr_path, NO_path):
+    plt.figure(figsize=(8, 6))
+    plt.rc('font', family='serif')
     data = load_data_with_names(OH_path)
     log_time_axis = data['log_time_axis']
     gas_O_over_H_list = data['gas_O_over_H_list']
@@ -279,29 +285,18 @@ def plot_O_SFR_gas_N_evolution(OH_path, gas_path, sfr_path, NO_path):
     t_safe = np.where(t > 0, t, 1e-12)
     logt = np.log10(t_safe*1e9)
     log_sfr = np.array(data3['SFR_list'], dtype=float)
-    plt.plot(logt[3:], log_sfr[3:], label='log(SFR)')
+    plt.plot(logt[3:], log_sfr[3:], label='SFH')
     data4 = load_data_with_names(NO_path)
     gas_N_over_O_list = data4['gas_N_over_O_list']
     gas_N_over_O_list = recalculate_NO(gas_N_over_O_list)
     plt.plot(log_time_axis, gas_N_over_O_list, label='log(N/O)')
-    plt.xlabel('log(time [yr])')
-    plt.title('Gas mass, SFR, O/H and N/O evolution', fontsize=10)
+    plt.xlabel('log(time [yr])', fontsize=14)
+    plt.title('Gas mass, SFR, O/H and N/O evolution for alpha3=2.1', fontsize=12)
     plt.legend(prop={'size': 7})
     plt.tight_layout()
-    plt.savefig('./figs/galevo_output_plots/O_SFR_gas_N_evolution.png', bbox_inches='tight', dpi=300)
+    plt.savefig('./figs/galevo_output_plots/O_SFR_gas_N_evolution_a2.1.png', bbox_inches='tight', dpi=300)
     plt.show()
     
-#plot_sfh("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/20250915/alpha=2.7/1Gyr/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_0100infall0.0008/plots/SFH.txt")
-OH_path = glob.glob("./simulation_results_from_galaxy_evol/20250915/alpha=2.7/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_015infall0.0008/plots/O_over_H_time.txt")
-gas_path = glob.glob("./simulation_results_from_galaxy_evol/20250915/alpha=2.7/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_015infall0.0008/plots/mass_evolution.txt")
-sfr_path = glob.glob("./simulation_results_from_galaxy_evol/20250915/alpha=2.7/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_015infall0.0008/plots/SFH.txt")
-NO_path = glob.glob("./simulation_results_from_galaxy_evol/20250915/alpha=2.7/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0102Z_015infall0.0008/plots/N_over_O_time.txt")
-# plot_O_SFR_gas_N_evolution(OH_path, gas_path, sfr_path, NO_path)
-# plot_sfh(sfr_path)
-NO_path += glob.glob("./simulation_results_from_galaxy_evol/20250915/alpha=1.5/imfKroupaSTF-4.15alpha1.5log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0062Z_015infall0.011/plots/N_over_O_time.txt")
-NO_path += glob.glob("./simulation_results_from_galaxy_evol/solution/correct agb/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0062Z_015infall0.008/plots/N_over_O_time.txt")
-NO_path.sort()
-print(NO_path)
 #plot_NO_over_time(NO_path, labels=['alpha=1.5', 'alpha=2.7', 'alpha=2.1'])
 # plot_O_SFR_gas_N_evolution("./simulation_results_from_galaxy_evol/20250915/alpha=2.7/1Gyr/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_0100infall0.0008/plots/O_over_H_time.txt",
                         #    "./simulation_results_from_galaxy_evol/20250915/alpha=2.7/1Gyr/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_0100infall0.0008/plots/mass_evolution.txt",
@@ -309,7 +304,12 @@ print(NO_path)
                         #    "./simulation_results_from_galaxy_evol/20250915/alpha=2.7/1Gyr/imfKroupaSTF-4.15alpha2.7log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0071Z_0100infall0.0008/plots/N_over_O_time.txt")
 
 sfh_path = glob.glob("./simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.3SFE0.0062Z_0100infall0.008/plots/SFH.txt")
-sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/Kroupa_IMF.py'>SFEN0.6SFE0.0021Z_0100infall8e-05/plots/SFH.txt")
+#sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/Kroupa_IMF.py'>SFEN0.6SFE0.0021Z_0100infall8e-05/plots/SFH.txt")
 sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha2.3log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.2SFE0.0061Z_0100infall0.0008/plots/SFH.txt")
 sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0085Z_0100infall0.0008/plots/SFH.txt")
-plot_sfh(sfh_path, labels=['alpha=2.1', 'alpha=1.5', 'alpha=2.3', 'alpha=3.0'])
+sfh_path.sort()
+print(sfh_path)
+plot_sfh(sfh_path, labels=['alpha=2.1', 'alpha=2.3', 'alpha=3.0'])
+
+sfh_path1 = glob.glob("./simulation_results_from_galaxy_evol/20250930/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.3SFE0.0062Z_0100infall0.008/plots/SFH.txt")
+#plot_sfh(sfh_path1, labels=['alpha=2.1'])
