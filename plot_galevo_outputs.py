@@ -100,33 +100,26 @@ def plot_noeg_gal_sfr():
         (3e6, 2, 'Mrk 996 (low density)', cmap(1), 0.5e6, 0.0, 0.00544), #sfr from Ha luminosity, James+09
         (3.5e6, 3.3, 'LyC', cmap(2), 0.9e6, 0.11, 2.37), #Vanzella+21
         (100e6, 10, 'EXCELS-121806 - uncertain age', cmap(10), 0.0, 1, 5.225), #Arellano-Cordova+25
-        (250e6, 16, 'GS_3073 (low density)', cmap(12), 50e6, 14, 5.55), #sfr from [CII]λ158 because Ha strong agn contrubution, Übler+23, age of AGB stars from Ji+24b
+        #(250e6, 16, 'GS_3073 (low density)', cmap(12), 50e6, 14, 5.55), #sfr from [CII]λ158 because Ha strong agn contrubution, Übler+23, age of AGB stars from Ji+24b
         (26e6, 40, 'GS_9422 (tentative)', cmap(13), 0.0, 0.0, 5.943), #(t=t50*2), Tacchella+24 -> Simmonds+24 from SED
-        #(26e6, 5.4, 'GS_9422 (tentative)', cmap(16), 0.0, 0.1, 5.943) #(t=t50*2), Tacchella+24 -> Scholtz+23
+        (26e6, 5.4, 'GS_9422 (tentative)', cmap(16), 0.0, 0.1, 5.943), #(t=t50*2), Tacchella+24 -> Scholtz+23
         (13e6, 2.5, 'RXJ2248-ID', cmap(15), 12e6, 2.0, 6.1057), #Topping+24
         (10e6, 11.3, 'GN-z8-LAE', cmap(18), 0.0, 7.8, 8.279), #sfr from Ha, Navarro-Carrera+24
         (68e6, 30, 'CEERS_1019', cmap(18), 29e6, 1.5, 8.679), #mass-weighted age (t=t50*2), Larson+23
-        (10e6, 12, 'GN-z11', cmap(6), 0, 10, 10.6), #Tacchella+23
-        (30e6, 21, 'GN-z11', cmap(6), 0, 26, 10.6), #Tacchella+23
+        (10e6, 12, 'GN-z11', cmap(3), 0, 10, 10.6), #Tacchella+23
+        (30e6, 21, 'GN-z11', cmap(3), 0, 26, 10.6), #Tacchella+23
         (12e6, 4.34, 'GS-z9-0 light-weighted', cmap(11), 2e6, 0.1, 9.4327), #Curti+25
         (32e6, 5.5, 'GS-z9-0 mass-weighted', cmap(11), 20e6, 0.2, 9.4327), #Curti+25
-        #(28e6, 5.2, 'GHZ2/GLASS-z12', cmap(4), 10e6, 1.1, 12.34) #mass-weighted age, Castellano+24
+        (28e6, 5.2, 'GHZ2/GLASS-z12', cmap(4), 10e6, 1.1, 12.34), #mass-weighted age, Castellano+24
         (75e6, 19, 'JADES-GS-z14-0', cmap(6), 25e6, 0.0, 14.32), #SED fitting, Carniani+25
     ]
         
     handles = []
     for age, sfr, label, color, age_err, sfr_err, z in points:
-        x = np.log10(age)
+        age = age/1e9
+        age_err = age_err/1e9
         y = np.log10(sfr)
         # compute asymmetric log errors from linear age errors (guard against age_err==0)
-        if age_err and age_err > 0 and age > age_err:
-            low = max(age - age_err, 1e-8)
-            xerr_minus = x - np.log10(low)
-            xerr_plus = np.log10(age + age_err) - x
-            # matplotlib expects shape (2,) for asymmetric single-point xerr or (2, N) for many points
-            xerr_plot = np.array([[xerr_minus], [xerr_plus]])
-        else:
-            xerr_plot = None
         if sfr_err and sfr_err > 0 and sfr > sfr_err:
             low = max(sfr - sfr_err, 1e-8)
             yerr_minus = y - np.log10(low)
@@ -136,8 +129,9 @@ def plot_noeg_gal_sfr():
         else:
             yerr_plot = None
 
-        sc = plt.scatter(x, y, color=color, label=label, s=20, marker='1', zorder=3)
-        plt.errorbar(x, y, xerr=xerr_plot, yerr=(None if sfr_err == 0 else sfr_err),
+        print(age,y)
+        sc = plt.scatter(age, y, color=color, label=label, s=20, marker='1', zorder=3)
+        plt.errorbar(age, y, xerr=age_err, yerr=yerr_plot,
                      fmt='none', elinewidth=0.8, ecolor=color, zorder=2)
         handles.append(sc)
 
@@ -176,7 +170,7 @@ def plot_OH_over_time(file_paths):
     #plt.savefig('./figs/galevo/O_over_H_over_time.png', bbox_inches='tight', dpi=300)
     plt.show()
 
-def plot_sfh(file_paths,labels):
+def plot_sfh(file_paths,labels, min, max):
     plt.figure(figsize=(8, 6))
     plt.rc('font', family='serif')
     colours = colors = plt.get_cmap('tab10').colors
@@ -184,12 +178,11 @@ def plot_sfh(file_paths,labels):
         data = load_data_with_names(path)
         age_list, sfr = data['age_list'], data['SFR_list']
         label = labels[i] if labels and i < len(labels) else f"Run {i+1}"
-        plt.plot(age_list, sfr, lw=0.8, color=colours[i % len(colours)], label=label)
+        plt.plot(age_list[min:max], sfr[min:max], lw=0.8, color=colours[i % len(colours)], label=label)
     plot_noeg_gal_sfr()
     plt.xlabel('Time (Gyr)', fontsize=14)
     plt.ylabel('log(SFR)', fontsize=14)
     plt.ylim(-5,1.8)
-    plt.xlim(-0.1, 1.1)
     plt.title('Star Formation History', fontsize=16)
     plt.legend()
     plt.savefig('./figs/galevo_output_plots/sfh.png', bbox_inches='tight', dpi=300)
@@ -363,7 +356,6 @@ sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/imfKr
 sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0085Z_0100infall0.0008/plots/SFH.txt")
 sfh_path.sort()
 print(sfh_path)
-plot_sfh(sfh_path, labels=['alpha=2.1', 'alpha=2.3', 'alpha=3.0'])
+plot_sfh(sfh_path, labels=['alpha=2.1', 'alpha=2.3', 'alpha=3.0'], min=2, max=20)
 
 sfh_path1 = glob.glob("./simulation_results_from_galaxy_evol/20250930/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.3SFE0.0062Z_0100infall0.008/plots/SFH.txt")
-plot_sfh(sfh_path1, labels=['alpha=2.1'])
