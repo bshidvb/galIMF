@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Integrated Galaxy-Wide IMF Weighting Tutorial</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 2rem; max-width: 900px; }
+    h1, h2, h3 { color: #1f3b4d; }
+    code { background: #f3f3f3; padding: 0.15rem 0.3rem; border-radius: 3px; }
+    pre { background: #f3f3f3; padding: 0.75rem; border-radius: 4px; overflow-x: auto; }
+    table { border-collapse: collapse; margin: 1.5rem 0; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background: #e4ecef; }
+    nav a { margin-right: 1rem; }
+    .note { border-left: 4px solid #5f8ca3; padding-left: 0.75rem; background: #f7fbfd; }
+  </style>
+</head>
+<body>
+  <h1>Integrated IMF Weighting: How GalIMF Builds a Galaxy-Wide Initial Mass Function</h1>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#equations">Key Equations</a>
+    <a href="#parameters">Inputs &amp; Parameters</a>
+    <a href="#code-tour">Code Tour</a>
+    <a href="#workflow">Reproducible Workflow</a>
+    <a href="#advanced">Advanced Notes</a>
+  </nav>
+
+  <section id="overview">
+    <h2>Overview</h2>
+    <p>
+      This short tutorial explains the logic behind the <code>galimf.py</code> module and its helper scripts.
+      The goal is to show how the project constructs an Integrated (or galaxy-wide) Initial Mass Function (IGIMF)
+      by weighting every embedded star cluster's IMF with the embedded cluster mass function (ECMF), following
+      Yan et&nbsp;al. (2017) and related work. The design is intentionally simple so you can read, tweak, and run
+      the code on your own machine without deep diving into the original publications every time.
+    </p>
+    <p>
+      The pipeline has two major modes:
+    </p>
+    <ul>
+      <li><strong>IGIMF mode</strong>: Analytically integrates the ECMF-weighted stellar IMF. This is what powers <code>igimf_calculator.py</code>.</li>
+      <li><strong>OSGIMF mode</strong>: Uses optimal sampling to draw discrete clusters and their stellar members before binning them.</li>
+    </ul>
+    <p>
+      Both modes depend on a consistent set of equations: the ECMF describes how many clusters of a given mass exist in a star-forming episode,
+      each cluster hosts a piecewise power-law stellar IMF, and galaxy-wide quantities arise by integrating over all clusters formed within
+      a time window <code>delta_t</code>.
+    </p>
+  </section>
+
+  <section id="equations">
+    <h2>Key Equations</h2>
+    <p>
+      Everything in <code>galimf.py</code> traces back to a handful of core relations. The code keeps the algebra in helper functions, but the
+      relevant expressions are worth having in front of you while you explore or modify the implementation.
+    </p>
+    <h3>Galaxy-wide IMF</h3>
+    <pre>
+xi_IGIMF(m) = \int_{M_{ecl, min}}^{M_{ecl, max}} xi(m | M_ecl) * xi_ecl(M_ecl) dM_ecl
+    </pre>
+    <p>
+      <code>xi(m | M_ecl)</code> is the stellar IMF inside a single cluster of initial mass <code>M_ecl</code>.
+      <code>xi_ecl(M_ecl)</code> is the ECMF. The code evaluates this integral numerically on a logarithmic mass grid.
+    </p>
+    <h3>Piecewise Stellar IMF in a Cluster</h3>
+    <pre>
+xi(m | M_ecl) = k_i * m^{-alpha_i}  with  i =
+  1   for  M_L <= m < M_turn
+  2   for  M_turn <= m < M_turn2
+  3   for  M_turn2 <= m <= M_max(M_ecl)
+    </pre>
+    <p>
+      The slopes <code>alpha_1</code>, <code>alpha_2</code>, and <code>alpha_3</code> can vary with metallicity and cluster mass via
+      <code>function_alpha_[1,2,3]_change</code>. The continuity constants <code>k1</code>, <code>k2</code>, and <code>k3</code> are determined by
+      enforcing continuity and by normalising the IMF to the cluster mass <code>M_ecl</code>.
+    </p>
+    <h3>Cluster Mass Constraint</h3>
+    <pre>
+M_ecl = \int_{M_L}^{M_max} m * xi(m | M_ecl) dm
+    </pre>
+    <p>
+      The helper <code>function_M_max</code> solves this equation for <code>M_max</code>, the most massive star the cluster can form under
+      the specified slopes and sampling rule. Internally it falls back through the three power-law segments until it finds the correct domain.
+    </p>
+    <h3>Embedded Cluster Mass Function (ECMF)</h3>
+    <pre>
+xi_ecl(M_ecl) = k_ecl * M_ecl^{-beta}
+    </pre>
+    <p>
+      Here <code>beta</code> can depend on the star-formation rate (<code>SFR</code>) via <code>function_beta_change</code>. The normalisation
+      constant <code>k_ecl</code> ensures consistency with the total mass converted into clusters during the formation episode:
+    </p>
+    <pre>
+M_tot = SFR * delta_t * 10^6  (delta_t in Myr)
+M_tot = \int_{M_{ecl, min}}^{M_{ecl, max}(SFR)} M_ecl * xi_ecl(M_ecl) dM_ecl
+    </pre>
+    <p>
+      The upper limit <code>M_{ecl, max}</code> comes from either the empirical relation in Yan et&nbsp;al. (2017) or by inverting the integral internally.
+    </p>
+  </section>
+
+  <section id="parameters">
+    <h2>Inputs &amp; Parameters at a Glance</h2>
+    <table>
+      <thead>
+        <tr><th>Symbol / Argument</th><th>Meaning</th><th>Important Helpers</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>SFR</code></td><td>Star-formation rate in M_sun yr^-1</td><td><code>function_beta_change</code>, <code>k_ecl</code></td></tr>
+        <tr><td><code>delta_t</code></td><td>Duration of the star-formation epoch (Myr)</td><td>Defines <code>M_tot</code></td></tr>
+        <tr><td><code>M_over_H</code></td><td>Gas metallicity [M/H]</td><td><code>function_alpha_*</code></td></tr>
+        <tr><td><code>M_ecl_L</code>, <code>M_ecl_U</code></td><td>Cluster mass bounds (Msun)</td><td><code>k_ecl</code>, <code>function_sample_from_ecmf</code></td></tr>
+        <tr><td><code>M_str_L</code>, <code>M_str_U</code></td><td>Stellar mass bounds (Msun)</td><td><code>function_M_max</code>, <code>function_m_i_str</code></td></tr>
+        <tr><td><code>I_ecl</code>, <code>I_str</code></td><td>Normalisation factors for optimal sampling</td><td><code>k_ecl</code>, <code>k_str</code></td></tr>
+        <tr><td><code>alpha_1</code>, <code>alpha_2</code>, <code>alpha3_model</code></td><td>IMF slopes or slope models</td><td><code>function_alpha_[1,2,3]_change</code></td></tr>
+        <tr><td><code>beta_model</code></td><td>ECMF slope model</td><td><code>function_beta_change</code></td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <p>
+        The example driver script <code>igimf_calculator.py</code> reads most of these values from <code>input_parameters.txt</code> unless you override them
+        on the command line. When you run the code for the first time, start there.
+      </p>
+    </div>
+  </section>
+
+  <section id="code-tour">
+    <h2>Code Tour</h2>
+    <p>
+      What follows is an annotated walkthrough of the core routines. Read it top-down with <code>galimf.py</code> open beside you.
+    </p>
+
+    <h3><code>function_galimf</code></h3>
+    <ul>
+      <li>Entry point that decides between analytic integration (<code>I</code>) and optimal sampling (<code>OS</code>).</li>
+      <li>For IGIMF mode it assembles the galaxy-wide IMF vectors <code>List_M_str_for_xi_str</code> and <code>List_xi</code>, and optionally writes them to <code>Galaxy_wide_IMF.txt</code>.</li>
+      <li>For OSGIMF mode it orchestrates sampling, histogramming, and optional file output.</li>
+    </ul>
+
+    <h3><code>function_draw_igimf</code></h3>
+    <ul>
+      <li>Initialises the ECMF via <code>function_ecmf</code> and prepares stellar IMF grids.</li>
+      <li>Adjusts the IMF slopes using <code>function_alpha_[1,2,3]_change</code> based on metallicity and cluster mass.</li>
+      <li>Calls <code>function_IMF</code> to accumulate the weighted sum over every cluster bin.</li>
+      <li>Converts number densities from <code>dN/dm</code> to logarithmic bins with <code>function_xi_to_xiL</code> for plotting convenience.</li>
+    </ul>
+
+    <h3><code>function_ecmf</code></h3>
+    <ul>
+      <li>Computes the cluster mass grid (<code>List_M_ecl_for_xi_ecl</code>) and weights (<code>List_xi_ecl</code>).</li>
+      <li>Handles the <code>beta</code> slope choice. <code>beta_model = 1</code> follows the Yan et&nbsp;al. relation with SFR; <code>beta_model = 0</code> freezes it.</li>
+      <li>Internally calls <code>function_draw_xi_ecl</code> which normalises the ECMF via <code>k_ecl</code>.</li>
+    </ul>
+
+    <h3><code>function_IMF</code></h3>
+    <ul>
+      <li>Iterates over each cluster mass bin.</li>
+      <li>Updates <code>alpha_3</code> (the high-mass slope) for the current cluster using <code>function_alpha_3_change</code>.</li>
+      <li>Builds the stellar IMF grid with <code>function_draw_xi_str</code> and accumulates the weighted sum through <code>function_update_list_xi</code>.</li>
+    </ul>
+
+    <h3><code>function_update_list_xi</code></h3>
+    <ul>
+      <li>Adds the contribution from one cluster bin to the galaxy-wide IMF arrays.</li>
+      <li>Implements the Riemann sum version of the IGIMF integral: multiplies the stellar IMF by the ECMF weight and the mass-bin width.</li>
+    </ul>
+
+    <h3><code>function_draw_xi_str</code>, <code>function_m_i_str</code>, and Friends</h3>
+    <ul>
+      <li><code>function_M_max</code> solves for the maximum stellar mass available to the cluster by finding where the cumulative mass equals <code>M_ecl</code>.</li>
+      <li><code>function_k321</code> derives the normalisation constants <code>k1</code>, <code>k2</code>, and <code>k3</code> so that the IMF is continuous and normalised.</li>
+      <li><code>function_m_i_str</code> discretises the stellar mass axis with logarithmic spacing controlled by <code>resolution_star_relative</code> and <code>mass_grid_index</code>.</li>
+      <li>The helper <code>cross_M_turn</code> and related functions ensure smooth transitions at the power-law breaks.</li>
+    </ul>
+
+    <h3><code>function_sample_from_ecmf</code> and OSGIMF Chain</h3>
+    <ul>
+      <li>Only used in optimal sampling mode. Draws discrete cluster masses that satisfy the integrated constraints.</li>
+      <li><code>function_sample_star_from_clusters</code> then assigns stellar masses to each sampled cluster.</li>
+      <li>Subsequent functions (<code>function_draw</code>, <code>function_draw_histogram</code>, etc.) organise the sampled stars into histograms for visualisation.</li>
+    </ul>
+
+    <h3>Driver Script: <code>igimf_calculator.py</code></h3>
+    <ul>
+      <li>Reads <code>SFR</code>, <code>M/H</code>, IMF model labels, and mass bounds from <code>input_parameters.txt</code> or command-line overrides.</li>
+      <li>Prepares slope models (e.g. <code>IGIMF_Z</code>, <code>IGIMF2</code>) and sets <code>resolution_histogram_relative</code> for numerical stability.</li>
+      <li>Calls <code>function_galimf("I", ...)</code> and stores the global arrays for additional analysis or plotting.</li>
+    </ul>
+  </section>
+
+  <section id="workflow">
+    <h2>Reproducible Workflow</h2>
+    <ol>
+      <li>Inspect or edit <code>input_parameters.txt</code>. Set <code>SFR</code>, <code>M_over_H</code>, the IGIMF flavour (<code>IGIMF_Z</code>, <code>IGIMF3</code>, etc.), and stellar mass bounds.</li>
+      <li>Run <code>python igimf_calculator.py</code> from the project root. The script prints the adopted parameters and writes <code>Galaxy_wide_IMF.txt</code>.</li>
+      <li>Optional: request optimal sampling by setting <code>OSrequest</code> to <code>1</code> and calling <code>function_galimf("OS", ...)</code> in your own script.</li>
+      <li>Use the generated NumPy arrays (<code>galimf.List_M_str_for_xi_str</code>, <code>galimf.List_xi</code>) for plotting or further integration.</li>
+      <li>Adjust metallicity or SFR to explore how <code>function_alpha_*</code> and <code>function_beta_change</code> reshape the IGIMF.</li>
+    </ol>
+    <p>
+      The repository also contains example notebooks and scripts (<code>example_galaxy_wide_IMF.py</code>, <code>example_star_cluster_IMF.py</code>) that demonstrate how to visualise
+      the outputs. They ultimately rely on the same core functions described above.
+    </p>
+  </section>
+
+  <section id="advanced">
+    <h2>Advanced Notes &amp; Practical Tips</h2>
+    <ul>
+      <li><strong>Resolution controls</strong>: The logarithmic mass spacing is governed by <code>mass_grid_index</code> (default 1.01). Reducing it increases accuracy but slows the integration.</li>
+      <li><strong>Metallicity limits</strong>: The metallicity-dependent slopes assume moderate values of <code>M/H</code>. The code emits warnings for extreme cases because the analytic fits become unreliable.</li>
+      <li><strong>Upper cluster mass</strong>: In IGIMF mode, <code>M_{ecl, max}</code> is computed from the SFR relation in Yan et&nbsp;al. unless you supply <code>R14orNOT = True</code>, which switches to the empirical R14 fit.</li>
+      <li><strong>Outputs</strong>: Analytic mode produces <code>Galaxy_wide_IMF.txt</code>. Optimal sampling mode can also create <code>Galaxy_stellar_mass_histogram.txt</code>.</li>
+      <li><strong>Adding new IMF models</strong>: Extend <code>function_alpha_[1,2,3]_change</code> or supply numeric slopes. You can follow the existing pattern to map model labels to slope laws.</li>
+      <li><strong>Speed-ups</strong>: When exploring parameter grids, cache the ECMF (which only depends on SFR, metallicity, and beta) to avoid recomputing <code>function_draw_xi_ecl</code> repeatedly.</li>
+    </ul>
+    <p>
+      With these pieces in hand you can confidently modify the weighting scheme, swap in different slope relations, or embed the IGIMF builder inside larger galaxy-evolution pipelines
+      such as <code>galevo.py</code>.
+    </p>
+  </section>
+
+  <footer>
+    <p>Last updated by the tutorial generator. Refer back to Yan et&nbsp;al. (2017) and Jerabkova et&nbsp;al. (2018) for the full astrophysical context.</p>
+  </footer>
+</body>
+</html>
