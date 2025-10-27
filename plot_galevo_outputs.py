@@ -56,17 +56,17 @@ def plot_high_redshift_gal_data():
 #     ]
     points = [
         # now (age_yr, logNO, 'name', colour, age_err_yr, logNO_err)
-        (3e6, -1.43, 'Mrk 996 (low density)', cmap(1), 0.5e6, 0.14),
-        (3.5e6, -0.21, 'LyC', cmap(2), 0.9e6, 0.11),
-        (500e6, 0.20, 'UNCOvER-45924', cmap(5), 0.0, 0.06),
+        (3e6, -1.43, 'Mrk 996 (low density)', cmap(1), 0.5e6, 0.14), #check
+        (3.5e6, -0.21, 'LyC', cmap(2), 0.9e6, 0.11), #check
+        (500e6, 0.20, 'UNCOvER-45924', cmap(5), 0.0, 0.06), #from SED fitting, Labbe+24
         (100e6, -0.86, 'EXCELS-121806 - uncertain age', cmap(10), 0.0, 0.10),
-        (2.7e6, -1.10, 'GS_3073 (low density)', cmap(12), 0.1e6, 0.12),
-        (50e6, -0.85, 'GS_9422 (tentative)', cmap(13), 0.0, 0.0),
-        (1.8e6, -0.39, 'RXJ2248-ID', cmap(15), 0.0, 0.10),
-        (1.6e6, -0.6, 'A1703-zdk6', cmap(17), 0.45e6, 0.3),
+        (26e6, -1.10, 'GS_3073 (low density)', cmap(12), 0.0, 0.12),
+        (26e6, -0.85, 'GS_9422 (tentative)', cmap(13), 0.0, 0.0),
+        (13e6, -0.39, 'RXJ2248-ID', cmap(15), 12e6, 0.10),
+        (1.6e6, -0.6, 'A1703-zdk6', cmap(17), 0.45e6, 0.3), #check
         (10e6, -0.44, 'GN-z8-LAE', cmap(18), 0.0, 0.36),
         (70e6, -0.25, 'GN-z11', cmap(6), 40e6, 0.05),
-        (12e6, -0.93, 'GS-z9-0', cmap(11), 1.5e6, 0.37),
+        (12e6, -0.93, 'GS-z9-0', cmap(11), 2e6, 0.37),
         (28e6, -0.25, 'GHZ2r', cmap(4), 12e6, 0.05)
     ]
 
