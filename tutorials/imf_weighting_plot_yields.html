@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IMF Weighting in plot_yields_LC18-N:O.ipynb</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem; line-height: 1.6; }
+    h1, h2, h3 { color: #233748; }
+    code { background: #f5f5f5; padding: 0.1rem 0.35rem; border-radius: 3px; }
+    pre { background: #f5f5f5; padding: 0.75rem; border-radius: 4px; overflow-x: auto; }
+    nav a { margin-right: 1rem; }
+    ul { margin-bottom: 1.2rem; }
+    table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
+    th, td { border: 1px solid #c3ccd2; padding: 0.45rem; text-align: left; }
+    th { background: #e6edf0; }
+    .note { border-left: 4px solid #6f95a6; padding-left: 0.75rem; background: #f2f8fa; margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+  <h1>How IMF Weighting Works in the N/O Yield Notebook</h1>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#equations">Equations</a>
+    <a href="#functions">Function Tour</a>
+    <a href="#workflow">How to Reproduce</a>
+    <a href="#validation">Validation Steps</a>
+    <a href="#customising">Customising the Analysis</a>
+  </nav>
+
+  <section id="overview">
+    <h2>Overview</h2>
+    <p>
+      The notebook <code>plot_yields_LC18-N:O.ipynb</code> adds IMF weighting to the Limongi &amp; Chieffi (2018) stellar yield grids
+      to turn tabulated ejecta from individual stars into galaxy-averaged production factors. The last few cells define a
+      small utility module that:</p>
+    <ul>
+      <li>configures a Kroupa IMF with an adjustable high-mass slope (<code>alpha3</code>),</li>
+      <li>integrates the IMF-weighted nitrogen and oxygen yields from the yield tables,</li>
+      <li>plots the cumulative IMF-weighted log(N/O) curve versus progenitor mass,</li>
+      <li>summarises the integrated production factors for each metallicity grid, and</li>
+      <li>verifies that the cumulative curves and integrated results are self-consistent.</li>
+    </ul>
+    <p>
+      Everything happens in memory with NumPy arrays, so once you understand the helper functions you can call them from your own scripts or adapt them to different yield sets.
+    </p>
+  </section>
+
+  <section id="equations">
+    <h2>Key Equations</h2>
+    <p>
+      IMF weighting replaces a simple table lookup with an integral over stellar mass. For an element <code>X</code> the production per unit stellar mass formed is
+    </p>
+    <pre>
+p_X = \frac{\int_{m_{\min}}^{m_{\max}} Y_X(m) \, \xi(m) \, \mathrm{d}m}{\int_{m_{\min}}^{m_{\max}} m \, \xi(m) \, \mathrm{d}m}
+    </pre>
+    <p>
+      where <code>Y_X(m)</code> is the tabulated ejecta mass and <code>\xi(m)</code> is the stellar IMF. The numerator and denominator are
+      computed with trapezoidal quadrature over the tabulated mass grid.</p>
+    <p>
+      To track how the ratio evolves with an upper mass cut, the notebook also forms the cumulative N/O ratio:
+    </p>
+    <pre>
+\log_{10}\left[\frac{\int_{m_{\min}}^{m} Y_{N}(m') \, \xi(m') \, \mathrm{d}m'}{\int_{m_{\min}}^{m} Y_{O}(m') \, \xi(m') \, \mathrm{d}m'}\right]
+    </pre>
+    <p>
+      This is what the figure shows when <code>weighting_mode='cumulative'</code>. Switching to <code>weighting_mode='pointwise'</code>
+      bypasses the integrals and simply plots <code>\log_{10}[Y_N(m) / Y_O(m)]</code> at each tabulated mass, which is useful for sanity checks.
+    </p>
+  </section>
+
+  <section id="functions">
+    <h2>Function Tour</h2>
+    <table>
+      <thead>
+        <tr><th>Function</th><th>Defined in</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>get_kroupa_imf(alpha3=None)</code></td>
+          <td><code>plot_yields_LC18-N:O.ipynb</code>, cell 8</td>
+          <td>Imports <code>IMFs/Kroupa_IMF.py</code>, optionally sets the high-mass slope <code>alpha3</code>, recomputes the normalisation<br>\((\int m \xi(m) dm = 1\)) via <code>scipy.integrate.quad</code>, and returns the callable <code>custom_imf</code>.</td>
+        </tr>
+        <tr>
+          <td><code>imf_weighted_yield_from_table(mass, yield_m, ...)</code></td>
+          <td>cell 8</td>
+          <td>Cleans the mass and yield arrays, applies an IMF weight <code>\xi(m)</code>, and evaluates the production factor <code>p_X</code> using trapezoidal integration.</td>
+        </tr>
+        <tr>
+          <td><code>_cumulative_trapezoid(y, x)</code></td>
+          <td>cell 8</td>
+          <td>Lightweight replacement for <code>scipy.integrate.cumulative_trapezoid</code> that returns an array equal in length to the inputs; used for the cumulative curves.</td>
+        </tr>
+        <tr>
+          <td><code>imf_weighted_ratio_vs_mass(..., weighting_mode)</code></td>
+          <td>cell 8</td>
+          <td>Builds either the cumulative or pointwise log(N/O) sequence. Handles masking, IMF evaluation, and returns a dictionary with intermediate products (<code>xi</code>, weighted yields, cumulative integrals).</td>
+        </tr>
+        <tr>
+          <td><code>plot_imf_weighted_NO_vs_mass(...)</code></td>
+          <td>cell 9</td>
+          <td>Loops over matched N and O yield tables, calls <code>imf_weighted_ratio_vs_mass</code>, and plots the requested curves. The <code>start_index</code> argument trims low-mass points to mirror earlier figures.</td>
+        </tr>
+        <tr>
+          <td><code>summarize_imf_weighted_yields(...)</code></td>
+          <td>cell 9</td>
+          <td>Evaluates the integrated production factors for each metallicity. Outputs <code>p_N</code>, <code>p_O</code>, and <code>\log_{10}(p_N / p_O)</code> for convenient tabulation.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <p>The helper <code>load_data_with_names</code> is defined earlier in the notebook (and reused elsewhere in the repo). It reads each yield table into a dict with NumPy arrays under keys such as <code>'mass'</code>, <code>'N_eject_mass'</code>, and <code>'metallicity'</code>.</p>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <h2>How to Reproduce the Plots</h2>
+    <ol>
+      <li>Ensure SciPy is available; <code>scipy.integrate.quad</code> is required to renormalise the Kroupa IMF whenever you tweak <code>alpha3</code>.</li>
+      <li>Run the notebook cells that load packages, define <code>load_data_with_names</code>, and set up matplotlib. The IMF-weighting helpers appear in cell 8.</li>
+      <li>Edit the control variables in cell 10:
+        <ul>
+          <li><code>alpha3</code> &mdash; high-mass IMF slope. Lower values boost massive-star weights.</li>
+          <li><code>start_index</code> &mdash; integer index used to skip the lowest-mass yields (matching earlier unweighted plots).</li>
+          <li><code>dataset_patterns</code> &mdash; list of tuples <code>(title, glob_for_N, glob_for_O)</code> pointing to yield grids you wish to analyse.</li>
+        </ul>
+      </li>
+      <li>Execute cell 10. For each dataset the notebook:
+        <ul>
+          <li>reads the N and O yields,</li>
+          <li>plots cumulative log(N/O) vs. log mass with the chosen IMF,</li>
+          <li>prints the integrated IMF-weighted production factors.</li>
+        </ul>
+      </li>
+      <li>Optional sanity checks: run cells 11 and 12 to confirm that cumulative curves agree with integrated numbers and that disabling the IMF (setting <code>xi(m)=1</code>) reproduces the original pointwise ratios.</li>
+    </ol>
+  </section>
+
+  <section id="validation">
+    <h2>Built-in Validation</h2>
+    <p>The notebook finishes with two safety nets:</p>
+    <ul>
+      <li><strong>Cumulative vs integrated consistency</strong> (cell 11): with <code>alpha3 = 2.30</code> the code checks that the final cumulative log(N/O) equals <code>\log_{10}(p_N/p_O)</code> to within <code>10^{-6}</code>.</li>
+      <li><strong>IMF-off regression test</strong> (cell 12): replacing the IMF with a constant <code>xi(m)=1</code> and using <code>weighting_mode='pointwise'</code> must return the original unweighted log(N/O) curves to machine precision.</li>
+    </ul>
+    <p>Both assertions will raise an error if you break the weighting logic while refactoring.</p>
+  </section>
+
+  <section id="customising">
+    <h2>Customising the Analysis</h2>
+    <ul>
+      <li><strong>Different IMFs</strong>: swap in your own callable for <code>imf_func</code> or extend <code>get_kroupa_imf</code> to support other parameterisations. The only requirement is that the function returns a probability density in units of stars per unit mass.</li>
+      <li><strong>Mass limits</strong>: use <code>mmin</code>/<code>mmax</code> in <code>imf_weighted_yield_from_table</code> or <code>plot_imf_weighted_NO_vs_mass</code> to restrict the integration range.</li>
+      <li><strong>Alternative weighting modes</strong>: set <code>apply_imf_weights=False</code> when calling the plotting or summary functions to recover the raw pointwise ratios for comparison.</li>
+      <li><strong>Other elements</strong>: the same pattern works for any ejecta pair (e.g. C/O). Duplicate the functions and rename the keys you pull from the yield tables.</li>
+      <li><strong>Script reuse</strong>: copy cells 8&ndash;12 into a standalone <code>.py</code> module if you prefer a non-notebook workflow; the functions are self-contained aside from NumPy/Matplotlib/ SciPy imports.</li>
+    </ul>
+    <p>
+      For reference the underlying Kroupa IMF implementation lives in <code>IMFs/Kroupa_IMF.py</code>, where <code>custom_imf</code> returns the piecewise power law normalised to unit stellar mass.
+    </p>
+  </section>
+
+  <footer>
+    <p>Updated for the IMF-weighted N/O yield analysis in <code>plot_yields_LC18-N:O.ipynb</code>. Adapt as needed for other yield grids.</p>
+  </footer>
+</body>
+</html>

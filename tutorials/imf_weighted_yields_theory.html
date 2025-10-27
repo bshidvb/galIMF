@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Theoretical Framework for IMF-Weighted Stellar Yields</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 920px; margin: 2rem auto; line-height: 1.65; color: #233748; }
+    h1, h2, h3 { color: #1d3142; }
+    nav a { margin-right: 1rem; }
+    code { background: #f5f5f5; padding: 0.1rem 0.35rem; border-radius: 3px; }
+    pre { background: #f5f5f5; padding: 0.75rem; border-radius: 4px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
+    th, td { border: 1px solid #c5d0d6; padding: 0.5rem; text-align: left; }
+    th { background: #e7eef2; }
+    .note { border-left: 4px solid #6a93a8; padding-left: 0.75rem; background: #f1f7fa; margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+  <h1>Theoretical Framework Behind IMF-Weighted Stellar Yields</h1>
+  <nav>
+    <a href="#motivation">Motivation</a>
+    <a href="#definitions">Definitions</a>
+    <a href="#equations">Key Equations</a>
+    <a href="#interpretation">Physical Interpretation</a>
+    <a href="#origin">Where the Formula Comes From</a>
+    <a href="#assumptions">Assumptions &amp; Caveats</a>
+    <a href="#further-reading">Further Reading</a>
+  </nav>
+
+  <section id="motivation">
+    <h2>Why Weight Stellar Yields with the IMF?</h2>
+    <p>
+      Stellar yield tables tabulate the mass of each element ejected by a single star of initial mass <code>m</code> and metallicity <code>Z</code>.
+      Galaxies, however, form populations of stars spanning a mass spectrum described by the initial mass function (IMF) <code>\xi(m)</code>.
+      To predict how a stellar population enriches the interstellar medium, we must sum the ejecta from all stars that form.
+    </p>
+    <p>
+      IMF weighting converts per-star yields into production factors per unit stellar mass formed, allowing comparison across IMFs and input to
+      chemical evolution models. Without this step we would over-represent rare massive stars or under-count abundant low-mass stars.
+    </p>
+  </section>
+
+  <section id="definitions">
+    <h2>Key Definitions</h2>
+    <table>
+      <thead>
+        <tr><th>Symbol</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>\xi(m)</code></td><td>Initial Mass Function: number of stars formed per unit mass interval (e.g. Kroupa or Salpeter).</td></tr>
+        <tr><td><code>Y_X(m, Z)</code></td><td>Total mass of element <code>X</code> ejected by a star of mass <code>m</code> and metallicity <code>Z</code>.</td></tr>
+        <tr><td><code>R(m)</code></td><td>Remnant mass left behind (white dwarf, neutron star, black hole).</td></tr>
+        <tr><td><code>p_X(Z)</code></td><td>Population-averaged production factor of element <code>X</code> per unit stellar mass formed.</td></tr>
+        <tr><td><code>\phi(m)</code></td><td>Normalised IMF such that <code>\int_{m_l}^{m_u} m \phi(m) dm = 1</code>, i.e. one solar mass of stars.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="equations">
+    <h2>The Fundamental Integrals</h2>
+    <p>The IMF-weighted production factor follows directly from population synthesis:</p>
+    <pre>
+p_X(Z) = \frac{\int_{m_l}^{m_u} Y_X(m, Z)\, \xi(m)\, dm}{\int_{m_l}^{m_u} m\, \xi(m)\, dm}
+    </pre>
+    <p>
+      The numerator sums the ejecta of element <code>X</code>. The denominator converts from “per star” to “per stellar mass formed”.
+      When <code>\xi(m)</code> is replaced by a unit-normalised IMF <code>\phi(m)</code> the denominator becomes unity.
+    </p>
+    <p>
+      Many chemical-evolution texts also define the <em>net yield</em> (Tinsley 1980; Pagel 1997):
+    </p>
+    <pre>
+y_X(Z) = \frac{\int_{m_l}^{m_u} (Y_X(m, Z) - X_0\,[m - R(m)])\, \xi(m)\, dm}{\int_{m_l}^{m_u} (m - R(m))\, \xi(m)\, dm}
+    </pre>
+    <p>
+      Here <code>X_0</code> is the initial mass fraction of element <code>X</code>. The numerator subtracts unprocessed material returned with the gas.
+      The denominator counts only the mass that is actually recycled, emphasising the enrichment efficiency of gas that re-enters the ISM.
+    </p>
+    <p>
+      To visualise how enrichment builds up as higher mass stars are included, we use cumulative integrals:
+    </p>
+    <pre>
+\mathcal{P}_X(m) = \int_{m_l}^{m} Y_X(m', Z)\, \phi(m')\, dm'
+\quad\Rightarrow\quad
+\log_{10}\left[\frac{\mathcal{P}_N(m)}{\mathcal{P}_O(m)}\right]
+    </pre>
+    <p>
+      This expression is what the notebook plots: the running log(N/O) ratio as a function of the maximum contributing stellar mass.
+    </p>
+  </section>
+
+  <section id="interpretation">
+    <h2>Physical Interpretation</h2>
+    <ul>
+      <li><strong>IMF slope sensitivity:</strong> A flatter (top-heavy) IMF assigns more weight to massive stars, boosting elements produced in core-collapse supernovae (O, Mg, etc.). A steeper IMF shifts production toward intermediate-mass contributions (e.g. AGB nitrogen).</li>
+      <li><strong>Mass cut-offs:</strong> The lower (<code>m_l</code>) and upper (<code>m_u</code>) integration limits encode which stars are active contributors. Below <code>\sim 1\,M_\odot</code> most stars lock their metals, so the effective lower limit for yields is typically set near the minimum mass that undergoes significant mass loss.</li>
+      <li><strong>Cumulative curves:</strong> Plotting the running ratio illustrates which mass ranges dominate. Plateaus indicate that additional, more massive stars no longer change the ratio appreciably.</li>
+      <li><strong>Population-level yields:</strong> The integrated production factor <code>p_X</code> feeds chemical evolution equations of the form
+        <pre>
+\frac{d(M_g X)}{dt} = -\psi(t) X + E_X(t)
+        </pre>
+        where <code>\psi(t)</code> is the star-formation rate and <code>E_X(t) = \psi(t) p_X</code> (under instantaneous recycling) is the enrichment rate from newly formed stars.</li>
+    </ul>
+  </section>
+
+  <section id="origin">
+    <h2>Where Do the Equations Come From?</h2>
+    <p>
+      The integrals arise from treating a single star as an <em>infinitesimal</em> contributor to a continuously sampled IMF. Consider forming a stellar mass <code>dM_*</code> in stars between <code>m</code> and <code>m + dm</code>.
+    </p>
+    <pre>
+dN = \xi(m)\, dm ,\qquad dM_* = m\, \xi(m)\, dm
+    </pre>
+    <p>
+      The metal mass ejected in that bin is simply <code>dM_X = Y_X(m, Z) \xi(m) dm</code>. Integrating from <code>m_l</code> to <code>m_u</code> and dividing by the total stellar mass <code>\int m \xi(m) dm</code> recovers <code>p_X</code>.</p>
+    <p>
+      In chemical evolution theory this appears when deriving the instantaneous recycling approximation (IRA). The gas mass and metallicity obey:
+    </p>
+    <pre>
+\frac{dM_g}{dt} = - (1 - R) \psi(t) + I(t) - O(t)
+\quad ; \quad
+\frac{d(Z M_g)}{dt} = - Z (1 - R) \psi(t) + y_Z \psi(t) + Z_I I(t) - Z O(t)
+    </pre>
+    <p>
+      where <code>R</code> is the returned mass fraction and <code>y_Z = p_Z</code> is the population-averaged yield defined above. Both <code>R</code> and <code>y_Z</code> are IMF-weighted integrals over stellar tracks.</p>
+  </section>
+
+  <section id="assumptions">
+    <h2>Assumptions and Caveats</h2>
+    <ul>
+      <li><strong>Instantaneous recycling:</strong> The production factor assumes prompt return of material. For elements mainly produced by long-lived stars you must convolve with stellar lifetimes (time-delayed enrichment).</li>
+      <li><strong>Single burst vs. continuous SF:</strong> IMF weighting gives the yield per unit mass formed in an instantaneous burst. For continuous star formation, convolve with the star-formation history.</li>
+      <li><strong>Stellar multiplicity:</strong> Binaries, rotation, and other stellar physics can alter <code>Y_X(m)</code>. The IMF weighting framework is agnostic to the microphysics but inherits their uncertainties.</li>
+      <li><strong>Sampling effects:</strong> In low-mass systems the IMF may not be fully sampled; stochastic or optimal sampling approaches replace the integrals with weighted sums over discrete stars or clusters.</li>
+      <li><strong>Metallicity coverage:</strong> Interpolate carefully between yield grids. The production factor varies with metallicity through both <code>Y_X(m, Z)</code> and metallicity-dependent IMFs.</li>
+    </ul>
+    <div class="note">
+      <p>When switching IMFs (e.g. top-heavy during starbursts) remember to recompute both <code>p_X</code> and the overall returned mass fraction <code>R</code>; they are not independent.</p>
+    </div>
+  </section>
+
+  <section id="further-reading">
+    <h2>Further Reading</h2>
+    <ul>
+      <li>Tinsley, B. M. 1980, <em>Fundamentals of Cosmic Physics</em>, 5, 287 — classic treatment of chemical evolution equations.</li>
+      <li>Pagel, B. E. J. 1997, <em>Nucleosynthesis and Chemical Evolution of Galaxies</em> — comprehensive review of stellar yields and IMF weighting.</li>
+      <li>Matteucci, F. 2012, <em>Chemical Evolution of Galaxies</em> — modern textbook covering time-delay formalism and IMF choices.</li>
+      <li>Vincenzo &amp; Kobayashi 2018, <em>A&amp;A</em>, 610, L16 — example of IMF-dependent yields applied to N/O diagnostics.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Prepared as background material for IMF-weighted yield studies in <code>galIMF</code>. Adapt freely for notes or teaching.</p>
+  </footer>
+</body>
+</html>
