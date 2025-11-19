@@ -33,7 +33,7 @@ def kroupa_imf(mass, alpha3, time=0):  # normalized to a population with mass = 
     else:
         return 0
     
-alpha3 = [1.3, 2.3, 3.0]
+alpha3 = [2.1, 2.3, 3.0]
 
 plt.figure(figsize=(8, 6))
 plt.rc('font', family='serif')
