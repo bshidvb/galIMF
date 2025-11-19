@@ -268,6 +268,5 @@ def main() -> None:
     else:
         plt.close(fig)
 
-
 if __name__ == "__main__":
     main()
