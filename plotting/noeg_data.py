@@ -1,8 +1,8 @@
-"""Compiled nitrogen-oxygen enriched galaxy sample."""
+"""Compiled nitrogen-oxygen enriched galaxy sample from Ji+25: https://arxiv.org/abs/2505.12505"""
 
 points = [
     {
-        'name': 'Mrk 996',
+        'name': 'Mrk 996 (high density)',
         'redshift': 0.00544,
         'redshift_err': None,
         'log_N_over_O': -0.13,
@@ -10,6 +10,25 @@ points = [
         'log_N_over_O_limit': None,
         'twelve_plus_log_O_over_H': 8.38,
         'twelve_plus_log_O_over_H_err': 0.075,
+        'age_Myr': 13708.6,
+        'age_err_Myr': None,
+        'age_method': 'redshift_based (Planck18 cosmic age)',
+        'sfr_Msun_per_yr': None,
+        'sfr_err_Msun_per_yr': None,
+        'sfr_method': 'not_reported',
+        'redshift_method': 'spectroscopic',
+        'agn_signs': False,
+        'sources': {'abundances': 'Ji et al. 2025', 'age_sfr': 'Planck Collaboration 2020'},
+    },
+     {
+        'name': 'Mrk 996 (low density)',
+        'redshift': 0.00544,
+        'redshift_err': None,
+        'log_N_over_O': -1.43,
+        'log_N_over_O_err': 0.14,
+        'log_N_over_O_limit': None,
+        'twelve_plus_log_O_over_H': 8.36,
+        'twelve_plus_log_O_over_H_err': 0.225,
         'age_Myr': 13708.6,
         'age_err_Myr': None,
         'age_method': 'redshift_based (Planck18 cosmic age)',
@@ -390,11 +409,11 @@ points = [
         'log_N_over_O_limit': 'lower',
         'twelve_plus_log_O_over_H': 7.91,
         'twelve_plus_log_O_over_H_err': 0.07,
-        'age_Myr': 435.239,
+        'age_Myr': 18.62, #maximum age of stars from Bunker et al. 2023
         'age_err_Myr': None,
-        'age_method': 'redshift_based (Planck18 cosmic age)',
-        'sfr_Msun_per_yr': None,
-        'sfr_err_Msun_per_yr': None,
+        'age_method': 'SED fitting ',
+        'sfr_Msun_per_yr': 18.78,
+        'sfr_err_Msun_per_yr': 0.75, #from Bunker et al. 2023
         'sfr_method': 'not_reported',
         'redshift_method': 'spectroscopic',
         'agn_signs': False,
