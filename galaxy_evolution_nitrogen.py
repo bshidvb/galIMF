@@ -3,9 +3,9 @@ import galevo_nitrogen as galevo
     # For gas_mass_dependent SFH model, we need to provide the gas mass evolution.
     # This is an example of how to generate a gas mass evolution.
 Log_SFR_list = [-0.3]  # 20 M_sun/yr (Tacchella et al. 2023)
-SFEN_list = [30]       # 70 ± 40 Myr (Tacchella et al. 2023)
+SFEN_list = [100]       # 70 ± 40 Myr (Tacchella et al. 2023)
 STF_list = [0.04]
-SFE_list = [0.009]
+SFE_list = [0.0115]
 tau_infall_list = [0.0002]
 # Log_SFR = 1.5 # for 20 M_sun/yr - real value
 location = 10
