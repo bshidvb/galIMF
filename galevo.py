@@ -5540,7 +5540,7 @@ def generate_sfh_given():
 def generate_sfh_flat(Log_SFR, SFEN):
     # Flat distribution for star formation history
     # took input: star formation rate, star formation event number
-    file = open('SFH.txt', 'w')
+    file = open('SFH_flat.txt', 'w')
     file.write("0\n")
     j = 0
     while j < SFEN:
@@ -5563,7 +5563,7 @@ def generate_sfh_flat(Log_SFR, SFEN):
 def generate_sfh_flat_tail(Log_SFR, SFEN):
     # Flat distribution for star formation history
     # took input: star formation rate, star formation event number
-    file = open('SFH.txt', 'w')
+    file = open('SFH_flat_tail.txt', 'w')
     file.write("0\n")
     j = 0
     while j < SFEN:
@@ -5595,7 +5595,7 @@ def generate_sfh_skewnorm(Log_SFR, SFEN, sfr_tail, skewness, location):
         result_cal_tot_sf = cal_tot_sf(Log_SFR, SFEN, skewness, location)
         (tot_sf) = (result_cal_tot_sf[0])
 
-    file = open('SFH.txt', 'w')
+    file = open('SFH_skewnorm.txt', 'w')
     file.write("0\n")
     sfr_for_this_epoch = 0
     result_starburst_sf = 0
@@ -5650,14 +5650,14 @@ def generate_sfh_lognorm(Log_SFR, SFEN):
     time_list = np.linspace(0, time_step_number, time_step_number)
     star_formation_rate = tot_sf_set * lognorm.pdf(time_list, s, scale=sc)
 
-    i = 20
+    i = 0
     while i < time_step_number:
         # if star_formation_rate[i] < star_formation_rate[1]/10:
         #     star_formation_rate[i] = 0
         star_formation_rate[i] = 0
         (i) = (i+1)
 
-    file = open('SFH.txt', 'w')
+    file = open('SFH_lognorm.txt', 'w')
     for i in range(time_step_number):
         file.write("{}\n".format(star_formation_rate[i]))
 
