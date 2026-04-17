@@ -1,0 +1,4 @@
+# final SNIa_number per stellar mass formed
+0.0014372519591581098
+# final SNII_number per stellar mass formed
+0.0018285767178672539
