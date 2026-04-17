@@ -36,7 +36,7 @@ print("    This test code serves as an example, "
 # --------------------------------------------------------------------------------------------------------------------------------
 
 fig0 = plt.figure(figsize=(3.4, 2.5))
-
+plt.rc('font', family='serif')
 
 # --------------------------------------------------------------------------------------------------------------------------------
 # Define code parameters necessary for the computations:
@@ -180,7 +180,7 @@ if OSrequest == "y" or OSrequest == "Y" or OSrequest == "yes" or OSrequest == "Y
 # Make a grid with power-law index -2.3 to compare with the resulting IMFs.
 # --------------------------------------------------------------------------------------------------------------------------------
 
-for k in range(20):
+for k in range(30):
     sal_IMF = masses ** (-2.3)
     plt.plot(np.log10(masses), np.log10((1.e5*np.max(igimf)/np.max(sal_IMF))*sal_IMF)-k, c='grey', lw=0.5)
 
@@ -210,16 +210,15 @@ if ylim_max < np.max(can_imf):
 # --------------------------------------------------------------------------------------------------------------------------------
 # Plot settings
 # --------------------------------------------------------------------------------------------------------------------------------
-
-plt.xlabel('$\log{(m\,[M_{\odot}])}$')
-plt.ylabel('$\log{(\\xi_{\mathrm{gal}}\,[M_{\odot}^{-1}])}$')
+plt.xlabel('$\log{(m\,[M_{\odot}])}$', fontsize=10)
+plt.ylabel('$\log{(\\xi_{\mathrm{gal}}\,[M_{\odot}^{-1}])}$', fontsize=10)
 
 plt.ylim(np.log10(ylim_min), np.log10(ylim_max))
 plt.xlim(math.log(0.06, 10), math.log(160, 10))
-plt.text(0.32, 0.9, f'SFR = {SFR} $\mathrm{{M_{{\odot}}\,yr^{{-1}}}}$, [M/H] = {M_over_H}', fontsize=7, transform=plt.gcf().transFigure)
+plt.title(f'SFR = {SFR} $\mathrm{{M_{{\odot}}\,yr^{{-1}}}}$, [M/H] = {M_over_H}', fontsize=10)
 #plt.legend(loc='best', ncol=1, fancybox=False, prop={'size': 7})
 plt.tight_layout()
-fig0.savefig(f"example_galaxy_wide_IMF_plots/SFR_{SFR}_metallicity_{M_over_H}.png", dpi=250)
+fig0.savefig(f"./figs/example_galaxy_wide_IMF_plots/SFR_{SFR}_metallicity_{M_over_H}.pdf", dpi=300)
 
 print("\n    Please check the prompted window for the result."
       "\n    IMFs in the plot are normalized by the same galaxy stellar mass."
