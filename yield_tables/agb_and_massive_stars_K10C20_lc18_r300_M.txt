@@ -1,4 +1,4 @@
-H Name: metal poor AGB yields from Karakas 2010, metal rich AGB yields from karakas 2022, massive star yields from LC 2018, Rotation = 0.
+H Name: metal poor AGB yields from Karakas 2010, metal rich AGB yields from karakas 2022, massive star yields from LC 2018, Rotation = 300.
 H In this table, I add more points in mass. 
 H Data prepared by: Zi-Yi Guo 
 H Data prepared date: Feb 21st 2025 
