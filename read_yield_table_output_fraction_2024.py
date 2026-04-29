@@ -911,15 +911,15 @@ def function_get_mass_grid(yield_table_name):  # read in a grid from 0.08 to 150
         data = file_yield.readlines()
         file_yield.close()
     elif yield_table_name == "Limongi_R000_sup_agb":
-        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R000.txt', 'r')
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_R000.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
     elif yield_table_name == "Limongi_R150_sup_agb":
-        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R150.txt', 'r')
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_R150.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
     elif yield_table_name == "Limongi_R300_sup_agb":
-        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D13_LC18_R300.txt', 'r')
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_R300.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
     elif yield_table_name == "Nomoto":
@@ -1490,19 +1490,19 @@ def write_data():
         file_eject_mass.write(out_eject_mass)
         file_eject_mass.close()
 
-        # # write file lifetime. This is not written as we use the smooth spline fitted lifetime of Portinari98
-        # out_lifetime = '# metallicity\n{}\n# mass\n'.format(metallicity)
-        # for n in range(len(mass_grid)):
-        #     out_lifetime += '{} '.format(mass_grid[n])
-        # out_lifetime += '\n# lifetime\n'
-        # for n in range(len(lifetime)):
-        #     out_lifetime += '{} '.format(lifetime[n])
-        # name_lifetime = 'yield_tables__2024/rearranged___/setllar_lifetime_from_{}/{}_Z={}.txt'.format(yield_table_name,
-        #                                                                                              yield_table_name,
-        #                                                                                              metallicity)
-        # file_lifetime = open(name_lifetime, 'w')
-        # file_lifetime.write(out_lifetime)
-        # file_lifetime.close()
+        # write file lifetime. This is not written as we use the smooth spline fitted lifetime of Portinari98
+        out_lifetime = '# metallicity\n{}\n# mass\n'.format(metallicity)
+        for n in range(len(mass_grid)):
+            out_lifetime += '{} '.format(mass_grid[n])
+        out_lifetime += '\n# lifetime\n'
+        for n in range(len(lifetime)):
+            out_lifetime += '{} '.format(lifetime[n])
+        name_lifetime = 'yield_tables__2024/rearranged___/setllar_lifetime_from_{}/{}_Z={}.txt'.format(yield_table_name,
+                                                                                                     yield_table_name,
+                                                                                                     metallicity)
+        file_lifetime = open(name_lifetime, 'w')
+        file_lifetime.write(out_lifetime)
+        file_lifetime.close()
 
         # write file Mfinal
         out_Mfinal = '# metallicity\n{}\n# mass\n'.format(metallicity)
@@ -2351,7 +2351,7 @@ if __name__ == '__main__':
     Cr_over_Fe_list = []
     Mn_over_Fe_list = []
     Ni_over_Fe_list = []
-    yield_table_name = "Nomoto_sup_agb"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
+    yield_table_name = "Limongi_R300_sup_agb"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
     # or "Nomoto" or "Nomoto_HNe" or "Nomoto_ZY_hypernova" or "Nomoto_ZY_CCSN" or "Nomoto_ZY_CCSN_popIII" or "K10_N13_HegerPopIII"
     # or "Limongi_R000" or "Limongi_R300" or "Limongi_R150" or "K10_N13_HNe00"
     # or "Limongi_R000_sup_agb" or "Limongi_R150_sup_agb" or "Limongi_R300_sup_agb"
