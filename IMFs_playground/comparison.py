@@ -1,4 +1,5 @@
 import given_IMF
+from Salpeter_IMF import custom_imf_unnormalized, custom_imf
 from diet_Salpeter_IMF import diet_salpeter_imf
 from Kroupa_IMF import kroupa_imf, kroupa_imf_unnormalized
 from given_IMF import given_imf
@@ -11,10 +12,10 @@ import matplotlib.pyplot as plt
 masses = np.logspace(-2, 2.5, 500)  # Mass range from 0.01 to ~300 solar masses
 
 # Evaluate the IMF for each mass
-salpeter_imf = [diet_salpeter_imf(m, None) for m in masses]
+salpeter_imf = [custom_imf(m) for m in masses]
 
 # Evaluate the Kroupa IMF
-kroupa_imf_values = [kroupa_imf(m) for m in masses]
+kroupa_imf_values = [kroupa_imf_unnormalized(m) for m in masses]
 
 # Evaluate the given IMF
 given_imf_values = [given_imf(m, 0) for m in masses]
@@ -26,14 +27,14 @@ custom_imf_values = [custom_imf(m) for m in masses]
 plt.rc('font', family='serif')
 plt.figure(figsize=(8, 6))
 #plt.loglog(masses, salpeter_imf, label="Diet Salpeter IMF", color="blue")
-plt.loglog(masses, kroupa_imf_values, label="Kroupa IMF", color="green")
+plt.loglog(masses, salpeter_imf, label="Salpeter IMF", color="green", lw=2)
 # plt.loglog(masses, given_imf_values, label="Time dependent IMF", color="purple")
 # plt.loglog(masses, custom_imf_values, label="Salpeter IMF", color="red")
-plt.xlabel("Stellar Mass ($M_{\\odot}$)")
-plt.ylabel("IMF ($\\xi$)")
+plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
+plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
 # plt.title("Comparison of various IMFs")
 plt.legend()
-plt.savefig("IMF_comparison.png")
+plt.savefig("IMF_salpeter.pdf", dpi=300)
 plt.show()
 
 # Cumulative integration for the total number of stars

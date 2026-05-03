@@ -44,12 +44,12 @@ colors = [cmap(i) for i in range(len(alpha3))]
 handles = []
 for i, alpha_value in enumerate(alpha3):
     h, = plt.loglog(masses, [kroupa_imf(m, alpha_value) for m in masses],
-                    color=colors[i], zorder=1)
+                    color=colors[i], zorder=1, lw=2)
     handles.append(h)
 
 # plot the red dashed line last so it's on top / visible
 hd, = plt.loglog(masses, [kroupa_imf(m, 2.3) for m in masses],
-                 color="red", linestyle='--', zorder=10)
+                 color="red", linestyle='--', zorder=10, lw=2)
 
 # create legend with the order you want (red dashed in the middle)
 plt.legend([handles[0], hd, handles[2]],
@@ -57,9 +57,28 @@ plt.legend([handles[0], hd, handles[2]],
             "Kroupa IMF (α3=2.3)",
             f"Kroupa IMF (α3={alpha3[2]})"])
 
-plt.xlabel("Stellar Mass (M$_\odot$)", fontsize=14)
-plt.ylabel("IMF ($\\xi$)", fontsize=14)
-plt.title("Kroupa IMF with different high-mass slopes", fontsize=16)
-plt.savefig("./figs/IMF_comparison.png", dpi=300)
+plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
+plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
+plt.savefig("./IMF_Kroupa_3a.pdf", dpi=300)
+plt.tight_layout()
+plt.show()
+
+def kroupa_imf_2001(mass):  # normalized to a population with mass = 1 Msun
+    if mass < 0.08:
+        return 25*mass**(-0.3)/integrated_mass
+    elif mass < 0.5:
+        return 2*mass**(-1.3)/integrated_mass
+    elif mass < 1:
+        return mass**(-2.3)/integrated_mass
+    elif mass < 150:
+        return mass**(-2.3)/integrated_mass
+    else:
+        return 0
+
+plt.loglog(masses, [kroupa_imf_2001(m) for m in masses], color="purple", linestyle='-', zorder=10, lw=2, label="Kroupa IMF")
+plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
+plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
+plt.legend()
+plt.savefig("./IMF_Kroupa_2001.pdf", dpi=300)
 plt.tight_layout()
 plt.show()
