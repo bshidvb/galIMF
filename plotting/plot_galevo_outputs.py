@@ -224,19 +224,19 @@ def plot_mass_evolution(file_paths):
     BH_mass_list = data['BH_mass_list']
     NS_mass_list = data['NS_mass_list']
     WD_mass_list = data['WD_mass_list']
-    plt.plot(time_axis, total_gas_mass_list, lw=1.5, label='gas', ls='dotted', c='k')
-    plt.plot(time_axis, ejected_gas_mass_list, lw=0.8, label='ejected gas')
-    plt.plot(time_axis, stellar_mass_list, lw=0.8, label='living stars', c='k')
+    plt.plot(time_axis, total_gas_mass_list, lw=2.2, label='gas', ls='dotted', c='k')
+    plt.plot(time_axis, ejected_gas_mass_list, lw=1.5, label='ejected gas')
+    plt.plot(time_axis, stellar_mass_list, lw=1.5, label='living stars', c='k')
     print('plot stellar_mass final', stellar_mass_list[-1])
-    plt.plot(time_axis, remnant_mass_list, lw=0.8, label='stellar remnants', ls='dashed', c='k')
-    plt.plot(time_axis, BH_mass_list, lw=0.8, label='black holes')
-    plt.plot(time_axis, NS_mass_list, lw=0.8, label='neutron stars')
-    plt.plot(time_axis, WD_mass_list, lw=0.8, label='white dwarfs')
-    plt.xlabel(r'log$_{10}$(time [yr])')
-    plt.ylabel(r'log$_{10}$(Mass [$M_\odot$])')
-    plt.title('Mass evolution', fontsize=10)
-    plt.legend(fontsize=6, loc='upper left')
-    plt.savefig('/Users/adriana_work/Desktop/galIMF/figs/galevo_output_plots/mass_evolution.png', bbox_inches='tight', dpi=300)
+    plt.plot(time_axis, remnant_mass_list, lw=1.5, label='stellar remnants', ls='dashed', c='k')
+    plt.plot(time_axis, BH_mass_list, lw=1.5, label='black holes')
+    plt.plot(time_axis, NS_mass_list, lw=1.5, label='neutron stars')
+    plt.plot(time_axis, WD_mass_list, lw=1.5, label='white dwarfs')
+    plt.xlabel(r'log$_{10}$(time [yr])', fontsize=14)
+    plt.ylabel(r'log$_{10}$(Mass [$M_\odot$])', fontsize=14)
+    plt.title('Mass evolution', fontsize=16)
+    plt.legend(fontsize=12, loc='upper left')
+    plt.savefig('/Users/adriana_work/Desktop/galIMF/figs/galevo_output_plots/mass_evolution.pdf', bbox_inches='tight', dpi=300)
     plt.show()
 
 def plot_masses(file_paths):
@@ -341,13 +341,12 @@ def plot_supernovae(file_paths):
     # plt.rc('ytick', labelsize='x-small')
     data = load_data_with_names(file_paths)
     time_axis, SNIa_number_per_century, SNII_number_per_century, SN_number_per_century = data['time_axis'], data['SNIa_number_per_century'], data['SNII_number_per_century'], data['SN_number_per_century']
-    # age_list = np.array(age_list, dtype=float) - 0.01
-    plt.loglog(time_axis, SNIa_number_per_century, label='SNIa', color="tab:orange", ls='dotted')  # Number per century
-    plt.loglog(time_axis, SNII_number_per_century, label='SNII', color="tab:orange")  # Number per century
-    plt.loglog(time_axis, SN_number_per_century, ls="dotted", label='total')
-    plt.xlabel(r'time [Myr]')
-    plt.ylabel(r'# of SN per century')
-    plt.title('Supernova rate evolution', fontsize=10)
+    plt.loglog(time_axis, SNIa_number_per_century, label='SNIa', color="tab:orange", ls='dotted', lw=2)  # Number per century
+    plt.loglog(time_axis, SNII_number_per_century, label='SNII', color="tab:orange", lw=2)  # Number per century
+    plt.loglog(time_axis, SN_number_per_century, ls="dotted", label='total', lw=2)
+    plt.xlabel(r'time [Myr]', fontsize=14)
+    plt.ylabel(r'# of SN per century', fontsize=14)
+    plt.title('Supernova rate evolution', fontsize=16)
     plt.xlim(10 ** 7, 14 * 10 ** 9)
     # plt.ylim(1e-2, 1e6)
     plt.legend()
@@ -406,4 +405,7 @@ plot_O_SFR_gas_N_evolution("/Users/adriana_work/Desktop/galIMF/simulation_result
 # plot_sfh_with_data(sfh_path, labels=['alpha=2.1', 'alpha=2.3', 'alpha=3.0'], min=0, max=25)
 
 # sfh_path1 = glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/20250930/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.3SFE0.0062Z_0100infall0.008/plots/SFH.txt")
-plot_supernovae("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/SN_number_evolution.txt")
+# plot_supernovae("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/SN_number_evolution.txt")
+plot_mass_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/mass_evolution.txt")
+
+# plot_sfh_with_data(glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20260502/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.5SFE0.0052Z_0100infall0.0008/plots/SFH.txt"), labels=['alpha=2.3'], min=0, max=25)
