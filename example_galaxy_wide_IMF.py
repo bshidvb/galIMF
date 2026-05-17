@@ -35,8 +35,10 @@ print("    This test code serves as an example, "
 # Set the final out put plot size:
 # --------------------------------------------------------------------------------------------------------------------------------
 
-fig0 = plt.figure(figsize=(3.4, 2.5))
+fig0 = plt.figure(figsize=(8, 6))
 plt.rc('font', family='serif')
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
 
 # --------------------------------------------------------------------------------------------------------------------------------
 # Define code parameters necessary for the computations:
@@ -119,7 +121,7 @@ igimf = np.array(galimf.List_xi)
 # Mtot1Myr = SFR*10*1.e6 #total mass formed in 10 Myr
 # igimf = np.array(igimf)*Mtot1Myr/Norm
 
-plt.plot(np.log10(masses+1.e-50), np.log10(igimf+1.e-50), color='blue', lw=2.5, label='Galaxy-wide IMF')
+plt.plot(np.log10(masses+1.e-50), np.log10(igimf+1.e-50), color='blue', lw=7.5, label='Galaxy-wide IMF')
 ylim_min = np.min(igimf+1.e-50)
 ylim_max = np.max(igimf+1.e-50)
 plt.ylim(np.log10(ylim_min), np.log10(ylim_max))
@@ -173,7 +175,7 @@ if OSrequest == "y" or OSrequest == "Y" or OSrequest == "yes" or OSrequest == "Y
         *sorted(zip(mass_range_center, mass_range, mass_range_upper_limit, mass_range_lower_limit, star_number)))
     masses = np.array(galimf.List_mass_grid_x_axis) + 1.e-50
     osgimf = np.array(galimf.List_star_number_in_mass_grid_y_axis) + 1.e-50
-    plt.plot(np.log10(masses), np.log10(osgimf), color='green', lw=2.5, label='Stellar mass histogram')
+    plt.plot(np.log10(masses), np.log10(osgimf), color='green', lw=7.5, label='Stellar mass histogram')
 
 
 # --------------------------------------------------------------------------------------------------------------------------------
@@ -202,7 +204,7 @@ def imf(mass, k_star, alpha):
 Norm = quad(imf, 0.08, 0.5, args=(1, 1.3))[0] + quad(imf, 0.5, 120, args=(0.5, 2.3))[0]
 Mtot1Myr = SFR*10*1.e6  # total mass formed in 10 Myr
 can_imf = np.array(can_imf)*Mtot1Myr/Norm
-plt.plot(np.log10(masses), np.log10(can_imf), color='r', lw=2, label='canonical IMF')
+plt.plot(np.log10(masses), np.log10(can_imf), color='r', lw=7.5, label='canonical IMF')
 
 if ylim_max < np.max(can_imf):
     ylim_max = np.max(can_imf)
@@ -210,12 +212,12 @@ if ylim_max < np.max(can_imf):
 # --------------------------------------------------------------------------------------------------------------------------------
 # Plot settings
 # --------------------------------------------------------------------------------------------------------------------------------
-plt.xlabel('$\log{(m\,[M_{\odot}])}$', fontsize=10)
-plt.ylabel('$\log{(\\xi_{\mathrm{gal}}\,[M_{\odot}^{-1}])}$', fontsize=10)
+plt.xlabel('$\log{(m\,[M_{\odot}])}$', fontsize=30)
+plt.ylabel('$\log{(\\xi_{\mathrm{gal}}\,[M_{\odot}^{-1}])}$', fontsize=30)
 
 plt.ylim(np.log10(ylim_min), np.log10(ylim_max))
 plt.xlim(math.log(0.06, 10), math.log(160, 10))
-plt.title(f'SFR = {SFR} $\mathrm{{M_{{\odot}}\,yr^{{-1}}}}$, [M/H] = {M_over_H}', fontsize=10)
+plt.title(f'SFR = {SFR} $\mathrm{{M_{{\odot}}\,yr^{{-1}}}}$, [M/H] = {M_over_H}', fontsize=25)
 #plt.legend(loc='best', ncol=1, fancybox=False, prop={'size': 7})
 plt.tight_layout()
 fig0.savefig(f"./figs/example_galaxy_wide_IMF_plots/SFR_{SFR}_metallicity_{M_over_H}.pdf", dpi=300)
