@@ -7,6 +7,7 @@ from Salpeter_IMF import custom_imf, custom_imf_unnormalized
 from scipy.integrate import quad
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 
 # Generate a range of stellar masses
 masses = np.logspace(-2, 2.5, 500)  # Mass range from 0.01 to ~300 solar masses
@@ -26,6 +27,10 @@ custom_imf_values = [custom_imf(m) for m in masses]
 # Plot the IMF
 plt.rc('font', family='serif')
 plt.figure(figsize=(8, 6))
+matplotlib.rcParams['xtick.minor.size'] = 0
+matplotlib.rcParams['xtick.minor.width'] = 0
+matplotlib.rcParams['ytick.minor.size'] = 0
+matplotlib.rcParams['ytick.minor.width'] = 0
 #plt.loglog(masses, salpeter_imf, label="Diet Salpeter IMF", color="blue")
 plt.loglog(masses, salpeter_imf, label="Salpeter IMF", color="green", lw=2)
 # plt.loglog(masses, given_imf_values, label="Time dependent IMF", color="purple")

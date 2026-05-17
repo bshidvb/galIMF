@@ -1,6 +1,7 @@
 from scipy.integrate import quad
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 
 masses = np.logspace(-2, 2.5, 500)
 alpha3 = 2.3
@@ -22,21 +23,21 @@ def mass_function(mass):
 integrated_mass = quad(mass_function, 0.08, 150, limit=50)[0]
 
 def kroupa_imf(mass, alpha3, time=0):  # normalized to a population with mass = 1 Msun
-    if mass < 0.08:
-        return 0
-    elif mass < 0.5:
+    if mass < 0.5:
         return 2*mass**(-1.3)/integrated_mass
     elif mass < 1:
         return mass**(-2.3)/integrated_mass
     elif mass < 150:
         return mass**(-alpha3)/integrated_mass
-    else:
-        return 0
     
 alpha3 = [2.1, 2.3, 3.0]
 
 plt.figure(figsize=(8, 6))
 plt.rc('font', family='serif')
+matplotlib.rcParams['xtick.minor.size'] = 0
+matplotlib.rcParams['xtick.minor.width'] = 0
+matplotlib.rcParams['ytick.minor.size'] = 0
+matplotlib.rcParams['ytick.minor.width'] = 0
 cmap = plt.get_cmap('tab10')
 colors = [cmap(i) for i in range(len(alpha3))]
 
@@ -72,8 +73,6 @@ def kroupa_imf_2001(mass):  # normalized to a population with mass = 1 Msun
         return mass**(-2.3)/integrated_mass
     elif mass < 150:
         return mass**(-2.3)/integrated_mass
-    else:
-        return 0
 
 plt.loglog(masses, [kroupa_imf_2001(m) for m in masses], color="purple", linestyle='-', zorder=10, lw=2, label="Kroupa IMF")
 plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
