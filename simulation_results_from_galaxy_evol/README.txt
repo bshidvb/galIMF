@@ -41,3 +41,7 @@ Notes on structure of files:
 20250915/alpha=x.x/ - finding solution for top heavy imf, alpha3=x.x
 
 20250916/ - looking for solutions for canonical IMF and 3.0
+
+20260702/ - when igimf, we are using IGIMF3 model -- resulting in very bottom-light IMF, leading to low N/O_mass_eject
+
+20260703/ - testing newer IMF variation with Z - IGIMF_Z
