@@ -315,6 +315,25 @@ def nitrogen_oxygen_mass_fraction_evolution(file_paths):
     plt.tight_layout()
     plt.show()
 
+def metallicity_abundance_evolution(file_paths):
+    data = load_data_with_names(file_paths)
+    time_axis = data['time step list:']
+    gas_NO = data['Gas metallicity, [Z/X]:']
+    stellar_NO = data['Stellar mass-weighted metallicity, [Z/X]:']
+    stellar_NO_luminosity_weighted = data['Stellar luminosity-weighted metallicity, [Z/X]:']
+    plt.rc('font', family='serif')
+    plt.rc('xtick', labelsize='x-small')
+    plt.rc('ytick', labelsize='x-small')
+    plt.plot(time_axis, gas_NO, label='gas')
+    plt.plot(time_axis, stellar_NO, label='stellar MW')
+    plt.plot(time_axis, stellar_NO_luminosity_weighted, label='stellar LW')
+    plt.xlabel(r'log$_{10}$(time [yr])')
+    plt.ylabel('N/O')
+    plt.title('Metallicity history', fontsize=10)
+    plt.legend(prop={'size': 7})
+    plt.tight_layout()
+    plt.show()
+
 def nitrogen_hydrogen_mass_fraction_evolution(file_paths):
     data = load_data_with_names(file_paths)
     time_axis = data['time step list:']
@@ -391,10 +410,10 @@ def plot_O_SFR_gas_N_evolution(OH_path, gas_path, sfr_path, NO_path):
     plt.show()
     
 #plot_NO_over_time(NO_path, labels=['alpha=1.5', 'alpha=2.7', 'alpha=2.1'])
-plot_O_SFR_gas_N_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/O_over_H_time.txt",
-                           "/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/mass_evolution.txt",
-                           "/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/SFH.txt",
-                           "/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/N_over_O_time.txt")
+# plot_O_SFR_gas_N_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/O_over_H_time.txt",
+#                            "/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/mass_evolution.txt",
+#                            "/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/SFH.txt",
+#                            "/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20251212/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN-0.3SFE0.0115Z_0100infall0.0002/plots/N_over_O_time.txt")
 
 # sfh_path = glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.3SFE0.0062Z_0100infall0.008/plots/SFH.txt")
 # #sfh_path += glob.glob("./simulation_results_from_galaxy_evol/final_results/Kroupa_IMF.py'>SFEN0.6SFE0.0021Z_0100infall8e-05/plots/SFH.txt")
@@ -406,6 +425,8 @@ plot_O_SFR_gas_N_evolution("/Users/adriana_work/Desktop/galIMF/simulation_result
 
 # sfh_path1 = glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/20250930/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.3SFE0.0062Z_0100infall0.008/plots/SFH.txt")
 # plot_supernovae("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/SN_number_evolution.txt")
-plot_mass_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/mass_evolution.txt")
+# plot_mass_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/mass_evolution.txt")
 
 # plot_sfh_with_data(glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20260502/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.5SFE0.0052Z_0100infall0.0008/plots/SFH.txt"), labels=['alpha=2.3'], min=0, max=25)
+
+metallicity_abundance_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/20260703/LCR300/imfigimfSTF0.04Log_SFR1.0SFEN15SFE0.008Z_0-4.15infall0.009/chemical_and_SN_evolution.txt")
