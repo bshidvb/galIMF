@@ -2,40 +2,36 @@
 # chmod +x push_origin-master.sh # Give execute permission to the script
 # sh push_origin-master.sh # To run the script
 
-git add plotting/plot_stellar_lifetimes_comparison.py
+git add plotting/igimf_animation/
 
-git add plotting/plots_for-thesis.ipynb
+git add plotting/igimf_evolution.ipynb
 
-git commit -m "Created new plotting functions for thesis and stellar lifetimes from yields"
+git commit -m "Created function that plots evolution of IGIMF"
 
-git add plotting/plots_nitrogen_correct.ipynb
+git add IMFs_playground/kroupa-imfs-different-a modified.py
 
-git commit -m "Marked filepaths to solutions"
+git commit -m "Created function to plot wild variations of Kroupa IMF"
 
-git add plotting/
+git add figs/yield_plots/
 
-git commit -m "Modified existing plotting functions"
+git add plot_yields_LC18-N:O.ipynb
 
-git add yield_tables__2024/rearranged___/setllar_lifetime_from_Limongi_M300
+git add IMFs_playground/
 
-git commit -m "Generated lifetimes for Limongi M300 yields"
+git commit -m "Made new plots"
+
+git add figs/galevo/
 
 git add simulation_results_from_galaxy_evol/
 
-git commit -m "Generated new solutions for thesis"
-
-git add sfh_comparison.ipynb
-
-git commit -m "Created plotting functions for SFHs models"
-
-git add read_yield_table_output_fraction_2024.py
-
-git commit -m "Modified input to generate yields"
-
-git add galevo_nitrogen.py
+git commit -m "Found new models"
 
 git add galaxy_evolution_nitrogen.py
 
-git commit -m "Modified functions to get new solutions"
+git add galevo_nitrogen.py
+
+git add IMFs/
+
+git commit -m "Did parameter modifications"
 
 git push origin master
