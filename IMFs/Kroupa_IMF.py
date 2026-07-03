@@ -1,6 +1,6 @@
 from scipy.integrate import quad
 
-alpha3 = 3.0
+alpha3 = 1.8
 
 def custom_imf_unnormalized(mass):  # there is no time dependence for Kroupa IMF
     if mass < 0.08:
@@ -10,7 +10,7 @@ def custom_imf_unnormalized(mass):  # there is no time dependence for Kroupa IMF
     elif mass < 1:
         return mass**(-2.3)
     elif mass < 150:
-        return mass**(-alpha3)
+        return mass**(-1.8)
     else:
         return 0
 
@@ -27,6 +27,6 @@ def custom_imf(mass, time=0):  # normalized to a population with mass = 1 Msun
     elif mass < 1:
         return mass**(-2.3)/integrated_mass
     elif mass < 150:
-        return mass**(-alpha3)/integrated_mass
+        return mass**(-1.8)/integrated_mass
     else:
         return 0
