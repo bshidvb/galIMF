@@ -68,7 +68,7 @@ def kroupa_imf_2001(mass):  # normalized to a population with mass = 1 Msun
     if mass < 0.08:
         return 25*mass**(-0.3)/integrated_mass
     elif mass < 0.5:
-        return 2*mass**(-1.3)/integrated_mass
+        return 2*mass**(-0.9)/integrated_mass
     elif mass < 1:
         return mass**(-2.3)/integrated_mass
     elif mass < 150:

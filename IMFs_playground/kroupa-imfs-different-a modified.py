@@ -61,11 +61,11 @@ plt.loglog(masses, [kroupa_imf(m) for m in masses],
 #             "Kroupa IMF (α3=2.3)"])
             # f"Kroupa IMF (α3={alpha3[2]})"])
 
-plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
-plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
-# plt.savefig("./IMF_Kroupa_3a.pdf", dpi=300)
-plt.tight_layout()
-plt.show()
+# plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
+# plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
+# # plt.savefig("./IMF_Kroupa_3a.pdf", dpi=300)
+# plt.tight_layout()
+# plt.show()
 
 def kroupa_imf_2001(mass):  # normalized to a population with mass = 1 Msun
     # if mass < 0.08:
@@ -77,10 +77,21 @@ def kroupa_imf_2001(mass):  # normalized to a population with mass = 1 Msun
     elif mass < 150:
         return mass**(-2.3)/integrated_mass
 
+def kroupa_imf_2001_bh(mass):  # normalized to a population with mass = 1 Msun
+    # if mass < 0.08:
+    #     return 25*mass**(-0.3)/integrated_mass
+    if mass < 0.5:
+        return 0.6*mass**(-3)/integrated_mass
+    elif mass < 1:
+        return mass**(-2.3)/integrated_mass
+    elif mass < 150:
+        return mass**(-2.3)/integrated_mass
+
 plt.loglog(masses, [kroupa_imf_2001(m) for m in masses], color="purple", linestyle='-', zorder=10, lw=2, label="Kroupa IMF")
+plt.loglog(masses, [kroupa_imf_2001_bh(m) for m in masses], color="blue", linestyle='-', zorder=10, lw=1.5, label="Kroupa IMF")
 plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
 plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
 plt.legend()
 plt.savefig("./IMF_Kroupa_2001_without_bd.png", dpi=300)
 plt.tight_layout()
-# plt.show()
+plt.show()
