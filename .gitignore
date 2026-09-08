@@ -4,3 +4,4 @@
 *.pdf
 /IMFs
 push_origin-master.sh
+.DS_Store
