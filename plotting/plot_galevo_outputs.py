@@ -185,10 +185,10 @@ def plot_sfh_with_data(file_paths,labels, min, max):
         age_list, sfr = data['age_list'], data['SFR_list']
         age_list = np.array(age_list, dtype=float) - 0.01
         label = labels[i] if labels and i < len(labels) else f"Run {i+1}"
-        plt.plot(age_list[min:max], sfr[min:max], lw=1.0, color=colours[i % len(colours)], label=label)
+        plt.plot(age_list[min:max], sfr[min:max], lw=1.5, color=colours[i % len(colours)], label=label)
     plt.xlabel('Time (Gyr)', fontsize=14)
     plt.ylabel('log(SFR)', fontsize=14)
-    plt.ylim(-4.5,2.1)
+    plt.ylim(-4.5,2.5)
     plt.title('Star Formation History', fontsize=16)
     lgd2 = plt.legend(loc='upper left', bbox_to_anchor=(1.09, 0.3), fontsize=8, title="Simulation Data")
     plt.gca().add_artist(lgd2)
@@ -205,10 +205,10 @@ def plot_sfh(file_paths,labels, min, max):
         age_list, sfr = data['age_list'], data['SFR_list']
         age_list = np.array(age_list, dtype=float) - 0.01
         label = labels[i] if labels and i < len(labels) else f"Run {i+1}"
-        plt.plot(age_list[min:max], sfr[min:max], lw=0.8, color=colours[i % len(colours)], label=label)
+        plt.plot(age_list[min:max], sfr[min:max], lw=2, color=colours[i % len(colours)], label=label)
     plt.xlabel('Time (Gyr)', fontsize=14)
     plt.ylabel('log(SFR)', fontsize=14)
-    plt.ylim(-4,3)
+    plt.ylim(-4,4)
     plt.xlim(-0.15,1.1)
     plt.title('Star Formation History', fontsize=16)
     plt.legend()
@@ -427,6 +427,6 @@ def plot_O_SFR_gas_N_evolution(OH_path, gas_path, sfr_path, NO_path):
 # plot_supernovae("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/SN_number_evolution.txt")
 # plot_mass_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/final_results/imfKroupaSTF-4.15alpha3.0log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN1.3SFE0.0085Z_0100infall0.0008/plots/mass_evolution.txt")
 
-# plot_sfh_with_data(glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/M300_yields/20260502/imfKroupaSTF-4.15alpha2.1log_SFR<module 'IMFs.Kroupa_IMF' from '/Users/adriana_work/Desktop/galIMF/IMFs/Kroupa_IMF.py'>SFEN0.5SFE0.0052Z_0100infall0.0008/plots/SFH.txt"), labels=['alpha=2.3'], min=0, max=25)
+plot_sfh_with_data(glob.glob("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/paper/nomoto/igimf2/imfigimfSTF-4.15alpha2.3log_SFR<module 'igimf_SFR_-365447_Fe_over_H_1908581' from '/Users/adriana_work/Desktop/galIMF/Generated_IGIMFs/igimf_SFR_-365447_Fe_over_H_1908581.py'>SFEN1.0SFE0.008Z_0100infall0.0065/plots/SFH.txt"), labels=['alpha=2.3'], min=0, max=250)
 
-metallicity_abundance_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/20260703/LCR300/imfigimfSTF0.04Log_SFR1.0SFEN15SFE0.008Z_0-4.15infall0.009/chemical_and_SN_evolution.txt")
+# metallicity_abundance_evolution("/Users/adriana_work/Desktop/galIMF/simulation_results_from_galaxy_evol/20260703/LCR300/imfigimfSTF0.04Log_SFR1.0SFEN15SFE0.008Z_0-4.15infall0.009/chemical_and_SN_evolution.txt")

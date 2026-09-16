@@ -39,8 +39,8 @@ matplotlib.rcParams['ytick.minor.width'] = 0
 cmap = plt.get_cmap('tab10')
 
 # collect handles but don't add labels here
-plt.loglog(masses, [kroupa_imf_canon(m) for m in masses],
-                 color="red", linestyle='--', zorder=10, lw=2, label='Canonical Kroupa IMF')
+# plt.loglog(masses, [kroupa_imf_canon(m) for m in masses],
+#                  color="red", linestyle='--', zorder=10, lw=2, label='Canonical Kroupa IMF')
 
 def kroupa_imf(mass):  # normalized to a population with mass = 1 Msun
     if mass < 0.5:
@@ -50,8 +50,8 @@ def kroupa_imf(mass):  # normalized to a population with mass = 1 Msun
     elif mass < 150:
         return 0.7*mass**(-1.4)/integrated_mass
  
-plt.loglog(masses, [kroupa_imf(m) for m in masses],
-                    color='green', zorder=1, lw=2, label='Different slope')
+# plt.loglog(masses, [kroupa_imf(m) for m in masses],
+#                     color='green', zorder=1, lw=2, label='Different slope')
 
 # plot the red dashed line last so it's on top / visible
 
@@ -77,18 +77,28 @@ def kroupa_imf_2001(mass):  # normalized to a population with mass = 1 Msun
     elif mass < 150:
         return mass**(-2.3)/integrated_mass
 
-def kroupa_imf_2001_bh(mass):  # normalized to a population with mass = 1 Msun
+# def kroupa_imf_2001_bh(mass):  # normalized to a population with mass = 1 Msun
+#     # if mass < 0.08:
+#     #     return 25*mass**(-0.3)/integrated_mass
+#     if mass < 0.5:
+#         return 0.6*mass**(-3)/integrated_mass
+#     elif mass < 1:
+#         return mass**(-2.3)/integrated_mass
+#     elif mass < 150:
+#         return mass**(-2.3)/integrated_mass
+
+def kroupa_imf_2001_th(mass):  # normalized to a population with mass = 1 Msun
     # if mass < 0.08:
     #     return 25*mass**(-0.3)/integrated_mass
     if mass < 0.5:
-        return 0.6*mass**(-3)/integrated_mass
+        return 2*mass**(-1.3)/integrated_mass
     elif mass < 1:
         return mass**(-2.3)/integrated_mass
     elif mass < 150:
-        return mass**(-2.3)/integrated_mass
+        return mass**(-1.6)/integrated_mass
 
-plt.loglog(masses, [kroupa_imf_2001(m) for m in masses], color="purple", linestyle='-', zorder=10, lw=2, label="Kroupa IMF")
-plt.loglog(masses, [kroupa_imf_2001_bh(m) for m in masses], color="blue", linestyle='-', zorder=10, lw=1.5, label="Kroupa IMF")
+plt.loglog(masses, [kroupa_imf_2001(m) for m in masses], color="purple", linestyle='-', zorder=10, lw=2, label="canon Kroupa IMF")
+plt.loglog(masses, [kroupa_imf_2001_th(m) for m in masses], color="blue", linestyle='-', zorder=10, lw=1.5, label="top-heavy Kroupa IMF")
 plt.xlabel("Stellar Mass ($\\mathrm{M_{\\odot}}$)", fontsize=12)
 plt.ylabel("IMF ($\\mathrm{\\xi}$)", fontsize=12)
 plt.legend()
