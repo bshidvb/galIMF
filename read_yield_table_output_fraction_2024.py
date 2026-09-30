@@ -102,6 +102,22 @@ def function_read_file(yield_table_name):
         file_yield = open('yield_tables/agb_and_massive_stars_K10C20_lc18_r300_M.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_M000_only":
+            file_yield = open('yield_tables/lc18_r0_M_recalculated.txt', 'r')
+            data = file_yield.readlines()
+            file_yield.close()
+    elif yield_table_name == "Limongi_M300_only":
+            file_yield = open('yield_tables/lc18_r300_M_recalculated.txt', 'r')
+            data = file_yield.readlines()
+            file_yield.close()  
+    elif yield_table_name == "Limongi_M000_sup_agb":
+            file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_M000.txt', 'r')
+            data = file_yield.readlines()
+            file_yield.close()
+    elif yield_table_name == "Limongi_M300_sup_agb":
+            file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_M300.txt', 'r')
+            data = file_yield.readlines()
+            file_yield.close()   
     elif yield_table_name == "Limongi_R000":
         file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R000.txt', 'r')
         data = file_yield.readlines()
@@ -902,6 +918,22 @@ def function_get_mass_grid(yield_table_name):  # read in a grid from 0.08 to 150
         file_yield = open('yield_tables/agb_and_massive_stars_K10C20_lc18_r300_M.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
+    elif yield_table_name == "Limongi_M000_only":
+            file_yield = open('yield_tables/lc18_r0_M_recalculated.txt', 'r')
+            data = file_yield.readlines()
+            file_yield.close()
+    elif yield_table_name == "Limongi_M300_only":
+            file_yield = open('yield_tables/lc18_r300_M_recalculated.txt', 'r')
+            data = file_yield.readlines()
+            file_yield.close()  
+    elif yield_table_name == "Limongi_M000_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_M000.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()
+    elif yield_table_name == "Limongi_M300_sup_agb":
+        file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_M300.txt', 'r')
+        data = file_yield.readlines()
+        file_yield.close()   
     elif yield_table_name == "Limongi_R150":
         file_yield = open('yield_tables/agb_and_massive_stars_K10_LC18_R150.txt', 'r')
         data = file_yield.readlines()
@@ -2351,7 +2383,7 @@ if __name__ == '__main__':
     Cr_over_Fe_list = []
     Mn_over_Fe_list = []
     Ni_over_Fe_list = []
-    yield_table_name = "Limongi_M300"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
+    yield_table_name = "Limongi_M000_sup_agb"  # "K10_K06_HNe10" or "C15_N13_HNe10" or "WW95" or "portinari98" or "marigo01" or "Kobayashi06" or "Karakas10"
     # or "Nomoto" or "Nomoto_HNe" or "Nomoto_ZY_hypernova" or "Nomoto_ZY_CCSN" or "Nomoto_ZY_CCSN_popIII" or "K10_N13_HegerPopIII"
     # or "Limongi_R000" or "Limongi_R300" or "Limongi_R150" or "K10_N13_HNe00"
     # or "Limongi_R000_sup_agb" or "Limongi_R150_sup_agb" or "Limongi_R300_sup_agb"
