@@ -102,14 +102,6 @@ def function_read_file(yield_table_name):
         file_yield = open('yield_tables/agb_and_massive_stars_K10C20_lc18_r300_M.txt', 'r')
         data = file_yield.readlines()
         file_yield.close()
-    elif yield_table_name == "Limongi_M000_only":
-            file_yield = open('yield_tables/lc18_r0_M_recalculated.txt', 'r')
-            data = file_yield.readlines()
-            file_yield.close()
-    elif yield_table_name == "Limongi_M300_only":
-            file_yield = open('yield_tables/lc18_r300_M_recalculated.txt', 'r')
-            data = file_yield.readlines()
-            file_yield.close()  
     elif yield_table_name == "Limongi_M000_sup_agb":
             file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_M000.txt', 'r')
             data = file_yield.readlines()
@@ -917,15 +909,7 @@ def function_get_mass_grid(yield_table_name):  # read in a grid from 0.08 to 150
     elif yield_table_name == "Limongi_M300":
         file_yield = open('yield_tables/agb_and_massive_stars_K10C20_lc18_r300_M.txt', 'r')
         data = file_yield.readlines()
-        file_yield.close()
-    elif yield_table_name == "Limongi_M000_only":
-            file_yield = open('yield_tables/lc18_r0_M_recalculated.txt', 'r')
-            data = file_yield.readlines()
-            file_yield.close()
-    elif yield_table_name == "Limongi_M300_only":
-            file_yield = open('yield_tables/lc18_r300_M_recalculated.txt', 'r')
-            data = file_yield.readlines()
-            file_yield.close()  
+        file_yield.close() 
     elif yield_table_name == "Limongi_M000_sup_agb":
         file_yield = open('yield_tables/agb_and_super_agb_and_massive_stars_K10_D14_LC18_M000.txt', 'r')
         data = file_yield.readlines()
