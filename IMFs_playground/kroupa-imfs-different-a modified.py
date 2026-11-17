@@ -91,11 +91,11 @@ def kroupa_imf_2001_th(mass):  # normalized to a population with mass = 1 Msun
     # if mass < 0.08:
     #     return 25*mass**(-0.3)/integrated_mass
     if mass < 0.5:
-        return 2*mass**(-1.3)/integrated_mass
+        return 2.8*mass**(-0.8)/integrated_mass
     elif mass < 1:
         return mass**(-2.3)/integrated_mass
     elif mass < 150:
-        return mass**(-1.6)/integrated_mass
+        return mass**(-2.1)/integrated_mass
 
 plt.loglog(masses, [kroupa_imf_2001(m) for m in masses], color="purple", linestyle='-', zorder=10, lw=2, label="canon Kroupa IMF")
 plt.loglog(masses, [kroupa_imf_2001_th(m) for m in masses], color="blue", linestyle='-', zorder=10, lw=1.5, label="top-heavy Kroupa IMF")
