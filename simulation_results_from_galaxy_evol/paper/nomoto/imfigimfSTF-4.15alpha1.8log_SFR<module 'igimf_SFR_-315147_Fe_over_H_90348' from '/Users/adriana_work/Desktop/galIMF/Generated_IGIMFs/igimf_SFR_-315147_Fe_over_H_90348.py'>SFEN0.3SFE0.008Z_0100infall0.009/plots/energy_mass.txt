@@ -1,6 +1,0 @@
-# final SN_energy_release
-nan
-# final binding_energy
-nan
-# final gas_kinetic_energy
-nan
